@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Lera's Word Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday study tool, styled like the teacher's Miro lesson sheets
+   IDEA a Miro lesson frame: white sheet, blue sheet label, time-pill chips, pale blue panels
+   PICTURE the flashcard itself, large and centred; on Progress, the mastery bars per lesson
+   COLOUR board grey ground, white sheets, Miro blue #305bab, pill #c6dcff, panel #f0f5fd, green/red feedback tints
+   TYPE IBM Plex Sans throughout, as on the board
+   LAYOUT sheet header, tabs, then the card (phone: same order, buttons full width) */
+:root{color-scheme:light dark;--bg:light-dark(#eef0f3,#14171c);--sheet:light-dark(#ffffff,#1d2128);--ink:light-dark(#1a1a1a,#eef1f6);--mute:light-dark(#595959,#a7afbd);--blue:light-dark(#305bab,#8fb2f2);--pill:light-dark(#c6dcff,#253a63);--panel:light-dark(#f0f5fd,#222a36);--line:light-dark(#e7e7e7,#2e3440);--ok:light-dark(#eaf9ef,#16301f);--okink:light-dark(#067429,#7fdc9c);--no:light-dark(#fff0f0,#3a1c1c);--noink:light-dark(#bd0a0a,#ff9a9a);--amber:light-dark(#fff6b6,#3d3612)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 "IBM Plex Sans",system-ui,sans-serif;overflow-x:clip;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding-block:24px 48px;padding-left:max(4vw,16px,env(safe-area-inset-left,0px));padding-right:max(4vw,16px,env(safe-area-inset-right,0px))}
+.sheet{background:var(--sheet);border-radius:6px;padding:clamp(20px,4vw,48px);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.lbl{color:var(--blue);font-weight:700;font-size:15px;letter-spacing:.01em}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.05;letter-spacing:-.02em;margin:6px 0 4px}
+.sub{color:var(--mute);margin:0}
+.pill{display:inline-flex;align-items:center;justify-content:center;background:var(--pill);color:var(--blue);font-weight:700;border-radius:24px;padding:8px 18px;white-space:nowrap;border:0;font:inherit;font-weight:700}
+hr{border:0;border-top:2px solid var(--line);margin:22px 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{background:transparent;color:var(--mute);border:2px solid var(--line);border-radius:24px;padding:8px 18px;font:inherit;font-weight:700;cursor:pointer;min-height:44px}
+.tab[aria-selected=true]{background:var(--pill);color:var(--blue);border-color:var(--pill)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.chip{border:1.5px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:20px;padding:6px 14px;font:inherit;font-size:14px;cursor:pointer;min-height:38px}
+.chip[aria-pressed=true]{border-color:var(--blue);color:var(--blue);font-weight:700}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:24px;align-items:start}
+.card{background:var(--panel);border-radius:12px;min-height:340px;padding:clamp(22px,4vw,44px);display:flex;flex-direction:column;justify-content:center;gap:14px;cursor:pointer;position:relative;outline-offset:4px}
+.card .meta{position:absolute;top:16px;left:20px;right:20px;display:flex;justify-content:space-between;color:var(--mute);font-size:13px}
+.word{font-size:clamp(32px,6vw,52px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
+.ipa{color:var(--blue);font-size:18px}
+.def{font-size:20px}
+.ex{color:var(--mute);font-style:italic}
+.hint{color:var(--mute);font-size:14px}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.btn{border:0;border-radius:12px;padding:14px;font:inherit;font-weight:700;font-size:17px;cursor:pointer;min-height:52px}
+.btn.no{background:var(--no);color:var(--noink)}.btn.yes{background:var(--ok);color:var(--okink)}
+.btn:disabled{opacity:.45;cursor:default}
+.side{display:grid;gap:12px}
+.box{background:var(--panel);border-radius:12px;padding:16px}
+.big{font-size:34px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.small{font-size:13px;color:var(--mute)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(10em,1fr));gap:12px}
+h2{font-size:28px;letter-spacing:-.01em;margin:28px 0 6px;line-height:1.15}
+.bars{display:grid;gap:14px;margin-top:14px}
+.brow{display:grid;grid-template-columns:200px minmax(0,1fr) 64px;gap:12px;align-items:center}
+.stack{display:flex;height:30px;border-radius:6px;overflow:hidden;background:var(--line)}
+.stack span{display:block;height:100%}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--mute);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.cols{display:flex;align-items:flex-end;gap:6px;height:180px;border-bottom:2px solid var(--line);margin-top:14px;overflow-x:auto;padding-top:22px}
+.col{flex:0 0 34px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
+.col b{width:100%;background:var(--blue);border-radius:4px 4px 0 0}
+.col em{font-style:normal;font-size:12px;color:var(--mute);position:absolute;top:-20px;white-space:nowrap}
+.xl{display:flex;gap:6px;font-size:11px;color:var(--mute);overflow:hidden}.xl span{flex:0 0 34px;text-align:center}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--blue);font-size:14px}
+.st{display:inline-block;border-radius:14px;padding:2px 10px;font-size:13px;font-weight:700;white-space:nowrap}
+.s0{background:var(--line);color:var(--mute)}.s1{background:var(--no);color:var(--noink)}.s2{background:var(--amber);color:var(--ink)}.s3{background:var(--pill);color:var(--blue)}.s4{background:var(--ok);color:var(--okink)}
+form{display:grid;grid-template-columns:repeat(auto-fit,minmax(12em,1fr));gap:10px;margin-top:12px}
+input,select{font:inherit;font-size:16px;padding:10px;border:1.5px solid var(--line);border-radius:8px;background:var(--sheet);color:var(--ink)}
+.note{background:var(--amber);border-radius:12px;padding:14px 16px;margin-top:16px}
+.empty{background:var(--panel);border-radius:12px;padding:32px;text-align:center;color:var(--mute)}
+@media(max-width:760px){.stage{grid-template-columns:minmax(0,1fr)}.side{grid-template-columns:1fr 1fr}.brow{grid-template-columns:minmax(0,1fr) 56px}.brow .stack{grid-column:1/-1;grid-row:2}}
+@media(max-width:600px){table{font-size:13px}th,td{padding:6px 4px}.hide-s{display:none}}
+</style>
+</head><body>
+<div class="wrap"><div class="sheet">
+  <div class="top">
+    <div>
+      <div class="lbl">ARCHITECTURE IN ENGLISH / FLASHCARDS</div>
+      <h1>Lera's Word Deck</h1>
+      <p class="sub">Every word from our Miro lessons. Tap the card to turn it, then be honest: did you know it?</p>
+    </div>
+    <span class="pill" id="countPill">Loading…</span>
+  </div>
+  <hr>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-v="practise" aria-selected="true">Practise</button>
+    <button class="tab" role="tab" data-v="progress" aria-selected="false">Progress</button>
+    <button class="tab" role="tab" data-v="list" aria-selected="false">Word list</button>
+  </div>
+
+  <section id="v-practise">
+    <div class="chips" id="lessonChips"></div>
+    <div class="chips" style="margin-top:-8px">
+      <button class="chip" id="dirBtn" aria-pressed="false">Show: meaning first</button>
+      <button class="chip" id="dueBtn" aria-pressed="false">Only words I'm still learning</button>
+    </div>
+    <div class="stage">
+      <div>
+        <div class="card" id="card" tabindex="0" role="button" aria-label="Flip card"></div>
+        <div class="ans">
+          <button class="btn no" id="noBtn" disabled>Still learning</button>
+          <button class="btn yes" id="yesBtn" disabled>I knew it</button>
+        </div>
+      </div>
+      <div class="side">
+        <div class="box"><div class="small">This session</div><div class="big" id="sessScore">0 / 0</div><div class="small" id="sessAcc">answer a card to start</div></div>
+        <div class="box"><div class="small">Mastered overall</div><div class="big" id="sideMastered">0</div><div class="small" id="sideOf">of 0 words</div></div>
+        <div class="box small" id="saveState">Your progress is saved on this device.</div>
+        <button class="btn yes" id="finishBtn" style="width:100%">Finish and send to my teacher</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="v-progress" hidden>
+    <div class="kpis" id="kpis"></div>
+    <h2 id="masteryTitle">Mastery by lesson</h2>
+    <p class="sub">Each card climbs a step every time she knows it and drops back to the start when she doesn't. Five correct in a row means mastered.</p>
+    <div class="bars" id="bars"></div>
+    <div class="legend"><span><i style="background:var(--line)"></i>Not seen</span><span><i style="background:var(--noink)"></i>Struggling</span><span><i style="background:#e0b100"></i>Learning</span><span><i style="background:var(--blue)"></i>Known</span><span><i style="background:var(--okink)"></i>Mastered</span></div>
+    <h2>Accuracy per session</h2>
+    <p class="sub" id="sessNote">Share of cards she knew in each practice session, oldest on the left.</p>
+    <div class="cols" id="cols"></div><div class="xl" id="xl"></div>
+    <h2>Words to work on</h2>
+    <p class="sub">Most "still learning" answers first. Good candidates for the next lesson's warm-up.</p>
+    <div class="scroll"><table><thead><tr><th>Word</th><th>Lesson</th><th>Missed</th><th>Knew</th><th>Status</th></tr></thead><tbody id="hard"></tbody></table></div>
+  </section>
+
+  <section id="v-list" hidden>
+    <p class="sub" style="margin-top:18px">All words, grouped by lesson.</p>
+    <div class="scroll"><table><thead><tr><th>Word</th><th class="hide-s">Pronunciation</th><th>Meaning</th><th>Status</th></tr></thead><tbody id="list"></tbody></table></div>
+  </section>
+</div></div>
+
+<script src="config.js"></script>
+<script>
+{
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STAT=[['Not seen','s0'],['Struggling','s1'],['Learning','s2'],['Learning','s2'],['Known','s3'],['Known','s3'],['Mastered','s4']];
+const lvl=p=>{if(!p||(!p.right&&!p.wrong))return 0;const b=p.box||0;return b>=5?6:b<=0?1:b+1;};
+const group=l=>[0,1,2,2,3,3,4][l];
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d;}catch(e){return d;}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
+let words=[],prog=load('lera.prog',{}),sessions=load('lera.sessions',[]),filter='all',meaningFirst=false,dueOnly=false,queue=[],cur=null,flipped=false,sess=null;
+const setSave=t=>{$('#saveState').textContent=t;};
+
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b));['practise','progress','list'].forEach(v=>$('#v-'+v).hidden=v!==b.dataset.v);render();});
+$('#dirBtn').onclick=()=>{meaningFirst=!meaningFirst;$('#dirBtn').setAttribute('aria-pressed',meaningFirst);$('#dirBtn').textContent=meaningFirst?'Show: meaning first':'Show: word first';build();};
+$('#dirBtn').textContent='Show: word first';
+$('#dueBtn').onclick=()=>{dueOnly=!dueOnly;$('#dueBtn').setAttribute('aria-pressed',dueOnly);build();};
+
+function lessons(){const m=new Map();words.forEach(w=>m.set(w.lesson,w.lessonTitle));return [...m].sort((a,b)=>a[0]-b[0]);}
+function chips(){const ls=lessons();$('#lessonChips').innerHTML=[['all','All lessons']].concat(ls.map(([n,t])=>[String(n),'L'+String(n).padStart(2,'0')+' '+t])).map(([k,t])=>`<button class="chip" data-k="${esc(k)}" aria-pressed="${filter===k}">${esc(t)}</button>`).join('');
+  $('#lessonChips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{filter=c.dataset.k;chips();build();});}
+function build(){let pool=words.filter(w=>filter==='all'||String(w.lesson)===filter);if(dueOnly)pool=pool.filter(w=>lvl(prog[w.id])<6);
+  pool=pool.map(w=>({w,k:(prog[w.id]?.box||0)+Math.random()*1.5}));pool.sort((a,b)=>a.k-b.k);queue=pool.map(x=>x.w);next();}
+function next(){cur=queue.shift()||null;flipped=false;drawCard();if(!cur&&sess)finish();}
+function drawCard(){const c=$('#card');$('#noBtn').disabled=$('#yesBtn').disabled=!(cur&&flipped);
+  if(!words.length){c.innerHTML='<div class="empty">Loading words…</div>';return;}
+  if(!cur){c.innerHTML='<div class="word">Deck done</div><div class="def">Great work. Pick another lesson or tap here to go again.</div>';c.onclick=build;return;}
+  c.onclick=flip;const w=cur,p=prog[w.id],L=lvl(p);
+  const meta=`<div class="meta"><span>LESSON ${esc(String(w.lesson).padStart(2,'0'))} / ${esc(w.lessonTitle)}</span><span class="st ${STAT[L][1]}">${STAT[L][0]}</span></div>`;
+  const front=meaningFirst?`<div class="def">${esc(w.def)}</div><div class="hint">Which word is it? Tap to check.</div>`:`<div class="word">${esc(w.word)}</div><div class="hint">${esc(w.pos)} · What does it mean? Say it in a sentence, then tap.</div>`;
+  const back=`<div class="word">${esc(w.word)}</div><div class="ipa">${esc(w.pos)} ${esc(w.ipa)}</div><div class="def">${esc(w.def)}</div>${w.example?`<div class="ex">${esc(w.example)}</div>`:''}`;
+  c.innerHTML=meta+(flipped?back:front);}
+function flip(){if(!cur)return;flipped=!flipped;drawCard();}
+$('#card').onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();flip();}};
+document.addEventListener('keydown',e=>{if(!flipped||!cur)return;if(e.key==='ArrowRight')answer(true);if(e.key==='ArrowLeft')answer(false);});
+$('#yesBtn').onclick=()=>answer(true);$('#noBtn').onclick=()=>answer(false);
+$('#finishBtn').onclick=()=>{if(sess)finish();else setSave('Answer a few cards first.');};
+function answer(ok){const w=cur;if(!w)return;const p=Object.assign({box:0,right:0,wrong:0},prog[w.id]);
+  if(ok){p.box=Math.min(5,(p.box||0)+1);p.right++;}else{p.box=0;p.wrong++;queue.splice(Math.min(3,queue.length),0,w);}
+  p.last=new Date().toISOString();prog[w.id]=p;save('lera.prog',prog);
+  if(!sess)sess={at:p.last,right:0,wrong:0,lesson:filter==='all'?'All':'L'+filter.padStart(2,'0'),missed:[]};
+  sess[ok?'right':'wrong']++;if(!ok&&!sess.missed.includes(w.word))sess.missed.push(w.word);
+  const t=sess.right+sess.wrong;$('#sessScore').textContent=sess.right+' / '+t;$('#sessAcc').textContent=Math.round(100*sess.right/t)+'% known';
+  setSave('Saved on this device. Press Finish to send it to your teacher.');
+  next();side();}
+function mastered(){return words.filter(w=>lvl(prog[w.id])===6).length;}
+function finish(){const s=sess;if(!s)return;sess=null;sessions.push({at:s.at,right:s.right,wrong:s.wrong,lesson:s.lesson});save('lera.sessions',sessions);
+  const payload=JSON.stringify({...s,mastered:mastered(),totalWords:words.length});
+  if(window.RESULTS_URL){let sent=false;try{sent=navigator.sendBeacon(window.RESULTS_URL,new Blob([payload],{type:'text/plain'}));}catch(e){}
+    if(!sent){fetch(window.RESULTS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:payload}).catch(()=>{});}
+    setSave('Session sent to your teacher. Well done!');}
+  else setSave('Session saved on this device.');
+  $('#sessScore').textContent='0 / 0';$('#sessAcc').textContent='answer a card to start';render();}
+addEventListener('pagehide',()=>{if(sess&&sess.right+sess.wrong>=5)finish();});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&sess&&sess.right+sess.wrong>=5)finish();});
+function side(){$('#sideMastered').textContent=mastered();$('#sideOf').textContent='of '+words.length+' words';
+  $('#countPill').textContent=words.length+' words / '+lessons().length+' lessons';}
+function progress(){
+  const seen=words.filter(w=>lvl(prog[w.id])>0).length,mast=mastered();
+  let R=0,W=0;Object.values(prog).forEach(p=>{R+=p.right||0;W+=p.wrong||0;});
+  const days=new Set(sessions.map(s=>String(s.at).slice(0,10)));
+  const k=[[mast+' / '+words.length,'words mastered'],[seen+' / '+words.length,'words practised'],[R+W?Math.round(100*R/(R+W))+'%':'–','answers known'],[sessions.length,'sessions on '+days.size+' day'+(days.size===1?'':'s')]];
+  $('#kpis').innerHTML=k.map(([a,b])=>`<div class="box"><div class="big">${esc(a)}</div><div class="small">${esc(b)}</div></div>`).join('');
+  $('#masteryTitle').textContent=words.length?`${Math.round(100*mast/words.length)}% of all lesson words mastered`:'Mastery by lesson';
+  const col=['var(--line)','var(--noink)','#e0b100','var(--blue)','var(--okink)'];
+  $('#bars').innerHTML=lessons().map(([n,t])=>{const ws=words.filter(w=>w.lesson===n);const c=[0,0,0,0,0];ws.forEach(w=>c[group(lvl(prog[w.id]))]++);
+    return `<div class="brow"><div><b>L${esc(String(n).padStart(2,'0'))}</b> ${esc(t)}</div><div class="stack">${c.map((v,i)=>v?`<span title="${v}" style="width:${100*v/ws.length}%;background:${col[i]}"></span>`:'').join('')}</div><div class="small" style="text-align:right">${c[4]}/${ws.length}</div></div>`;}).join('');
+  const ss=sessions.slice(-24);
+  $('#cols').innerHTML=ss.map(s=>{const t=(s.right||0)+(s.wrong||0),a=t?Math.round(100*(s.right||0)/t):0;return `<div class="col" title="${t} cards"><em>${a}%</em><b style="height:${Math.max(2,a)}%"></b></div>`;}).join('')||'<div class="empty" style="flex:1">No sessions yet. They appear here after the first practice.</div>';
+  $('#xl').innerHTML=ss.map(s=>{const d=new Date(s.at);return `<span>${isNaN(d)?'':d.getDate()+'/'+(d.getMonth()+1)}</span>`;}).join('');
+  const hard=words.filter(w=>prog[w.id]?.wrong).sort((a,b)=>prog[b.id].wrong-prog[a.id].wrong).slice(0,10);
+  $('#hard').innerHTML=hard.map(w=>{const p=prog[w.id],L=lvl(p);return `<tr><td><b>${esc(w.word)}</b></td><td>L${esc(String(w.lesson).padStart(2,'0'))}</td><td>${p.wrong||0}</td><td>${p.right||0}</td><td><span class="st ${STAT[L][1]}">${STAT[L][0]}</span></td></tr>`;}).join('')||'<tr><td colspan="5" class="small">Nothing missed yet.</td></tr>';}
+function list(){$('#list').innerHTML=lessons().map(([n,t])=>`<tr><th colspan="4" style="padding-top:20px">LESSON ${esc(String(n).padStart(2,'0'))} / ${esc(t.toUpperCase())}</th></tr>`+words.filter(w=>w.lesson===n).map(w=>{const L=lvl(prog[w.id]);return `<tr><td><b>${esc(w.word)}</b><div class="small">${esc(w.pos)}</div></td><td class="hide-s">${esc(w.ipa)}</td><td>${esc(w.def)}</td><td><span class="st ${STAT[L][1]}">${STAT[L][0]}</span></td></tr>`;}).join('')).join('');}
+function render(){side();if(!$('#v-progress').hidden)progress();if(!$('#v-list').hidden)list();}
+drawCard();
+fetch('words.json',{cache:'no-cache'}).then(r=>r.json()).then(ws=>{words=ws.sort((a,b)=>a.lesson-b.lesson||(a.order||0)-(b.order||0));chips();build();render();}).catch(()=>{$('#card').innerHTML='<div class="empty">Could not load the word list. Check your connection and reload.</div>';});
+}
+</script>
+</body></html>
