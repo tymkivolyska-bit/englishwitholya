@@ -1,0 +1,50 @@
+{
+  "lessons": [
+    {
+      "id": "l1",
+      "date": "",
+      "note": ""
+    },
+    {
+      "id": "l2",
+      "date": "",
+      "note": ""
+    },
+    {
+      "id": "l3",
+      "date": "",
+      "note": ""
+    },
+    {
+      "id": "l4",
+      "date": "",
+      "note": ""
+    },
+    {
+      "id": "l5",
+      "date": "",
+      "note": ""
+    },
+    {
+      "id": "l6",
+      "date": "",
+      "note": ""
+    }
+  ],
+  "nmtTests": [
+    {
+      "title": "NMT 2026 English: training test 1",
+      "url": "https://abitly.org/uk/tests/anglijska-mova/nmt-2026-anglijska-mova-trenuvalnyi-1-2545",
+      "date": "",
+      "score": "",
+      "lesson": ""
+    },
+    {
+      "title": "NMT online 2026 English: session 1",
+      "url": "https://abitly.org/uk/tests/anglijska-mova/nmt-onlain-2026-roku-z-anhliiskoi-movy-1-sesiia-2523",
+      "date": "",
+      "score": "",
+      "lesson": ""
+    }
+  ]
+}

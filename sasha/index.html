@@ -22,7 +22,7 @@ body{margin:0;color:var(--ink);font:16px/1.5 Onest,system-ui,sans-serif;overflow
 .wrap{max-width:980px;margin:0 auto;padding-block:clamp(18px,3vw,36px);padding-left:max(4vw,16px,env(safe-area-inset-left,0px));padding-right:max(4vw,16px,env(safe-area-inset-right,0px))}
 .top{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:14px}
 h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:0;font-weight:800;color:#fff;text-shadow:0 2px 0 rgba(20,30,70,.45)}
-.modes{display:flex;gap:6px;background:rgba(255,255,255,.9);padding:5px;border-radius:14px}
+.modes{display:flex;flex-wrap:wrap;gap:6px;background:rgba(255,255,255,.9);padding:5px;border-radius:14px}
 .mode{font:inherit;font-weight:700;font-size:15px;border:0;background:none;color:var(--ink);padding:10px 16px;border-radius:10px;cursor:pointer;min-height:44px}
 .mode[aria-pressed=true]{background:var(--navy);color:#fff}
 .panel{background:#fff;border-radius:20px;padding:clamp(16px,3vw,28px);box-shadow:0 6px 0 rgba(20,30,70,.35)}
@@ -131,7 +131,7 @@ h3{font-size:17px;margin:22px 0 8px}
 <div class="wrap">
   <div class="top">
     <h1>Sasha's word cards</h1>
-    <div class="modes"><button class="mode" id="mStudy" aria-pressed="true">Study</button><button class="mode" id="mLearn" aria-pressed="false">Learn</button><button class="mode" id="mReport" aria-pressed="false">Progress report</button></div>
+    <div class="modes"><button class="mode" id="mStudy" aria-pressed="true">Study</button><button class="mode" id="mLearn" aria-pressed="false">Learn</button><button class="mode" id="mReport" aria-pressed="false">Progress report</button><a class="mode" href="progress.html" style="text-decoration:none;display:inline-flex;align-items:center">Progress check</a></div>
   </div>
   <div class="panel" id="study">
     <div class="banner" id="banner" hidden></div>
@@ -160,7 +160,7 @@ h3{font-size:17px;margin:22px 0 8px}
     <div id="ex"></div>
   </div>
   <div class="panel" id="report" hidden></div>
-  <p style="text-align:center;color:#fff;font-size:12px;opacity:.8;margin:14px 0 0">Version 6 · progress is saved on this device</p>
+  <p style="text-align:center;color:#fff;font-size:12px;opacity:.8;margin:14px 0 0">Version 7 · progress is saved on this device</p>
 </div>
 
 <script src="cards.js"></script>

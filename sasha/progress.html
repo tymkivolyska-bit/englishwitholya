@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3e5186">
+<title>Sasha's Progress Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Same blue gingham as the word cards. One white panel; a three-column table:
+   lesson done | NMT tests | words learned. Rows stack into cards on a phone. */
+:root{color-scheme:light;--ink:#1b2547;--mute:#5a6585;--line:#dde2ee;--soft:#eef1f8;--navy:#2c3d78;--ok:#2e8b57}
+*{box-sizing:border-box;min-width:0}
+html{background:#7a8cba}
+body{margin:0;color:var(--ink);font:16px/1.5 Onest,system-ui,sans-serif;overflow-x:clip;min-height:100vh;background-color:#7a8cba;background-image:linear-gradient(90deg,rgba(38,56,118,.42) 50%,transparent 50%),linear-gradient(rgba(38,56,118,.42) 50%,transparent 50%);background-size:72px 72px}
+.wrap{max-width:1080px;margin:0 auto;padding-block:clamp(18px,3vw,36px);padding-left:max(4vw,16px,env(safe-area-inset-left,0px));padding-right:max(4vw,16px,env(safe-area-inset-right,0px))}
+.top{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:14px}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:0;font-weight:800;color:#fff;text-shadow:0 2px 0 rgba(20,30,70,.45)}
+.back{font-weight:700;font-size:15px;color:var(--ink);background:rgba(255,255,255,.9);padding:10px 16px;border-radius:12px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.panel{background:#fff;border-radius:20px;padding:clamp(16px,3vw,28px);box-shadow:0 6px 0 rgba(20,30,70,.35)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.kpi{background:var(--soft);border-radius:12px;padding:10px 14px}
+.kpi b{display:block;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--mute)}
+.banner{background:#fff4d6;color:#6b4b00;border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:14px}
+.cols{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr) minmax(0,1.5fr);gap:14px;align-items:start}
+.col{border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+.col>h2{margin:0;font-size:16px;padding:12px 14px;background:var(--soft);display:flex;justify-content:space-between;gap:8px}
+.col>h2 span{color:var(--mute);font-weight:700;font-variant-numeric:tabular-nums}
+.item{padding:12px 14px;border-top:1px solid var(--line);border-left:6px solid var(--c,var(--line))}
+.col>h2+.item{border-top:0}
+.lab{display:none;font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.lt{font-weight:800;font-size:17px;line-height:1.25}
+.lu{font-size:13px;color:var(--mute);margin-top:2px}
+.done{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:13px;font-weight:700;color:var(--ok);background:#e3f4ea;border-radius:999px;padding:3px 10px}
+.lnote{font-size:14px;margin-top:6px}
+.test a{color:var(--navy);font-weight:700;overflow-wrap:anywhere}
+.test small{display:block;font-size:13px;color:var(--mute)}
+.res{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:14px;font-weight:700}
+.res input{font:inherit;font-size:16px;font-weight:700;width:7.5em;padding:6px 10px;border:1.5px dashed #b9c1d8;border-radius:10px;color:var(--ink);background:#fff}
+.res input:focus{outline:none;border:1.5px solid var(--navy)}
+.res b{font-size:18px}
+.none{font-size:14px;color:var(--mute)}
+.bar{height:10px;border-radius:5px;background:var(--soft);overflow:hidden;margin:4px 0 8px}
+.bar i{display:block;height:100%;background:var(--c)}
+.count{font-size:14px;font-weight:700}
+.words{display:flex;flex-wrap:wrap;gap:5px}
+.words span{background:color-mix(in srgb,var(--c) 12%,#fff);border-radius:7px;padding:2px 8px;font-size:14px}
+.more{font:inherit;font-size:13px;font-weight:700;border:0;background:none;color:var(--navy);padding:4px 0;cursor:pointer}
+.foot{text-align:center;color:#fff;font-size:12px;opacity:.85;margin:14px 0 0}
+@media(max-width:820px){
+  .kpis{grid-template-columns:minmax(0,1fr)}
+  .kpi{display:flex;align-items:baseline;gap:10px}.kpi b{font-size:22px}
+  .cols{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Sasha's progress check</h1>
+    <a class="back" href="./">← Word cards</a>
+  </div>
+  <div class="panel">
+    <div class="kpis">
+      <div class="kpi"><b id="kL">0</b><span>lessons done</span></div>
+      <div class="kpi"><b id="kT">0</b><span>NMT tests done</span></div>
+      <div class="kpi"><b id="kW">0</b><span>words learned</span></div>
+    </div>
+    <div class="banner" id="banner" hidden></div>
+    <div class="cols">
+      <section class="col" id="cLessons"><h2>Lessons done <span id="nL"></span></h2></section>
+      <section class="col" id="cTests"><h2>NMT tests and results <span id="nT"></span></h2></section>
+      <section class="col" id="cWords"><h2>Words learned <span id="nW"></span></h2></section>
+    </div>
+  </div>
+  <p class="foot" id="foot">Words learned are read from the flashcard progress on this device.</p>
+</div>
+<script src="cards.js"></script>
+<script>
+{
+const L=window.LESSONS||[];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hash=s=>{let h=5381;for(const ch of s)h=(h*33^ch.codePointAt(0))>>>0;return "c"+h.toString(36)};
+const safeUrl=u=>/^https?:\/\//i.test(String(u||""))?String(u):"";
+const fmt=d=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(d||""))return "";const [y,m,dd]=d.split("-").map(Number);return new Date(y,m-1,dd).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})};
+let P={};try{P=JSON.parse(localStorage.getItem("sw-p")||"{}")||{}}catch(e){}
+const words=new Map();
+L.forEach(l=>{const a=[];l.g.forEach(g=>g.k.forEach(k=>a.push({id:hash(l.id+"|"+g.n+"|"+k[0]),f:k[0]})));words.set(l.id,a)});
+const isLearned=w=>P[w.id]&&P[w.id].b>=3;
+const hasProgress=Object.keys(P).length>0;
+
+let R={};try{R=JSON.parse(localStorage.getItem("sw-nmt")||"{}")||{}}catch(e){}
+function testHtml(t,i){
+  const u=safeUrl(t.url),title=esc(t.title||"NMT test"),key=u||t.title||String(i);
+  const fixed=t.score!==undefined&&t.score!==""?String(t.score):"";
+  return '<div class="item test" style="--c:#2c3d78">'+(u?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+title+'</a>':'<b>'+title+'</b>')+
+    (fmt(t.date)?'<small>'+fmt(t.date)+'</small>':'')+
+    '<label class="res">Result: '+(fixed?'<b>'+esc(fixed)+'</b>':'<input data-k="'+esc(key)+'" value="'+esc(R[key]||"")+'" placeholder="e.g. 168/200" inputmode="text" autocomplete="off">')+'</label></div>';
+}
+function wordsHtml(id){
+  const all=words.get(id)||[];
+  if(!all.length)return '<span class="none">No flashcards for this lesson yet</span>';
+  const got=all.filter(isLearned),pct=Math.round(got.length/all.length*100);
+  let h='<div class="count">'+got.length+' of '+all.length+' words</div><div class="bar"><i style="width:'+pct+'%"></i></div>';
+  if(got.length){
+    const show=got.slice(0,24).map(w=>'<span>'+esc(w.f)+'</span>').join("");
+    const rest=got.slice(24).map(w=>'<span>'+esc(w.f)+'</span>').join("");
+    h+='<div class="words">'+show+'</div>';
+    if(rest)h+='<div class="words" hidden style="margin-top:5px">'+rest+'</div><button class="more" data-more>Show all '+got.length+'</button>';
+  }else if(hasProgress)h+='<span class="none">Not learned yet</span>';
+  return h;
+}
+function render(data){
+  const lessons=(data&&data.lessons)||[],tests=(data&&data.nmtTests)||[];
+  let learnedTotal=0;words.forEach(a=>{learnedTotal+=a.filter(isLearned).length});
+  $("cLessons").insertAdjacentHTML("beforeend",lessons.map(x=>{
+    const l=L.find(l=>l.id===x.id),c=(l&&l.c)||"#2c3d78",title=x.title||(l?l.t:x.id);
+    return '<div class="item" style="--c:'+esc(c)+'"><div class="lt">'+esc(title)+'</div>'+(l?'<div class="lu">'+esc(l.u)+'</div>':'')+
+      '<span class="done">✓ Done'+(fmt(x.date)?' · '+fmt(x.date):'')+'</span>'+(x.note?'<div class="lnote">'+esc(x.note)+'</div>':'')+'</div>'}).join("")||'<div class="item none">No lessons yet</div>');
+  $("cTests").insertAdjacentHTML("beforeend",tests.map(testHtml).join("")||'<div class="item none">No tests yet</div>');
+  $("cWords").insertAdjacentHTML("beforeend",L.map(l=>'<div class="item" style="--c:'+esc(l.c)+'"><div class="lt" style="font-size:15px">'+esc(l.t)+'</div>'+wordsHtml(l.id)+'</div>').join(""));
+  $("kL").textContent=$("nL").textContent=lessons.length;$("kT").textContent=$("nT").textContent=tests.length;$("kW").textContent=$("nW").textContent=learnedTotal;
+  if(!hasProgress){$("banner").hidden=false;$("banner").textContent="No flashcard progress on this device. Open this page on the phone Sasha studies on to see the words he has learned. The weekly Telegram report also shows his word counts."}
+}
+document.addEventListener("input",e=>{const k=e.target.dataset&&e.target.dataset.k;if(k===undefined)return;R[k]=e.target.value.trim();try{localStorage.setItem("sw-nmt",JSON.stringify(R))}catch(x){}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-more]");if(!b)return;const w=b.previousElementSibling;w.hidden=!w.hidden;b.textContent=w.hidden?b.dataset.t:(b.dataset.t=b.textContent,"Show fewer")});
+fetch("progress.json",{cache:"no-store"}).then(r=>r.json()).then(render).catch(()=>render({lessons:L.map(l=>({id:l.id})),nmtTests:[]}));
+}
+</script>
+</body>
+</html>
