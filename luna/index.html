@@ -178,6 +178,33 @@ section.task{margin-top:34px;padding-top:24px;border-top:2px dashed var(--line)}
 .scene .s-panda{left:34%;top:2.5%;width:30%;z-index:2}
 .scene .s-giraffe{left:0;top:0;width:26%;animation:float 4s ease-in-out infinite}
 .scene .s-wolf{right:0;bottom:0;width:26%;z-index:2}
+/* kitchen scene */
+.scene.kitchen{aspect-ratio:1/0.78}
+.kitchen .k-oven{left:0;bottom:0;width:38%;z-index:1}
+.kitchen .k-bowl{left:6%;bottom:47%;width:25%;z-index:2}
+.kitchen .k-plate{left:46%;bottom:2%;width:32%;z-index:1;filter:drop-shadow(0 3px 5px rgba(90,60,60,.3))}
+.kitchen .k-fork{left:41%;bottom:3%;width:3.2%;z-index:2}
+.kitchen .k-knife{left:79%;bottom:4%;width:20%;z-index:2}
+.kitchen .k-mug{left:44%;bottom:44%;width:19%;z-index:1}
+.kitchen .k-cups{right:2%;bottom:40%;width:17%;z-index:1}
+.kitchen .k-panda{left:63%;top:2%;width:17%;z-index:3;animation:float 4s ease-in-out infinite}
+/* no-sign over a picture */
+.pic{position:relative}
+.pic.multi{display:flex;gap:2px}
+.pic.multi img{width:50%}
+.pic.no::after{content:"";position:absolute;inset:4px;border:5px solid #c0392b;border-radius:50%;background:linear-gradient(45deg,transparent calc(50% - 3px),#c0392b calc(50% - 3px),#c0392b calc(50% + 3px),transparent calc(50% + 3px));opacity:.85}
+/* plate warm-up */
+.platewrap{margin-top:12px;text-align:center}
+.plate{position:relative;width:min(340px,86%);aspect-ratio:1;margin:0 auto}
+.plate img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(90,60,60,.28))}
+.food{position:absolute;transform:translate(-50%,-50%);border:0;background:none;font-size:clamp(34px,9vw,48px);line-height:1;padding:0;animation:pop .35s ease-out;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+.food:disabled{cursor:default}
+.platesay{min-height:3em;margin:12px auto 0;max-width:30em;font-weight:600;font-size:1.05em}
+.platesay b{color:var(--rose-d)}
+.foods{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px}
+.foodchip{display:inline-flex;align-items:center;gap:6px}
+.foodchip .emo{font-size:24px;line-height:1}
+.foodchip:disabled{opacity:.45}
 .scene .lbl{position:absolute;font:700 22px/1 var(--hand);color:var(--rose-d);white-space:nowrap}
 @keyframes float{50%{transform:translateY(-8px)}}
 @media (max-width:460px){.items li.has-img{grid-template-columns:72px 1fr}.items li.has-img .pic{width:72px;height:72px}.match .chip.imgchip img{height:64px}}
@@ -246,10 +273,10 @@ function norm(s){ return String(s).toLowerCase().replace(/[’‘`]/g,"'").repla
 function seeded(str){ var h = 2166136261; for (var i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h,16777619); } return function(){ h ^= h<<13; h ^= h>>>17; h ^= h<<5; return ((h>>>0)%100000)/100000; }; }
 function shuffle(arr, seed){ var a = arr.slice(), r = seeded(seed); for (var i=a.length-1;i>0;i--){ var j = Math.floor(r()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } if (a.length>1 && a.every(function(x,i){return x===arr[i];})) a.push(a.shift()); return a; }
 function isImg(s){ return /\.(jpe?g|png|webp|gif|svg)$/i.test(String(s)); }
-function picHtml(src){ return '<span class="pic"><img src="'+esc(src)+'" alt="" loading="lazy"></span>'; }
-function withImg(li, it){ if (it.img){ li.classList.add("has-img"); li.insertBefore(el(picHtml(it.img)), li.firstChild); var w = el('<div></div>'); while (li.children.length>1) w.appendChild(li.children[1]); li.appendChild(w); } return li; }
+function picHtml(src, no){ var srcs=[].concat(src); return '<span class="pic'+(srcs.length>1?' multi':'')+(no?' no':'')+'">'+srcs.map(function(x){ return '<img src="'+esc(x)+'" alt="" loading="lazy">'; }).join("")+'</span>'; }
+function withImg(li, it){ if (it.img){ li.classList.add("has-img"); li.insertBefore(el(picHtml(it.img, it.no)), li.firstChild); var w = el('<div></div>'); while (li.children.length>1) w.appendChild(li.children[1]); li.appendChild(w); } return li; }
 function el(html){ var d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
-function count(t){ return t.type==="match" ? t.pairs.length : t.items.length; }
+function count(t){ return t.type==="match" ? t.pairs.length : t.type==="plate" ? 1 : t.items.length; }
 function starsFor(score,total){ var p = total ? score/total : 0; return p>=.9?3:p>=.7?2:1; }
 function lessonStats(les){
   var sc=0, tot=0, done=0, s = store[les.id] || {};
@@ -330,13 +357,13 @@ function task(les,t,ti){
   var body = sec.querySelector(".body"), chk = sec.querySelector(".chk"), again = sec.querySelector(".again"), res = sec.querySelector(".result");
   var st = tState(les.id, ti); st.a = st.a || {};
   var seed = les.id+":"+ti;
-  var impl = ({choose:Choose,fill:Fill,match:Match,order:Order})[t.type];
+  var impl = ({choose:Choose,fill:Fill,match:Match,order:Order,plate:Plate})[t.type];
   if (!impl){ body.textContent = "Unknown task type: "+t.type; return sec; }
   var api = impl(t, st, body, seed);
 
   function showResult(){
     res.className = "result " + (st.score===count(t) ? "good" : "meh");
-    res.innerHTML = '<span class="pop">'+(st.score===count(t) ? "Perfect! " : "")+st.score+' / '+count(t)+'</span>';
+    res.innerHTML = '<span class="pop">'+(t.type==="plate" ? (st.score ? "Yum! Bon appétit! 😋" : "Your plate is empty!") : (st.score===count(t) ? "Perfect! " : "")+st.score+' / '+count(t))+'</span>';
     chk.hidden = true; again.hidden = false;
   }
   chk.onclick = function(){
@@ -521,6 +548,51 @@ function Order(t, st, body, seed){
     });
     lock(ul); return n;
   }};
+}
+
+var NUMS = ["zero","one","two","three","four","five","six","seven","eight","nine"];
+function Plate(t, st, body, seed){
+  // st.a: { foodIndex: how many }
+  var MAXEACH = 3, MAXALL = 9;
+  var SPOTS = [[50,50],[30,34],[68,32],[28,64],[70,66],[50,24],[50,77],[36,49],[64,49]];
+  var wrap = el('<div class="platewrap"><div class="plate"><img src="'+esc(t.plate||"img/plate.webp")+'" alt="a plate"></div><p class="platesay" aria-live="polite"></p><div class="foods"></div></div>');
+  var plate = wrap.querySelector(".plate"), say = wrap.querySelector(".platesay"), foods = wrap.querySelector(".foods");
+  var locked = false;
+  function total(){ var n=0; for (var k in st.a) n += st.a[k]; return n; }
+  function sentence(){
+    var parts = [];
+    t.foods.forEach(function(f,i){ var n = st.a[i]||0; if (!n) return;
+      parts.push(n===1 ? "there is " + f.one : "there are " + NUMS[n] + " " + f.many); });
+    if (!parts.length) return "My plate is empty! 😮 Tap the food to put it on the plate.";
+    var txt = parts.length===1 ? parts[0] : parts.slice(0,-1).join(", ") + " and " + parts[parts.length-1];
+    return "On my plate today " + txt + ".";
+  }
+  function draw(){
+    plate.querySelectorAll(".food").forEach(function(x){ x.remove(); });
+    var k = 0;
+    t.foods.forEach(function(f,i){
+      for (var c=0;c<(st.a[i]||0);c++){
+        var sp = SPOTS[k++ % SPOTS.length];
+        var b = el('<button class="food" type="button" aria-label="Take off '+esc(f.one)+'" style="left:'+sp[0]+'%;top:'+sp[1]+'%">'+f.e+'</button>');
+        b.onclick = (function(i){ return function(){ if (locked) return; st.a[i]--; if (!st.a[i]) delete st.a[i]; save(); draw(); }; })(i);
+        plate.appendChild(b);
+      }
+    });
+    var s = sentence();
+    say.innerHTML = esc(s).replace(/(there is|there are)/g,"<b>$1</b>");
+    foods.querySelectorAll(".chip").forEach(function(b,i){ b.disabled = locked || total()>=MAXALL || (st.a[i]||0)>=MAXEACH; });
+  }
+  t.foods.forEach(function(f,i){
+    var b = el('<button class="chip foodchip" type="button"><span class="emo">'+f.e+'</span>'+esc(f.name || f.one.replace(/^(a|an) /,""))+'</button>');
+    b.onclick = function(){ if (locked || total()>=MAXALL || (st.a[i]||0)>=MAXEACH) return; st.a[i] = (st.a[i]||0)+1; save(); draw(); };
+    foods.appendChild(b);
+  });
+  var lb = el('<button class="listen" type="button"><span class="say">'+speakIcon+'</span>Listen</button>');
+  lb.onclick = function(){ speak(sentence().replace(/[^\w\s.,'!?]/g,"")); };
+  wrap.insertBefore(lb, foods);
+  body.appendChild(wrap);
+  draw();
+  return { check: function(){ locked = true; draw(); return total() ? 1 : 0; } };
 }
 
 /* ---------- routing ---------- */
