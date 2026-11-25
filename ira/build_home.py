@@ -51,6 +51,35 @@ nexts = "".join(f"<li>{esc(s)}</li>" for s in r["next_steps"])
 nwords = sum(len(x["words"]) for x in r["reviews"])
 ncorr = sum(len(x["corrections"]) for x in r["reviews"])
 
+hw = r.get("homework")
+hw_html = ""
+if hw:
+    def draft(key, rng):
+        tgt = f'{rng[0]}–{rng[1]} words' if rng else ""
+        return (f'<div class="draft"><textarea data-draft="{key}" data-min="{rng[0] if rng else 0}" data-max="{rng[1] if rng else 0}" '
+                f'rows="6" placeholder="Write your draft here. It is saved on this device."></textarea>'
+                f'<div class="drow"><span class="wc" data-wc="{key}">0 words{" · aim: " + tgt if tgt else ""}</span>'
+                f'<button class="btn line sm" type="button" data-copy="{key}">Copy text</button></div></div>')
+    items = ""
+    for i, t in enumerate(hw["tasks"], 1):
+        body = f'<p>{esc(t["detail"])}</p>'
+        if t.get("options"):
+            tabs = "".join(f'<label class="opt"><input type="radio" name="hwopt" value="{o["id"]}"{" checked" if j == 2 else ""}> {esc(o["name"])} <small>{o["words"][0]}–{o["words"][1]} words</small></label>'
+                           for j, o in enumerate(t["options"]))
+            panes = "".join(f'<div class="pane" data-pane="{o["id"]}"{"" if j == 2 else " hidden"}><p class="brief">{esc(o["brief"])}</p>'
+                            f'<p class="check"><b>Check:</b> {esc(o["check"])}</p>{draft(t["id"] + o["id"], o["words"])}</div>'
+                            for j, o in enumerate(t["options"]))
+            phr = "".join(f"<li>{esc(p)}</li>" for p in hw["phrases"])
+            body += (f'<div class="opts" role="radiogroup" aria-label="Choose a task">{tabs}</div>{panes}'
+                     f'<details class="phr"><summary>Stage 4 phrases (use two)</summary><ul>{phr}</ul></details>')
+        elif t.get("words"):
+            body += draft(t["id"], t["words"])
+        items += (f'<li class="hw"><label class="done"><input type="checkbox" data-done="{t["id"]}"><span class="n">{i}</span></label>'
+                  f'<div><h3>{esc(t["title"])}{" <small>" + str(t["words"][0]) + "–" + str(t["words"][1]) + " words</small>" if t.get("words") else ""}</h3>{body}</div></li>')
+    hw_html = (f'<section id="homework"><h2>Homework for {esc(hw["dueLabel"])}</h2>'
+               f'<p class="sub">{esc(hw["lesson"])}. Tick each task when it is done. Your drafts stay on this device; copy them and send them to your teacher.</p>'
+               f'<ol class="hwlist">{items}</ol></section>')
+
 sheet_btn = (f'<a class="btn line" href="{esc(r["sheet"])}" target="_blank" rel="noopener">Progress sheet</a>'
              if r.get("sheet") else "")
 
@@ -115,6 +144,35 @@ ul.corr .why{{grid-column:1/-1;font-size:14px;color:var(--ink-soft)}}
 .card.focus li{{display:grid;gap:2px;padding-left:14px;border-left:3px solid var(--ribbon)}}
 .card.focus .seen{{font-size:13px;color:var(--ink-soft)}}
 .card.next{{grid-column:1/-1;border:1.5px dashed var(--ribbon)}}
+ol.hwlist{{list-style:none;margin:0;padding:0;display:grid;gap:12px}}
+li.hw{{display:grid;grid-template-columns:44px 1fr;gap:14px;border:1.5px solid var(--ribbon);border-radius:var(--r);padding:16px;background:var(--paper)}}
+li.hw.is-done{{background:var(--good-wash);border-color:var(--good)}}
+li.hw h3{{margin:0;font-family:var(--font-display);font-size:20px;font-weight:600}}
+li.hw h3 small,.opt small{{font-family:var(--font-body);font-size:13px;color:var(--ink-soft);font-weight:700;margin-left:6px}}
+li.hw p{{margin:6px 0 0}}
+label.done{{position:relative;width:44px;height:44px;cursor:pointer}}
+label.done input{{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}}
+label.done .n{{width:44px;height:44px;border-radius:50%;background:var(--ribbon-soft);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:20px}}
+label.done input:checked+.n{{background:var(--good);color:#fff;font-size:0}}
+label.done input:checked+.n::after{{content:"✓";font-size:22px}}
+label.done input:focus-visible+.n{{outline:3px solid var(--accent);outline-offset:2px}}
+.opts{{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}}
+.opt{{border:1.5px solid var(--ribbon-soft);border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:700;font-size:14px}}
+.opt:has(input:checked){{background:var(--accent);border-color:var(--accent);color:#fff}}
+.opt:has(input:checked) small{{color:#fff}}
+.opt input{{accent-color:var(--accent)}}
+.pane .brief{{background:var(--wash);border-radius:10px;padding:10px 12px}}
+.pane .check{{font-size:14px;color:var(--ink-soft)}}
+.draft{{margin-top:10px;display:grid;gap:6px}}
+.draft textarea{{width:100%;border:1.5px dashed var(--ribbon);border-radius:10px;padding:10px;font:15px/1.5 var(--font-body);color:var(--ink);background:var(--paper);resize:vertical}}
+.drow{{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}}
+.wc{{font-size:13px;color:var(--ink-soft);font-weight:700;font-variant-numeric:tabular-nums}}
+.wc.ok{{color:var(--good)}}
+.btn.sm{{padding:5px 12px;font-size:14px}}
+details.phr{{margin-top:10px}}
+details.phr summary{{cursor:pointer;font-weight:800;color:var(--accent)}}
+details.phr ul{{margin:8px 0 0;padding-left:20px;columns:2;column-gap:24px;font-size:14px}}
+@media (max-width:560px){{details.phr ul{{columns:1}} li.hw{{grid-template-columns:1fr}}}}
 #practice .live{{border:1.5px solid var(--wash-2);border-radius:var(--r);padding:14px 16px;display:grid;gap:8px}}
 .bars{{display:grid;gap:8px}}
 .bar{{display:grid;grid-template-columns:minmax(110px,190px) 1fr 52px;gap:10px;align-items:center;font-size:14px}}
@@ -136,6 +194,7 @@ ul.corr .why{{grid-column:1/-1;font-size:14px;color:var(--ink-soft)}}
       <div class="label">Main aim this autumn</div>
       <p class="big">{esc(r["aim"])}</p>
       <div class="actions">
+        {'<a class="btn" href="#homework">Homework for ' + esc(hw["dueLabel"].split(",")[0]) + '</a>' if hw else ''}
         <a class="btn" href="practice.html">Practise your words</a>
         <a class="btn line" href="{esc(r["miro"])}" target="_blank" rel="noopener">Our Miro board</a>
         {sheet_btn}
@@ -147,6 +206,8 @@ ul.corr .why{{grid-column:1/-1;font-size:14px;color:var(--ink-soft)}}
       <div class="stat"><b>{nwords}</b><span>new words</span></div>
       <div class="stat"><b>{ncorr}</b><span>corrections</span></div>
     </div>
+
+    {hw_html}
 
     <section id="studied">
       <h2>What we've studied</h2>
@@ -186,6 +247,28 @@ ul.corr .why{{grid-column:1/-1;font-size:14px;color:var(--ink-soft)}}
 <script>
 const paper=document.getElementById("paper");
 {draw}
+/* homework: ticks and drafts saved on this device */
+(function(){{
+  const K="iraHomework.v1"; let H={{}}; try{{H=JSON.parse(localStorage.getItem(K)||"{{}}")||{{}}}}catch(e){{}}
+  const save=()=>{{try{{localStorage.setItem(K,JSON.stringify(H))}}catch(e){{}}}};
+  document.querySelectorAll("[data-done]").forEach(cb=>{{const id=cb.dataset.done;cb.checked=!!(H.done&&H.done[id]);
+    const li=cb.closest("li.hw"); li.classList.toggle("is-done",cb.checked);
+    cb.addEventListener("change",()=>{{H.done=H.done||{{}};H.done[id]=cb.checked;li.classList.toggle("is-done",cb.checked);save();requestAnimationFrame(drawFrame)}});}});
+  const count=t=>(t.trim().match(/\\S+/g)||[]).length;
+  document.querySelectorAll("[data-draft]").forEach(ta=>{{const id=ta.dataset.draft,min=+ta.dataset.min,max=+ta.dataset.max;
+    const wc=document.querySelector('[data-wc="'+id+'"]');
+    const upd=()=>{{const n=count(ta.value);wc.textContent=n+(n===1?" word":" words")+(max?" · aim: "+min+"–"+max:"");wc.classList.toggle("ok",max>0&&n>=min&&n<=max)}};
+    ta.value=(H.drafts&&H.drafts[id])||"";upd();
+    ta.addEventListener("input",()=>{{H.drafts=H.drafts||{{}};H.drafts[id]=ta.value;upd();save()}});}});
+  document.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",async()=>{{
+    const ta=document.querySelector('[data-draft="'+b.dataset.copy+'"]');
+    try{{await navigator.clipboard.writeText(ta.value);b.textContent="Copied ✓"}}catch(e){{ta.select();b.textContent="Selected, press Copy"}}
+    setTimeout(()=>b.textContent="Copy text",2000);}}));
+  const radios=document.querySelectorAll('input[name="hwopt"]');
+  const show=v=>{{document.querySelectorAll("[data-pane]").forEach(p=>p.hidden=p.dataset.pane!==v);requestAnimationFrame(drawFrame)}};
+  if(H.opt){{const r=[...radios].find(x=>x.value===H.opt); if(r){{r.checked=true;show(H.opt)}}}}
+  radios.forEach(r=>r.addEventListener("change",()=>{{H.opt=r.value;save();show(r.value)}}));
+}})();
 /* practice summary from the flashcards' saved progress (same browser) */
 (function(){{
   let S=null; try{{S=JSON.parse(localStorage.getItem("writingExpertU1.progress.v1")||"null")}}catch(e){{}}

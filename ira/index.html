@@ -251,6 +251,35 @@ ul.corr .why{grid-column:1/-1;font-size:14px;color:var(--ink-soft)}
 .card.focus li{display:grid;gap:2px;padding-left:14px;border-left:3px solid var(--ribbon)}
 .card.focus .seen{font-size:13px;color:var(--ink-soft)}
 .card.next{grid-column:1/-1;border:1.5px dashed var(--ribbon)}
+ol.hwlist{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+li.hw{display:grid;grid-template-columns:44px 1fr;gap:14px;border:1.5px solid var(--ribbon);border-radius:var(--r);padding:16px;background:var(--paper)}
+li.hw.is-done{background:var(--good-wash);border-color:var(--good)}
+li.hw h3{margin:0;font-family:var(--font-display);font-size:20px;font-weight:600}
+li.hw h3 small,.opt small{font-family:var(--font-body);font-size:13px;color:var(--ink-soft);font-weight:700;margin-left:6px}
+li.hw p{margin:6px 0 0}
+label.done{position:relative;width:44px;height:44px;cursor:pointer}
+label.done input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+label.done .n{width:44px;height:44px;border-radius:50%;background:var(--ribbon-soft);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:20px}
+label.done input:checked+.n{background:var(--good);color:#fff;font-size:0}
+label.done input:checked+.n::after{content:"✓";font-size:22px}
+label.done input:focus-visible+.n{outline:3px solid var(--accent);outline-offset:2px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.opt{border:1.5px solid var(--ribbon-soft);border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:700;font-size:14px}
+.opt:has(input:checked){background:var(--accent);border-color:var(--accent);color:#fff}
+.opt:has(input:checked) small{color:#fff}
+.opt input{accent-color:var(--accent)}
+.pane .brief{background:var(--wash);border-radius:10px;padding:10px 12px}
+.pane .check{font-size:14px;color:var(--ink-soft)}
+.draft{margin-top:10px;display:grid;gap:6px}
+.draft textarea{width:100%;border:1.5px dashed var(--ribbon);border-radius:10px;padding:10px;font:15px/1.5 var(--font-body);color:var(--ink);background:var(--paper);resize:vertical}
+.drow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.wc{font-size:13px;color:var(--ink-soft);font-weight:700;font-variant-numeric:tabular-nums}
+.wc.ok{color:var(--good)}
+.btn.sm{padding:5px 12px;font-size:14px}
+details.phr{margin-top:10px}
+details.phr summary{cursor:pointer;font-weight:800;color:var(--accent)}
+details.phr ul{margin:8px 0 0;padding-left:20px;columns:2;column-gap:24px;font-size:14px}
+@media (max-width:560px){details.phr ul{columns:1} li.hw{grid-template-columns:1fr}}
 #practice .live{border:1.5px solid var(--wash-2);border-radius:var(--r);padding:14px 16px;display:grid;gap:8px}
 .bars{display:grid;gap:8px}
 .bar{display:grid;grid-template-columns:minmax(110px,190px) 1fr 52px;gap:10px;align-items:center;font-size:14px}
@@ -273,6 +302,7 @@ ul.corr .why{grid-column:1/-1;font-size:14px;color:var(--ink-soft)}
       <div class="label">Main aim this autumn</div>
       <p class="big">This autumn our main aim was to improve your writing: to write the right message for the right reader, from a quick text to a friend to a polite email and an Instagram caption for your salon.</p>
       <div class="actions">
+        <a class="btn" href="#homework">Homework for Thursday</a>
         <a class="btn" href="practice.html">Practise your words</a>
         <a class="btn line" href="https://miro.com/app/board/uXjVEYxHwLc=/?share_link_id=405140549711" target="_blank" rel="noopener">Our Miro board</a>
         <a class="btn line" href="https://docs.google.com/spreadsheets/d/1bv5o4LAU-IOaD9vPOreHbd7GNIPodKqsbCWj0Ov6oTw/edit" target="_blank" rel="noopener">Progress sheet</a>
@@ -284,6 +314,8 @@ ul.corr .why{grid-column:1/-1;font-size:14px;color:var(--ink-soft)}
       <div class="stat"><b>23</b><span>new words</span></div>
       <div class="stat"><b>7</b><span>corrections</span></div>
     </div>
+
+    <section id="homework"><h2>Homework for Thursday, 26 November</h2><p class="sub">Lesson 4 · A Year in Writing. Tick each task when it is done. Your drafts stay on this device; copy them and send them to your teacher.</p><ol class="hwlist"><li class="hw"><label class="done"><input type="checkbox" data-done="hw1"><span class="n">1</span></label><div><h3>Finish the Writing studio task you didn&#x27;t do in class</h3><p>Choose the task you didn&#x27;t finish in class (A, B or C) and use two phrases from stage 4 (below).</p><div class="opts" role="radiogroup" aria-label="Choose a task"><label class="opt"><input type="radio" name="hwopt" value="A"> Task A · Text message <small>30–50 words</small></label><label class="opt"><input type="radio" name="hwopt" value="B"> Task B · Formal email <small>80–120 words</small></label><label class="opt"><input type="radio" name="hwopt" value="C" checked> Task C · Instagram caption <small>60–100 words</small></label></div><div class="pane" data-pane="A" hidden><p class="brief">Your friend Kate writes: “hbd!!! what r u doing to celebrate? how&#x27;s life? miss u”. Reply to Kate. Say how you celebrated, tell her one thing about your year and suggest meeting up. Abbreviations are fine.</p><p class="check"><b>Check:</b> Friendly tone · short sentences · answer all her questions · a question back</p><div class="draft"><textarea data-draft="hw1A" data-min="30" data-max="50" rows="6" placeholder="Write your draft here. It is saved on this device."></textarea><div class="drow"><span class="wc" data-wc="hw1A">0 words · aim: 30–50 words</span><button class="btn line sm" type="button" data-copy="hw1A">Copy text</button></div></div></div><div class="pane" data-pane="B" hidden><p class="brief">Think of one goal for next year. Write to a school or academy about a course that can help you reach it. Say why you are writing, explain your goal briefly and ask about dates, price and a certificate.</p><p class="check"><b>Check:</b> Dear … · I am writing to … · polite questions · no abbreviations · Yours faithfully / sincerely</p><div class="draft"><textarea data-draft="hw1B" data-min="80" data-max="120" rows="6" placeholder="Write your draft here. It is saved on this device."></textarea><div class="drow"><span class="wc" data-wc="hw1B">0 words · aim: 80–120 words</span><button class="btn line sm" type="button" data-copy="hw1B">Copy text</button></div></div></div><div class="pane" data-pane="C"><p class="brief">Write a birthday post for your page, like Sofia&#x27;s. Start with a hook. Tell a short story of your year: what you did, what you achieved, what is not done yet. Finish with your next goal and a question for your followers.</p><p class="check"><b>Check:</b> Hook in line one · past and future · two phrases from stage 4 · call to action</p><div class="draft"><textarea data-draft="hw1C" data-min="60" data-max="100" rows="6" placeholder="Write your draft here. It is saved on this device."></textarea><div class="drow"><span class="wc" data-wc="hw1C">0 words · aim: 60–100 words</span><button class="btn line sm" type="button" data-copy="hw1C">Copy text</button></div></div></div><details class="phr"><summary>Stage 4 phrases (use two)</summary><ul><li>This year has been + adjective</li><li>I spent most of my time + verb-ing</li><li>I (finally) managed + to + verb</li><li>So far, I have + past participle</li><li>I haven&#x27;t + past participle … yet</li><li>I didn&#x27;t manage + to + verb</li><li>It&#x27;s still in progress.</li><li>It didn&#x27;t go to plan, but …</li><li>I&#x27;m planning + to + verb</li><li>I hope + to + verb</li><li>My goal for next year is + to + verb</li><li>By my next birthday, I&#x27;d like + to + verb</li></ul></details></div></li><li class="hw"><label class="done"><input type="checkbox" data-done="hw2"><span class="n">2</span></label><div><h3>A letter to yourself <small>120–150 words</small></h3><p>Write a letter to yourself to open on your next birthday. What did you do this year? What do you hope to achieve by then?</p><div class="draft"><textarea data-draft="hw2" data-min="120" data-max="150" rows="6" placeholder="Write your draft here. It is saved on this device."></textarea><div class="drow"><span class="wc" data-wc="hw2">0 words · aim: 120–150 words</span><button class="btn line sm" type="button" data-copy="hw2">Copy text</button></div></div></div></li><li class="hw"><label class="done"><input type="checkbox" data-done="hw3"><span class="n">3</span></label><div><h3>Feeling brave? (optional)</h3><p>Post your birthday caption in English. Next lesson, tell me how people reacted.</p></div></li></ol></section>
 
     <section id="studied">
       <h2>What we've studied</h2>
@@ -371,6 +403,28 @@ function drawFrame(){
 if("ResizeObserver" in window) new ResizeObserver(()=>drawFrame()).observe(paper); else window.addEventListener("resize",drawFrame);
 document.getElementById("bowTop").addEventListener("load",drawFrame);
 document.getElementById("bowBot").addEventListener("load",drawFrame);
+/* homework: ticks and drafts saved on this device */
+(function(){
+  const K="iraHomework.v1"; let H={}; try{H=JSON.parse(localStorage.getItem(K)||"{}")||{}}catch(e){}
+  const save=()=>{try{localStorage.setItem(K,JSON.stringify(H))}catch(e){}};
+  document.querySelectorAll("[data-done]").forEach(cb=>{const id=cb.dataset.done;cb.checked=!!(H.done&&H.done[id]);
+    const li=cb.closest("li.hw"); li.classList.toggle("is-done",cb.checked);
+    cb.addEventListener("change",()=>{H.done=H.done||{};H.done[id]=cb.checked;li.classList.toggle("is-done",cb.checked);save();requestAnimationFrame(drawFrame)});});
+  const count=t=>(t.trim().match(/\S+/g)||[]).length;
+  document.querySelectorAll("[data-draft]").forEach(ta=>{const id=ta.dataset.draft,min=+ta.dataset.min,max=+ta.dataset.max;
+    const wc=document.querySelector('[data-wc="'+id+'"]');
+    const upd=()=>{const n=count(ta.value);wc.textContent=n+(n===1?" word":" words")+(max?" · aim: "+min+"–"+max:"");wc.classList.toggle("ok",max>0&&n>=min&&n<=max)};
+    ta.value=(H.drafts&&H.drafts[id])||"";upd();
+    ta.addEventListener("input",()=>{H.drafts=H.drafts||{};H.drafts[id]=ta.value;upd();save()});});
+  document.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",async()=>{
+    const ta=document.querySelector('[data-draft="'+b.dataset.copy+'"]');
+    try{await navigator.clipboard.writeText(ta.value);b.textContent="Copied ✓"}catch(e){ta.select();b.textContent="Selected, press Copy"}
+    setTimeout(()=>b.textContent="Copy text",2000);}));
+  const radios=document.querySelectorAll('input[name="hwopt"]');
+  const show=v=>{document.querySelectorAll("[data-pane]").forEach(p=>p.hidden=p.dataset.pane!==v);requestAnimationFrame(drawFrame)};
+  if(H.opt){const r=[...radios].find(x=>x.value===H.opt); if(r){r.checked=true;show(H.opt)}}
+  radios.forEach(r=>r.addEventListener("change",()=>{H.opt=r.value;save();show(r.value)}));
+})();
 /* practice summary from the flashcards' saved progress (same browser) */
 (function(){
   let S=null; try{S=JSON.parse(localStorage.getItem("writingExpertU1.progress.v1")||"null")}catch(e){}
