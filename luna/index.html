@@ -205,6 +205,29 @@ section.task{margin-top:34px;padding-top:24px;border-top:2px dashed var(--line)}
 .foodchip{display:inline-flex;align-items:center;gap:6px}
 .foodchip .emo{font-size:24px;line-height:1}
 .foodchip:disabled{opacity:.45}
+/* CVC reading */
+.items.cvc{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.cvccard{background:#fbf8f1;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.tiles{display:flex;justify-content:center;gap:8px;margin:4px 0 8px}
+.tile{width:58px;height:66px;border:2px solid var(--line);border-radius:12px;background:#fff;font:800 40px/1 var(--text);color:var(--ink);box-shadow:0 3px 0 var(--line);transition:transform .12s,background .12s}
+.tile.vowel{color:var(--rose)}
+.tile.lit{background:#fff4c4;border-color:#e0b93a;transform:translateY(-4px)}
+.tile:disabled{cursor:pointer}
+.cvcbtns{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.cvccard .q{margin:10px 0 6px;font-weight:600;color:var(--mute);font-size:.9em}
+.opts.pics{justify-content:center}
+.pic-opt{font-size:30px;line-height:1;padding:6px 12px}
+.items.letters .line .chip,.items.letters .pool .chip{font-size:22px;min-width:44px}
+.letters .line:empty::before{content:"tap the letters below…"}
+/* speaking */
+.spk{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.spk .listen{margin-top:0}
+.btn.mic{padding:8px 18px}
+.btn.said{padding:8px 14px}
+.btn:disabled{opacity:.6}
+.heard{margin-top:6px;min-height:1.5em}
+.heard .good{color:var(--ok);font-weight:800}
+.heard .try{color:var(--rose-d);font-weight:700}
 .scene .lbl{position:absolute;font:700 22px/1 var(--hand);color:var(--rose-d);white-space:nowrap}
 @keyframes float{50%{transform:translateY(-8px)}}
 @media (max-width:460px){.items li.has-img{grid-template-columns:72px 1fr}.items li.has-img .pic{width:72px;height:72px}.match .chip.imgchip img{height:64px}}
@@ -284,6 +307,24 @@ function lessonStats(les){
   return {score:sc,total:tot,done:done,all:les.tasks.length,stars: done===les.tasks.length ? starsFor(sc,tot) : 0};
 }
 var speakIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
+var SOUNDS = {a:"ah",b:"buh",c:"kuh",d:"duh",e:"eh",f:"fff",g:"guh",h:"huh",i:"ih",j:"juh",k:"kuh",l:"lll",m:"mmm",n:"nnn",o:"aw",p:"puh",q:"kwuh",r:"rrr",s:"sss",t:"tuh",u:"uh",v:"vvv",w:"wuh",x:"ks",y:"yuh",z:"zzz"};
+function utter(txt, rate){
+  var u = new SpeechSynthesisUtterance(txt); u.lang = "en-GB"; u.rate = rate || .85;
+  var v = speechSynthesis.getVoices().filter(function(v){ return /^en[-_]GB/i.test(v.lang); })[0] || speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); })[0];
+  if (v) u.voice = v; return u;
+}
+function speakSeq(list, each, done){
+  if (!("speechSynthesis" in window)){ list.forEach(function(_,k){ each && each(k); }); done && done(); return; }
+  speechSynthesis.cancel(); var k = 0;
+  (function next(){
+    if (k>=list.length){ done && done(); return; }
+    var item = list[k], u = utter(item.t, item.r); var idx = k++;
+    each && each(idx);
+    var fired = false, go = function(){ if (fired) return; fired = true; setTimeout(next, item.pause||250); };
+    u.onend = go; u.onerror = go; setTimeout(go, 2500);
+    speechSynthesis.speak(u);
+  })();
+}
 function speak(txt){
   if (!("speechSynthesis" in window)) return;
   var u = new SpeechSynthesisUtterance(txt.replace(/\(.*?\)/g,"")); u.lang = "en-GB"; u.rate = .85;
@@ -357,7 +398,7 @@ function task(les,t,ti){
   var body = sec.querySelector(".body"), chk = sec.querySelector(".chk"), again = sec.querySelector(".again"), res = sec.querySelector(".result");
   var st = tState(les.id, ti); st.a = st.a || {};
   var seed = les.id+":"+ti;
-  var impl = ({choose:Choose,fill:Fill,match:Match,order:Order,plate:Plate})[t.type];
+  var impl = ({choose:Choose,fill:Fill,match:Match,order:Order,plate:Plate,cvc:Cvc,speak:Speak})[t.type];
   if (!impl){ body.textContent = "Unknown task type: "+t.type; return sec; }
   var api = impl(t, st, body, seed);
 
@@ -510,9 +551,10 @@ function Match(t, st, body, seed){
 function Order(t, st, body, seed){
   var ul = el('<ul class="items"></ul>');
   var lists = [];
-  t.items.forEach(function(sent,i){
+  t.items.forEach(function(item,i){
+    var sent = typeof item==="string" ? item : item.s;
     var m = sent.trim().match(/^(.*?)([.!?]*)$/);
-    var words = m[1].split(/\s+/), punct = m[2];
+    var words = t.letters ? m[1].replace(/\s+/g,"").split("") : m[1].split(/\s+/), punct = m[2];
     var order = shuffle(words.map(function(_,k){ return k; }), seed+":"+i);
     var chosen = st.a[i] = (st.a[i] || []).filter(function(k){ return k < words.length; });
     var li = el('<li><div class="line"></div><div class="pool"></div></li>');
@@ -533,17 +575,18 @@ function Order(t, st, body, seed){
       });
     }
     draw();
+    if (t.letters) li.classList.add("letters");
     lists.push({li:li,line:line,words:words,chosen:chosen,sent:sent});
-    ul.appendChild(li);
+    ul.appendChild(typeof item==="string" ? li : withImg(li, item));
   });
   body.appendChild(ul);
   return { check: function(){
     var n=0;
     lists.forEach(function(x){
-      var said = x.chosen.map(function(k){ return x.words[k]; }).join(" ");
-      var ok = x.chosen.length===x.words.length && norm(said)===norm(x.words.join(" "));
+      var said = x.chosen.map(function(k){ return x.words[k]; }).join(t.letters ? "" : " ");
+      var ok = x.chosen.length===x.words.length && norm(said)===norm(x.words.join(t.letters ? "" : " "));
       x.line.classList.add(ok?"ok":"bad");
-      if (!ok) x.li.appendChild(el('<div class="fix" style="margin:6px 0 0">✓ '+esc(x.sent)+'</div>'));
+      if (!ok) (x.li.classList.contains("has-img") ? x.li.lastChild : x.li).appendChild(el('<div class="fix" style="margin:6px 0 0">✓ '+esc(x.sent)+'</div>'));
       if (ok) n++;
     });
     lock(ul); return n;
@@ -593,6 +636,105 @@ function Plate(t, st, body, seed){
   body.appendChild(wrap);
   draw();
   return { check: function(){ locked = true; draw(); return total() ? 1 : 0; } };
+}
+
+/* CVC reading: tap letters to hear sounds, blend, then pick the picture */
+function Cvc(t, st, body, seed){
+  var ul = el('<ul class="items cvc"></ul>');
+  t.items.forEach(function(it,i){
+    var li = el('<li class="cvccard"><div class="tiles"></div><div class="cvcbtns"></div><div class="q">Which picture is it?</div><div class="opts pics"></div></li>');
+    var tiles = li.querySelector(".tiles");
+    var letters = it.w.split("");
+    letters.forEach(function(ch,k){
+      var b = el('<button class="tile'+(/[aeiou]/.test(ch)?' vowel':'')+'" type="button" aria-label="sound '+esc(ch)+'">'+esc(ch)+'</button>');
+      b.onclick = function(){ lightOnly(k); speakSeq([{t:SOUNDS[ch]||ch, r:.7}], null, function(){ lightOnly(-1); }); };
+      tiles.appendChild(b);
+    });
+    function lightOnly(k){ tiles.querySelectorAll(".tile").forEach(function(x,j){ x.classList.toggle("lit", j===k); }); }
+    function lightUpTo(k){ tiles.querySelectorAll(".tile").forEach(function(x,j){ x.classList.toggle("lit", j<=k); }); }
+    var slow = el('<button class="listen" type="button"><span class="say">🐢</span>Sound it out</button>');
+    slow.onclick = function(){
+      var seq = letters.map(function(ch){ return {t:SOUNDS[ch]||ch, r:.7, pause:350}; });
+      seq.push({t:it.w, r:.6, pause:300}); seq.push({t:it.w, r:.9});
+      speakSeq(seq, function(k){ if (k<letters.length) lightUpTo(k); else lightUpTo(letters.length); }, function(){ setTimeout(function(){ lightOnly(-1); }, 600); });
+    };
+    var fast = el('<button class="listen" type="button"><span class="say">🐇</span>Read it</button>');
+    fast.onclick = function(){ lightUpTo(letters.length); speakSeq([{t:it.w, r:.85}], null, function(){ lightOnly(-1); }); };
+    li.querySelector(".cvcbtns").appendChild(slow); li.querySelector(".cvcbtns").appendChild(fast);
+    var opts = shuffle(it.options, seed+":"+i);
+    opts.forEach(function(o){
+      var b = el('<button class="chip pic-opt" type="button">'+o+'</button>');
+      if (st.a[i]===o) b.classList.add("sel");
+      b.onclick = function(){ st.a[i] = o; save(); li.querySelectorAll(".pic-opt").forEach(function(c){ c.classList.toggle("sel", c===b); }); };
+      li.querySelector(".opts").appendChild(b);
+    });
+    ul.appendChild(li);
+  });
+  body.appendChild(el('<p class="ua" style="margin:8px 0 0">Tap each letter to hear its sound. Say the sounds, then say them fast together: c-u-p → cup! Then choose the picture.<br>Натисни на кожну літеру, щоб почути звук. Скажи звуки, потім разом швидко. Обери картинку.</p>'));
+  body.appendChild(ul);
+  return { check: function(){
+    var n = 0;
+    t.items.forEach(function(it,i){
+      ul.children[i].querySelectorAll(".pic-opt").forEach(function(c){
+        var o = c.innerHTML;
+        if (o===st.a[i]) c.classList.add(o===it.pic?"ok":"bad");
+        else if (o===it.pic && st.a[i]!==it.pic) c.classList.add("ok");
+      });
+      if (st.a[i]===it.pic) n++;
+    });
+    lock(ul); ul.querySelectorAll(".tile").forEach(function(b){ b.disabled = false; });
+    return n;
+  }};
+}
+
+/* Speaking: she says a sentence; the browser listens (if it can) */
+function Speak(t, st, body, seed){
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var ul = el('<ul class="items speak"></ul>');
+  function norm2(x){ return norm(x).replace(/\bisnt\b/g,"isn't").replace(/\barent\b/g,"aren't").replace(/\bis not\b/g,"isn't").replace(/\bare not\b/g,"aren't").replace(/\btheres\b|\bthere's\b/g,"there is"); }
+  function good(it, said){
+    var x = " " + norm2(said) + " ";
+    return (it.need||[]).every(function(alts){ return alts.split("|").some(function(a){ return x.indexOf(" "+norm2(a)+" ")>-1; }); }) && norm(said).split(" ").length >= (it.min||3);
+  }
+  t.items.forEach(function(it,i){
+    var li = el('<li><div class="q">'+esc(it.q)+'</div><div class="spk"></div><div class="heard" aria-live="polite"></div></li>');
+    var spk = li.querySelector(".spk"), heard = li.querySelector(".heard");
+    var ex = el('<button class="listen" type="button"><span class="say">'+speakIcon+'</span>Example</button>');
+    ex.onclick = function(){ speak(it.example); };
+    var mic = el('<button class="btn mic" type="button">🎤 Speak</button>');
+    var said = el('<button class="btn ghost said" type="button">✓ I said it</button>');
+    function show(){
+      var a = st.a[i];
+      heard.innerHTML = !a ? "" : a.text ? 'I heard: <b>“'+esc(a.text)+'”</b> '+(a.ok ? '<span class="good">⭐ Great sentence!</span>' : '<span class="try">Try again, use: '+esc(it.hint||"")+'</span>') : (a.self ? '<span class="good">⭐ Well done!</span>' : "");
+    }
+    if (SR){
+      mic.onclick = function(){
+        var r = new SR(); r.lang = "en-GB"; r.interimResults = false; r.maxAlternatives = 3;
+        mic.disabled = true; mic.textContent = "👂 Listening…";
+        r.onresult = function(e){
+          var alts = [].slice.call(e.results[0]).map(function(x){ return x.transcript; });
+          var best = alts.filter(function(x){ return good(it,x); })[0];
+          st.a[i] = { text: best || alts[0], ok: !!best }; save(); show();
+        };
+        r.onerror = function(e){ heard.innerHTML = e.error==="not-allowed" ? 'The microphone is off. Say it to your teacher and tap “I said it”.' : "I didn't hear you. Try again!"; };
+        r.onend = function(){ mic.disabled = false; mic.textContent = "🎤 Speak"; };
+        try { r.start(); } catch(e){ mic.disabled = false; }
+      };
+      spk.appendChild(ex); spk.appendChild(mic); spk.appendChild(said);
+    } else {
+      spk.appendChild(ex); spk.appendChild(said);
+      heard.innerHTML = '<span class="ua">Say it out loud, then tap “I said it”.</span>';
+    }
+    said.onclick = function(){ st.a[i] = st.a[i] && st.a[i].ok ? st.a[i] : { self:true, ok:true }; save(); show(); };
+    if (it.img) withImg(li, it);
+    ul.appendChild(li); show();
+  });
+  body.appendChild(el('<p class="ua" style="margin:8px 0 0">Make your own sentence and say it out loud! Press 🎤 and speak (allow the microphone), or say it to your teacher and tap “I said it”.<br>Склади своє речення і скажи його вголос!</p>'));
+  body.appendChild(ul);
+  return { check: function(){
+    var n = 0; t.items.forEach(function(_,i){ if (st.a[i] && st.a[i].ok) n++; });
+    lock(ul); return n;
+  }};
 }
 
 /* ---------- routing ---------- */

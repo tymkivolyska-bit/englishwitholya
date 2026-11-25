@@ -12,4 +12,6 @@ Lessons:
 1. "There is a panda on the bus!" is built from the ESL Level 2 Lesson 4 worksheet (adjectives tall/short/big/small/cute/scary, panda, wolf, bus, giraffe) plus there is / there are / there isn't / there aren't practice.
 2. "What's in the kitchen?" from the Lesson 5 worksheet and slides (kitchen words, singular/plural, Is there…? Are there…?). Starts with the "What is on your plate today?" warm-up (`type:"plate"`: tap food to put it on the plate; the page writes the there is / there are sentence).
 
+   Also has reading (`type:"cvc"`: tap each letter to hear its sound, "Sound it out" blends them, then she picks the picture), writing (missing vowel, build the word from letters with `letters:true` on an `order` task, write the word) and speaking (`type:"speak"`: she says her own sentence; the browser's speech recognition checks it has the words in `need`, or she taps "I said it").
+
 Pictures in tasks: `img` can be one path or a list (shows them side by side); `no:true` draws a red "no" sign over the picture.

@@ -169,6 +169,49 @@ window.LESSONS = [
         pairs: [["img/oven.webp", "oven"], ["img/knife.webp", "knife"], ["img/fork.webp", "fork"], ["img/cups.webp", "cups"], ["img/bowl.webp", "bowl"], ["img/mug.webp", "mug"], ["img/plate.webp", "plate"]]
       },
       {
+        type: "cvc", title: "Let's read! Sound it out", ua: "Читаємо! Звук за звуком",
+        intro: '<p class="speech">Psst, Luna! Every letter makes a sound. Put the sounds together and you can read! 🐼</p>',
+        items: [
+          { w: "cup", pic: "☕", options: ["☕", "🐶", "🍳"] },
+          { w: "pan", pic: "🍳", options: ["🍳", "🐷", "🚌"] },
+          { w: "pot", pic: "🍲", options: ["🥜", "🍲", "☀️"] },
+          { w: "can", pic: "🥫", options: ["🐱", "🥫", "🛏️"] },
+          { w: "nut", pic: "🥜", options: ["🥜", "🍳", "🦊"] },
+          { w: "bun", pic: "🍞", options: ["☀️", "🚌", "🍞"] },
+          { w: "pig", pic: "🐷", options: ["🐷", "🐔", "☕"] },
+          { w: "bus", pic: "🚌", options: ["🛏️", "🚌", "🐶"] },
+          { w: "hot", pic: "🔥", options: ["🔥", "🐱", "🥫"] },
+          { w: "fox", pic: "🦊", options: ["📦", "🦊", "🐷"] }
+        ]
+      },
+      {
+        type: "fill", title: "Writing: the missing letter", ua: "Письмо: впиши пропущену літеру (a, e, i, o, u)",
+        bank: ["a", "e", "i", "o", "u"],
+        items: [
+          { q: "☕  c ___ p", answer: "u" },
+          { q: "🍳  p ___ n", answer: "a" },
+          { q: "🍲  p ___ t", answer: "o" },
+          { q: "🐷  p ___ g", answer: "i" },
+          { q: "🛏️  b ___ d", answer: "e" },
+          { q: "🚌  b ___ s", answer: "u" }
+        ]
+      },
+      {
+        type: "order", letters: true, title: "Writing: build the word", ua: "Склади слово з літер",
+        items: [{ s: "mug", img: "img/mug.webp" }, { s: "cup", img: "img/cups.webp" }, { s: "fork", img: "img/fork.webp" }, { s: "bowl", img: "img/bowl.webp" }, { s: "oven", img: "img/oven.webp" }]
+      },
+      {
+        type: "fill", title: "Writing: write the word", ua: "Напиши слово сама 🖊",
+        items: [
+          { img: "img/mug.webp", q: "It's a ___.", answer: "mug" },
+          { img: "img/plate.webp", q: "It's a ___.", answer: "plate" },
+          { img: "img/knife.webp", q: "It's a ___. (k is silent! 🤫)", answer: "knife" },
+          { img: "img/bowl.webp", q: "It's a ___.", answer: "bowl" },
+          { img: "img/cups.webp", q: "There are three ___.", answer: "cups" },
+          { img: ["img/fork.webp", "img/fork.webp"], q: "There are two ___.", answer: "forks" }
+        ]
+      },
+      {
         type: "choose", title: "One or more than one?", ua: "Однина (одна річ) чи множина (багато)?",
         items: [
           { q: "plates", options: ["one", "more than one"], answer: "more than one" },
@@ -258,6 +301,19 @@ window.LESSONS = [
       {
         type: "order", title: "Make the sentences", ua: "Склади речення",
         items: ["Yes, there are some chopsticks.", "No, there isn't a fork.", "No, there aren't any spoons.", "Yes, there is a microwave.", "Is there a mug in the kitchen?"]
+      },
+      {
+        type: "speak", title: "Speaking: say your own sentences", ua: "Говоріння: скажи власні речення",
+        intro: '<p class="speech">I want to hear YOUR sentences, Luna! Say them out loud! 🐼🎤</p>',
+        items: [
+          { img: "img/oven.webp", q: "Start with: There is …", need: ["there is"], hint: "There is a …", example: "There is a pink oven." },
+          { img: "img/cups.webp", q: "Start with: There are …", need: ["there are"], hint: "There are …", example: "There are three cups." },
+          { img: "img/plate.webp", no: true, q: "Start with: There isn't …", need: ["there isn't|there is no"], hint: "There isn't a …", example: "There isn't a plate." },
+          { q: "What is on your plate today? (look at task 1)", need: ["there is|there are"], hint: "On my plate there is …", example: "On my plate there is a pizza and there are two strawberries." },
+          { img: "img/knife.webp", q: "Ask a question: Is there …?", need: ["is there"], hint: "Is there a …?", example: "Is there a knife?" },
+          { img: ["img/fork.webp", "img/fork.webp"], q: "Ask a question: Are there any …?", need: ["are there"], hint: "Are there any …?", example: "Are there any forks?" },
+          { q: "Make a funny sentence! 😄", need: ["there"], hint: "There is a panda in the …", example: "There is a panda in the oven!" }
+        ]
       },
       {
         type: "fill", title: "Your turn! What is in YOUR kitchen?", ua: "Твоя черга! Що є на твоїй кухні? Напиши будь-які слова англійською",
