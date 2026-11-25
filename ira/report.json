@@ -1,0 +1,112 @@
+{
+  "student": "Ira",
+  "term": "Autumn 2026",
+  "aim": "This autumn our main aim was to improve your writing: to write the right message for the right reader, from a quick text to a friend to a polite email and an Instagram caption for your salon.",
+  "miro": "https://miro.com/app/board/uXjVEYxHwLc=/?share_link_id=405140549711",
+  "sheet": "https://docs.google.com/spreadsheets/d/1bv5o4LAU-IOaD9vPOreHbd7GNIPodKqsbCWj0Ov6oTw/edit",
+  "lessons": [
+    {
+      "n": 1,
+      "title": "Text Me Back",
+      "topic": "Text messages and chat",
+      "studied": "Reading a real chat for the main idea and details; 30+ text abbreviations (BTW, TBH, ASAP, ETA, L8R); what makes a good reply; who you can send text-speak to; decoding and writing short messages.",
+      "language": "WYD rn? · HBU? · IDK · TTYL · CU Sat · np"
+    },
+    {
+      "n": 2,
+      "title": "Sincerely Yours",
+      "topic": "Formal emails",
+      "studied": "Formal, semi-formal and informal register; the same news as a text and as an email; rules for formal writing (no abbreviations, full forms, clear subject line); polite requests; fixing a badly written email; email ping-pong.",
+      "language": "I am writing to… · Could you please…? · I look forward to hearing from you. · Kind regards"
+    },
+    {
+      "n": 3,
+      "title": "Caption This",
+      "topic": "Instagram captions for your hair studio",
+      "studied": "Stopping the scroll; the anatomy of a caption (hook, story, call to action, hashtags); hooks; writing tips; words that sell; fixing a caption; writing your own salon posts in English.",
+      "language": "Okay, real talk… · Save this for your next salon visit. · Tell me in the comments…"
+    },
+    {
+      "n": 4,
+      "title": "A Year in Writing",
+      "topic": "Revision: one story, three styles",
+      "studied": "Writing about your birthday, your year and your goals as a text, an email and a caption; present perfect for \"this year\" vs past simple for finished time; spend time + -ing; manage / hope / plan + to; making sentences sound B2.",
+      "language": "So far, I have… · I haven't… yet · I finally managed to… · I hope to… · Although… / However…"
+    }
+  ],
+  "reviews": [
+    {
+      "date": "2026-10-15",
+      "label": "15 October",
+      "corrections": [
+        {"said": "ceremony (wrong stress)", "better": "CER-e-mo-ny /ˈserəməni/", "why": "Stress on the first syllable."},
+        {"said": "I'm tired about…", "better": "I'm tired of…", "why": "tired of + noun / -ing: \"I'm tired of waiting.\""},
+        {"said": "on rush", "better": "in a rush", "why": "Fixed phrase: \"Sorry, I'm in a rush.\""},
+        {"said": "I'm in stress", "better": "I'm stressed / distressed", "why": "Use the adjective for how you feel."}
+      ],
+      "words": [
+        ["accumulate /əˈkjuːmjəleɪt/", "накопичувати", "collect or build up over time", "Russia accumulated weapons for years."],
+        ["water heater", "бойлер", "a machine that heats water at home", "Our water heater broke yesterday."],
+        ["relaxed", "розслаблений", "calm, not worried", "I feel relaxed after a massage."],
+        ["ceremony /ˈserəməni/", "церемонія", "a formal event", "The wedding ceremony was beautiful."],
+        ["put a signature", "поставити підпис", "sign a document", "Please put your signature here."],
+        ["weak point", "слабке місце", "something you are not good at", "Grammar is my weak point."],
+        ["in a rush", "поспіхом, у поспіху", "in a hurry", "I left home in a rush."],
+        ["distressed /dɪˈstrest/", "засмучений, у стресі", "very upset or worried", "She was distressed after the news."],
+        ["bullet /ˈbʊlɪt/", "куля", "a small metal object fired from a gun", "The bullet hit the wall."],
+        ["European vendors /ˈvendəz/", "європейські постачальники", "companies from Europe that sell goods", "We buy products from European vendors."],
+        ["writing", "письмо", "putting words on paper or screen", "Writing in English is hard for me."],
+        ["message", "повідомлення", "a short text you send", "I sent you a message."],
+        ["voice-over", "закадровий голос", "a voice in a video from someone you don't see", "She does voice-overs for ads."]
+      ]
+    },
+    {
+      "date": "2026-10-26",
+      "label": "26 October",
+      "corrections": [
+        {"said": "its / it's mixed up", "better": "its = його/її · it's = it is", "why": "\"The dog wagged its tail.\" / \"It's cold today.\""}
+      ],
+      "words": [
+        ["I'm nosy /ˈnəʊzi/", "я допитлива", "interested in other people's private business", "I'm a bit nosy, I always ask questions."],
+        ["get rid of", "позбутися", "throw away or remove something you don't want", "I want to get rid of old clothes."],
+        ["attend /əˈtend/", "відвідувати", "go to an event or class", "I attend English lessons twice a week."],
+        ["(They) don't perceive me as… /pəˈsiːv/", "(вони) не сприймають мене як…", "don't see or think of me as…", "They don't perceive me as a beginner."],
+        ["supervisor /ˈsuːpəvaɪzə/", "керівник, наглядач", "a person in charge of workers", "I need to ask my supervisor."]
+      ]
+    },
+    {
+      "date": "2026-11-02",
+      "label": "2 November",
+      "corrections": [
+        {"said": "I'm a person who don't…", "better": "I'm a person who doesn't…", "why": "\"A person\" = he/she, so the verb takes -s: doesn't."},
+        {"said": "in the same point", "better": "at the same time", "why": "Fixed phrase: at the same time = одночасно."}
+      ],
+      "words": [
+        ["heading /ˈhedɪŋ/", "заголовок", "the title at the top of a text", "Read the heading first."],
+        ["It can draw my attention", "це може привернути мою увагу", "make me notice something", "Bright colours can draw my attention."],
+        ["expected /ɪkˈspektɪd/", "очікуваний", "thought likely to happen", "The results were better than expected."],
+        ["contest /ˈkɒntest/", "конкурс, змагання", "a competition", "She won a photo contest."],
+        ["at the same time", "одночасно, водночас", "together, in one moment", "I can't cook and talk at the same time."]
+      ]
+    }
+  ],
+  "going_well": [
+    "You finished all four Writing Studio lessons: texts, formal emails, Instagram captions and the revision lesson.",
+    "You can now choose the right style for the reader: text-speak for friends, full polite sentences for a manager or a client.",
+    "You bring real life into English (your salon, work, suppliers, the news), so your vocabulary is growing fast: 23 new words and phrases in three lessons.",
+    "You write captions for your own hair posts, which is the most useful writing practice you can do."
+  ],
+  "focus": [
+    {"area": "He / she / a person + verb-s", "why": "\"I'm a person who don't…\"", "do": "After he, she, it and a person, check the verb: doesn't, has, likes, works."},
+    {"area": "Fixed phrases with prepositions", "why": "\"tired about\", \"on rush\", \"in the same point\"", "do": "Learn them as one block: tired of, in a rush, at the same time. Practise them in the \"From our lessons\" flashcards."},
+    {"area": "Adjectives for feelings", "why": "\"I'm in stress\"", "do": "Use I'm + adjective: I'm stressed, I'm relaxed, I'm exhausted, I'm distressed."},
+    {"area": "its vs it's in writing", "why": "mixed up in your writing", "do": "Before you send a text or a caption, read it once more: can you say \"it is\"? Then write it's."},
+    {"area": "Verb patterns from Lesson 4", "why": "the key B2 grammar for writing about your year", "do": "hope to / manage to / plan to + verb; spend time + -ing; past simple with finished time (last month, in June)."},
+    {"area": "Word stress in new words", "why": "\"ceremony\"", "do": "Tap Listen on each new word in the flashcards and repeat the stressed syllable louder."}
+  ],
+  "next_steps": [
+    "Do Flashcards, Learn and a Test for each word set at least once a week; your teacher gets every test result.",
+    "Write one Instagram caption in English for your salon each week and bring it to the lesson.",
+    "Write one short formal email a week (to a supplier, a landlord or a client) and check it against the formal writing rules from Lesson 2."
+  ]
+}
