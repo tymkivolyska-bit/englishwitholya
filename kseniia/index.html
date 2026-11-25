@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FFF4F7">
+<title>Kseniia's English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700&family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Kseniia's study page.
+   PICTURE pale pink paper covered in small pink hearts (the teacher's chosen pattern), white cards on top.
+   COLOUR #FFF4F7 paper, #F58FB0 hearts, deep rose ink, raspberry buttons.
+   TYPE Playfair Display italic for headings, Onest for text (Latin + Cyrillic).
+   ORDER 1 Still need to do, 2 Flashcards, 3 Topics we did, 4 Teacher's feedback.
+   DATA everything lives in data.json in this GitHub folder. The teacher edits on this page;
+   changes are kept on the device at once and committed to GitHub automatically. */
+:root{color-scheme:light;--bg:#FFF4F7;--heart:#F58FB0;--ink:#4A1F33;--mute:#86566B;--line:#F6D2DE;--soft:#FFEAF1;--rose:#C2416C;--rose2:#A8325B;--ok:#2F8A5B;--okbg:#E4F4EA}
+*{box-sizing:border-box;min-width:0}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font:16px/1.55 Onest,system-ui,sans-serif;min-height:100vh;overflow-x:clip;background-color:var(--bg);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='136' viewBox='0 0 120 136'%3E%3Cg fill='%23F58FB0'%3E%3Cpath transform='translate(22 26) rotate(-8 8 8)' d='M8 15C5 12.6 0 9.4 0 5 0 2.2 2 0 4.4 0 6 0 7.3.9 8 2.3 8.7.9 10 0 11.6 0 14 0 16 2.2 16 5c0 4.4-5 7.6-8 10z'/%3E%3Cpath transform='translate(82 94) rotate(7 8 8)' d='M8 15C5 12.6 0 9.4 0 5 0 2.2 2 0 4.4 0 6 0 7.3.9 8 2.3 8.7.9 10 0 11.6 0 14 0 16 2.2 16 5c0 4.4-5 7.6-8 10z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:120px 136px}
+.wrap{max-width:860px;margin:0 auto;padding-block:clamp(22px,4vw,44px) 60px;padding-left:max(16px,4vw,env(safe-area-inset-left,0px));padding-right:max(16px,4vw,env(safe-area-inset-right,0px))}
+header{text-align:center;margin-bottom:22px}
+.kicker{display:inline-block;background:#fff;border:1.5px solid var(--line);color:var(--rose);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:4px 14px}
+h1{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:700;font-size:clamp(40px,8vw,64px);line-height:1.05;margin:10px 0 0;color:var(--ink)}
+h1 em{color:var(--rose);font-style:italic}
+.sub{color:var(--mute);margin:6px 0 0;font-size:15px}
+section.card{background:#fff;border-radius:24px;padding:clamp(18px,3.4vw,30px);margin-bottom:18px;box-shadow:0 1px 0 var(--line),0 10px 30px -18px rgba(194,65,108,.45);border:1.5px solid var(--line)}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.num{flex:none;width:36px;height:36px;border-radius:50%;background:var(--soft);color:var(--rose);display:grid;place-items:center;font-weight:800;font-size:16px}
+h2{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:700;font-size:clamp(24px,4.4vw,30px);line-height:1.15;margin:0;flex:1}
+.count{font-size:14px;font-weight:700;color:var(--mute);white-space:nowrap}
+.empty{color:var(--mute);font-size:15px;background:var(--soft);border-radius:14px;padding:14px 16px}
+button{font:inherit;cursor:pointer}
+.btn{font-weight:700;font-size:15px;border:0;border-radius:12px;padding:10px 16px;min-height:44px;background:var(--rose);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{background:var(--rose2)}
+.btn.ghost{background:var(--soft);color:var(--rose2)}
+.btn.ghost:hover{background:#FFDDE8}
+.btn.small{min-height:36px;padding:6px 12px;font-size:14px;border-radius:10px}
+.btn:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:3px solid var(--heart);outline-offset:2px}
+
+/* 1 to do */
+.todo{list-style:none;margin:0;padding:0}
+.todo li{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.todo li:first-child{border-top:0;padding-top:4px}
+.todo input[type=checkbox]{width:24px;height:24px;margin:1px 0 0;flex:none;accent-color:var(--rose)}
+.todo .tx{flex:1;white-space:pre-wrap;overflow-wrap:anywhere}
+.todo .due{display:inline-block;margin-top:4px;font-size:13px;font-weight:700;color:var(--rose2);background:var(--soft);border-radius:999px;padding:1px 10px}
+.todo li.is-done .tx{color:var(--mute);text-decoration:line-through;text-decoration-color:var(--heart)}
+.todo li.is-done .due{opacity:.6}
+
+/* 2 flashcards */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:14px;border-radius:999px;padding:6px 14px;min-height:36px}
+.chip[aria-pressed=true]{background:var(--rose);border-color:var(--rose);color:#fff}
+.stage{perspective:1200px}
+.fc{position:relative;width:100%;min-height:230px;border:0;padding:0;background:none;color:inherit;text-align:center;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.3,.7,.3,1)}
+.fc.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px 20px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.front{background:var(--soft);border:2px dashed var(--heart)}
+.back{background:#fff;border:2px solid var(--heart);transform:rotateY(180deg)}
+.fw{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.15;overflow-wrap:anywhere}
+.ft{font-size:20px;font-weight:700;overflow-wrap:anywhere}
+.fe{font-size:16px;color:var(--mute);max-width:36em;overflow-wrap:anywhere}
+.hint{font-size:13px;color:var(--mute)}
+.tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rose)}
+.known-badge{font-size:13px;font-weight:700;color:var(--ok);background:var(--okbg);border-radius:999px;padding:2px 10px}
+.fbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.fbar .grp{display:flex;gap:8px;flex-wrap:wrap}
+.pos{font-weight:700;color:var(--mute);font-variant-numeric:tabular-nums}
+.say{border:0;background:#fff;color:var(--rose);width:44px;height:44px;border-radius:50%;display:inline-grid;place-items:center;box-shadow:0 2px 0 var(--line)}
+.say svg{width:22px;height:22px}
+.opts{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:14px;color:var(--mute)}
+.opts label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.opts input{accent-color:var(--rose);width:18px;height:18px}
+details.all{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+details.all summary{cursor:pointer;font-weight:700;color:var(--rose2);min-height:36px;display:flex;align-items:center}
+.wl{list-style:none;margin:6px 0 0;padding:0}
+.wl li{padding:8px 0;border-top:1px solid var(--line);font-size:15px}
+.wl b{font-weight:700}
+.wl span{color:var(--mute)}
+.wl .k{color:var(--ok);font-weight:700;font-size:13px;margin-left:6px}
+
+/* 3 topics */
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:4px 14px;padding:12px 0;border-top:1px solid var(--line)}
+.tl li:first-child{border-top:0;padding-top:4px}
+.tl .d{font-size:14px;font-weight:700;color:var(--rose2);padding-top:2px}
+.tl .t{font-weight:700;overflow-wrap:anywhere}
+.tl .n{grid-column:2;color:var(--mute);font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* 4 feedback */
+.fb{border-left:5px solid var(--heart);background:var(--soft);border-radius:4px 16px 16px 4px;padding:14px 16px;margin-top:12px}
+.fb:first-child{margin-top:0}
+.fb .d{font-size:13px;font-weight:700;color:var(--rose2);text-transform:uppercase;letter-spacing:.05em}
+.fb h3{margin:2px 0 6px;font-size:18px}
+.fb p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.fb .nx{margin-top:10px;font-size:15px}
+.fb .nx b{color:var(--rose2)}
+
+/* teacher editing */
+.teacher-foot{text-align:center;margin-top:26px}
+.linkbtn{border:0;background:rgba(255,255,255,.85);color:var(--mute);font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;min-height:36px}
+.editbar{position:sticky;top:0;z-index:5;margin:-6px 0 18px;background:#fff;border:2px solid var(--rose);border-radius:16px;padding:10px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;box-shadow:0 8px 20px -12px rgba(194,65,108,.6)}
+.editbar .st{flex:1 1 220px;font-size:14px;font-weight:700}
+.st.ok{color:var(--ok)} .st.warn{color:#9A5B00} .st.err{color:#B3261E}
+.setup{background:#FFF8E6;border:1.5px solid #F2D58C;border-radius:16px;padding:14px 16px;margin-bottom:18px;font-size:15px}
+.setup h3{margin:0 0 6px;font-size:17px}
+.setup ol{margin:6px 0 10px;padding-left:20px}
+.setup li{margin:3px 0}
+.setup a{color:var(--rose2);font-weight:700}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ed{border:1.5px solid var(--line);border-radius:14px;padding:12px;margin-top:10px;background:#FFFBFC}
+.ed:first-child{margin-top:0}
+.ed .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ed .full{grid-column:1/-1}
+.ed label{display:block;font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+input.f,textarea.f{display:block;width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:3px}
+textarea.f{min-height:64px;resize:vertical}
+input.f:focus,textarea.f:focus{outline:none;border-color:var(--rose)}
+.ed .tools{display:flex;gap:6px;justify-content:flex-end;align-items:center;margin-top:8px;flex-wrap:wrap}
+.ed .tools .sp{flex:1}
+.ic{border:1.5px solid var(--line);background:#fff;color:var(--mute);border-radius:10px;min-width:36px;height:36px;font-weight:700;font-size:15px}
+.ic.del{color:#B3261E}
+.ck{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--mute)}
+.ck input{width:20px;height:20px;accent-color:var(--rose)}
+.addrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.bulk{margin-top:12px;background:var(--soft);border-radius:14px;padding:12px}
+.bulk p{margin:0 0 6px;font-size:14px;color:var(--mute)}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:700;font-size:14px;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1}
+.loading{text-align:center;color:var(--mute);padding:40px 0}
+[hidden]{display:none!important}
+@media (max-width:560px){
+  .tl li{grid-template-columns:minmax(0,1fr)}
+  .tl .n{grid-column:1}
+  .ed .grid{grid-template-columns:minmax(0,1fr)}
+  .fbar{justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.fc{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="kicker" id="lvl">B1 English</span>
+    <h1><em id="who">Kseniia</em>'s English</h1>
+    <p class="sub">Your homework, words and lesson notes, all in one place</p>
+  </header>
+
+  <div id="editbar" class="editbar" hidden>
+    <span id="status" class="st">Editing</span>
+    <button class="btn small" id="saveNow">Save to GitHub</button>
+    <button class="btn small ghost" id="doneEdit">Finish editing</button>
+  </div>
+  <div id="setup" class="setup" hidden>
+    <h3>Connect this page to GitHub once</h3>
+    Your changes are already kept on this device. To save them to GitHub too (so Kseniia sees them), paste a GitHub key here. You only do this once on each device.
+    <ol>
+      <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">New fine-grained token</a> on GitHub.</li>
+      <li>Name it "Kseniia page". Expiration: the longest you like.</li>
+      <li>Repository access: <b>Only select repositories</b> → <b>englishwitholya</b>.</li>
+      <li>Permissions → Repository permissions → <b>Contents: Read and write</b>.</li>
+      <li>Generate the token, copy it and paste it below.</li>
+    </ol>
+    <div class="row">
+      <input class="f" id="tok" type="password" placeholder="github_pat_…" autocomplete="off" style="flex:1 1 240px;margin:0">
+      <button class="btn small" id="tokSave">Connect</button>
+    </div>
+    <p class="hint" style="margin:8px 0 0">The key stays only in this browser. It is never put on the website.</p>
+  </div>
+
+  <div id="loading" class="loading">Loading…</div>
+  <main id="main" hidden>
+    <section class="card" id="s-todo">
+      <div class="sh"><span class="num">1</span><h2>Still need to do</h2><span class="count" id="c-todo"></span></div>
+      <div id="b-todo"></div>
+    </section>
+    <section class="card" id="s-cards">
+      <div class="sh"><span class="num">2</span><h2>Flashcards</h2><span class="count" id="c-cards"></span></div>
+      <div id="b-cards"></div>
+    </section>
+    <section class="card" id="s-topics">
+      <div class="sh"><span class="num">3</span><h2>Topics we did</h2><span class="count" id="c-topics"></span></div>
+      <div id="b-topics"></div>
+    </section>
+    <section class="card" id="s-feedback">
+      <div class="sh"><span class="num">4</span><h2>Teacher's feedback</h2><span class="count" id="c-feedback"></span></div>
+      <div id="b-feedback"></div>
+    </section>
+  </main>
+  <div class="teacher-foot"><button class="linkbtn" id="editBtn">✎ Teacher: edit this page</button></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(()=>{
+const OWNER="tymkivolyska-bit",REPO="englishwitholya",PATH="kseniia/data.json",BRANCH="main";
+const API=`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`;
+const K={draft:"ks-draft",tok:"ks-gh-token",known:"ks-known",ticks:"ks-ticks",ui:"ks-ui"};
+const $=id=>document.getElementById(id);
+const get=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
+const put=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}};
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const fmt=d=>{if(!d)return"";const t=new Date(d+"T12:00:00");return isNaN(t)?d:t.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})};
+let toastT;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2600)}
+
+let data=null,editing=false,dirty=false;
+let known=get(K.known,{}),ticks=get(K.ticks,{}),ui=Object.assign({topic:"all",ua:false,i:0},get(K.ui,{}));
+const saveUi=()=>put(K.ui,ui);
+const blank=()=>({student:"Kseniia",level:"B1",updated:"",todo:[],flashcards:[],topics:[],feedback:[]});
+function norm(d){const b=blank();d=Object.assign(b,d||{});["todo","flashcards","topics","feedback"].forEach(k=>{if(!Array.isArray(d[k]))d[k]=[];d[k].forEach(x=>{if(!x.id)x.id=uid(k[0])})});return d}
+
+/* ---------- load: GitHub first (freshest), then the published file, then this device ---------- */
+async function load(){
+  let remote=null;
+  try{const r=await fetch(API+"?ref="+BRANCH+"&t="+Date.now(),{headers:{Accept:"application/vnd.github.raw+json"},cache:"no-store"});if(r.ok)remote=JSON.parse(await r.text())}catch(e){}
+  if(!remote){try{const r=await fetch("data.json?t="+Date.now(),{cache:"no-store"});if(r.ok)remote=await r.json()}catch(e){}}
+  const dr=get(K.draft,null);
+  if(dr&&dr.data&&(dr.dirty||!remote||(dr.data.updated||"")>(remote.updated||""))){data=norm(dr.data);dirty=!!dr.dirty}
+  else data=norm(remote);
+  if(dr&&!dr.dirty&&remote&&(dr.data.updated||"")<=(remote.updated||""))try{localStorage.removeItem(K.draft)}catch(e){}
+  $("loading").hidden=true;$("main").hidden=false;
+  if(dirty){startEdit();setStatus("warn","You have changes that are not on GitHub yet")}
+  renderAll();
+}
+
+/* ---------- view ---------- */
+function renderAll(){
+  $("who").textContent=data.student||"Kseniia";$("lvl").textContent=(data.level||"B1")+" English";
+  document.title=(data.student||"Kseniia")+"'s English";
+  renderTodo();renderCards();renderTopics();renderFeedback();
+}
+function renderTodo(){
+  const L=data.todo,el=$("b-todo");
+  if(editing){el.innerHTML=L.map((x,i)=>`<div class="ed" data-l="todo" data-i="${i}"><div class="grid">
+      <div class="full"><label>Task<textarea class="f" data-f="text">${esc(x.text)}</textarea></label></div>
+      <div><label>Due date<input class="f" type="date" data-f="due" value="${esc(x.due)}"></label></div>
+      <div style="display:flex;align-items:end"><label class="ck"><input type="checkbox" data-f="done" ${x.done?"checked":""}> Done</label></div>
+    </div>${tools(i,L.length)}</div>`).join("")+`<div class="addrow"><button class="btn small" data-add="todo">+ Add a task</button></div>`;
+    $("c-todo").textContent=L.filter(x=>!x.done).length+" left";return}
+  const left=L.filter(x=>!(x.done||ticks[x.id]));
+  $("c-todo").textContent=L.length?(left.length?left.length+" left":"all done ♥"):"";
+  if(!L.length){el.innerHTML=`<div class="empty">Nothing here right now. Enjoy your free time ♥</div>`;return}
+  el.innerHTML=`<ul class="todo">${L.map(x=>{const d=x.done||ticks[x.id];return `<li class="${d?"is-done":""}">
+    <input type="checkbox" data-tick="${esc(x.id)}" ${d?"checked":""} ${x.done?"disabled":""} aria-label="Done">
+    <div style="flex:1"><div class="tx">${esc(x.text)}</div>${x.due?`<span class="due">by ${esc(fmt(x.due))}</span>`:""}</div></li>`}).join("")}</ul>`;
+}
+function topicsOf(){return [...new Set(data.flashcards.map(c=>(c.topic||"").trim()).filter(Boolean))]}
+let shuffled=null;
+function deck(){const src=shuffled&&shuffled.length===data.flashcards.length&&shuffled.every(x=>data.flashcards.includes(x))?shuffled:data.flashcards;return src.filter(c=>ui.topic==="all"||(c.topic||"").trim()===ui.topic)}
+const ico='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z" fill="currentColor"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+function renderCards(){
+  const el=$("b-cards"),all=data.flashcards;
+  if(editing){const tl=topicsOf();
+    el.innerHTML=`<datalist id="topicList">${tl.map(t=>`<option value="${esc(t)}">`).join("")}</datalist>`+all.map((x,i)=>`<div class="ed" data-l="flashcards" data-i="${i}"><div class="grid">
+      <div><label>English word or phrase<input class="f" data-f="word" value="${esc(x.word)}"></label></div>
+      <div><label>Translation / meaning<input class="f" data-f="translation" value="${esc(x.translation)}"></label></div>
+      <div class="full"><label>Example sentence<input class="f" data-f="example" value="${esc(x.example)}"></label></div>
+      <div><label>Topic<input class="f" data-f="topic" list="topicList" value="${esc(x.topic)}"></label></div>
+    </div>${tools(i,all.length)}</div>`).join("")+`<div class="addrow"><button class="btn small" data-add="flashcards">+ Add a card</button></div>
+    <div class="bulk"><p><b>Add many at once:</b> one word per line, like <i>to splurge - розщедритися - She splurged on a coat.</i> The example is optional. Separate parts with " - " or a tab.</p>
+    <textarea class="f" id="bulkTx" placeholder="word - translation - example"></textarea>
+    <div class="row" style="margin-top:8px"><input class="f" id="bulkTopic" list="topicList" placeholder="Topic for these words" style="flex:1 1 200px;margin:0"><button class="btn small" id="bulkAdd">Add these words</button></div></div>`;
+    $("c-cards").textContent=all.length+" cards";return}
+  if(!all.length){$("c-cards").textContent="";el.innerHTML=`<div class="empty">No flashcards yet.</div>`;return}
+  const tl=topicsOf();if(ui.topic!=="all"&&!tl.includes(ui.topic))ui.topic="all";
+  const D=deck(),n=D.length;if(ui.i>=n||ui.i<0)ui.i=0;const c=D[ui.i];
+  const kn=all.filter(x=>known[x.id]).length;$("c-cards").textContent=kn+" / "+all.length+" known";
+  const front=ui.ua?`<div class="ft">${esc(c.translation||"—")}</div>`:`<div class="fw">${esc(c.word)}</div>`;
+  const back=ui.ua?`<div class="fw">${esc(c.word)}</div>${c.example?`<div class="fe">${esc(c.example)}</div>`:""}`:`<div class="ft">${esc(c.translation||"")}</div>${c.example?`<div class="fe">“${esc(c.example)}”</div>`:""}`;
+  el.innerHTML=(tl.length>1?`<div class="chips"><button class="chip" data-topic="all" aria-pressed="${ui.topic==="all"}">All</button>${tl.map(t=>`<button class="chip" data-topic="${esc(t)}" aria-pressed="${ui.topic===t}">${esc(t)}</button>`).join("")}</div>`:"")+
+  `<div class="stage"><button class="fc" id="fc" aria-label="Flip the card">
+     <div class="face front">${c.topic?`<span class="tag">${esc(c.topic)}</span>`:""}${front}<span class="hint">Tap to see the answer</span>${known[c.id]?`<span class="known-badge">✓ I know it</span>`:""}</div>
+     <div class="face back">${back}</div></button></div>
+   <div class="fbar"><div class="grp"><button class="btn small ghost" id="prev" aria-label="Previous card">←</button><span class="pos" style="align-self:center">${ui.i+1} / ${n}</span><button class="btn small ghost" id="next" aria-label="Next card">→</button></div>
+   <div class="grp"><button class="say" id="say" aria-label="Listen">${ico}</button><button class="btn small ghost" id="again">Again</button><button class="btn small" id="know">${known[c.id]?"Known ✓":"I know it"}</button></div></div>
+   <div class="opts"><label><input type="checkbox" id="uaFirst" ${ui.ua?"checked":""}> Show the translation first</label><button class="linkbtn" id="shuf" style="background:var(--soft)">Shuffle</button>${kn?`<button class="linkbtn" id="reset" style="background:var(--soft)">Start again</button>`:""}</div>
+   <details class="all"><summary>See all words (${all.length})</summary><ul class="wl">${all.map(x=>`<li><b>${esc(x.word)}</b> <span>— ${esc(x.translation)}</span>${known[x.id]?`<span class="k">✓</span>`:""}</li>`).join("")}</ul></details>`;
+  const fc=$("fc");fc.onclick=()=>fc.classList.toggle("flip");
+  const go=d=>{ui.i=(ui.i+d+n)%n;saveUi();renderCards()};
+  $("prev").onclick=()=>go(-1);$("next").onclick=()=>go(1);
+  $("say").onclick=()=>speak(c.word);
+  $("again").onclick=()=>{delete known[c.id];put(K.known,known);go(1)};
+  $("know").onclick=()=>{known[c.id]=Date.now();put(K.known,known);if(n>1)go(1);else renderCards()};
+  $("uaFirst").onchange=e=>{ui.ua=e.target.checked;saveUi();renderCards()};
+  $("shuf").onclick=()=>{const order=data.flashcards.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(p=>p[1]);shuffled=order;ui.i=0;renderCards()};
+  if($("reset"))$("reset").onclick=()=>{known={};put(K.known,known);ui.i=0;saveUi();renderCards()};
+  el.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>{ui.topic=b.dataset.topic;ui.i=0;saveUi();renderCards()});
+}
+let voice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices(),en=vs.filter(v=>/^en[-_](GB|US)/i.test(v.lang));voice=en.find(v=>/^en[-_]GB/i.test(v.lang)&&/Serena|Kate|Libby|Sonia|Martha|Stephanie|Female|Google UK English Female/i.test(v.name))||en.find(v=>/Samantha|Female|Zira|Jenny|Aria/i.test(v.name))||en.find(v=>/^en[-_]GB/i.test(v.lang))||en[0]||null}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function speak(t){if(!("speechSynthesis" in window))return toast("Sound is not available in this browser");try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(t).replace(/\bsb\b/g,"somebody").replace(/\bsth\b/g,"something").replace(/[()]/g,""));u.lang=voice?voice.lang:"en-GB";if(voice)u.voice=voice;u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+
+function renderTopics(){
+  const L=data.topics,el=$("b-topics");
+  if(editing){el.innerHTML=`<div class="addrow" style="margin:0 0 10px"><button class="btn small" data-add="topics">+ Add a topic</button></div>`+L.map((x,i)=>`<div class="ed" data-l="topics" data-i="${i}"><div class="grid">
+      <div><label>Date<input class="f" type="date" data-f="date" value="${esc(x.date)}"></label></div>
+      <div><label>Topic<input class="f" data-f="title" value="${esc(x.title)}"></label></div>
+      <div class="full"><label>Notes (grammar, words, what we read…)<textarea class="f" data-f="note">${esc(x.note)}</textarea></label></div>
+    </div>${tools(i,L.length)}</div>`).join("");$("c-topics").textContent=L.length+"";return}
+  $("c-topics").textContent=L.length?L.length+(L.length===1?" topic":" topics"):"";
+  el.innerHTML=L.length?`<ul class="tl">${L.map(x=>`<li><span class="d">${esc(fmt(x.date))||"&nbsp;"}</span><span class="t">${esc(x.title)}</span>${x.note?`<span class="n">${esc(x.note)}</span>`:""}</li>`).join("")}</ul>`:`<div class="empty">Topics will appear here after our lessons.</div>`;
+}
+function renderFeedback(){
+  const L=data.feedback,el=$("b-feedback");
+  if(editing){el.innerHTML=`<div class="addrow" style="margin:0 0 10px"><button class="btn small" data-add="feedback">+ Add lesson feedback</button></div>`+L.map((x,i)=>`<div class="ed" data-l="feedback" data-i="${i}"><div class="grid">
+      <div><label>Lesson date<input class="f" type="date" data-f="date" value="${esc(x.date)}"></label></div>
+      <div><label>Lesson<input class="f" data-f="lesson" value="${esc(x.lesson)}" placeholder="e.g. Black Friday"></label></div>
+      <div class="full"><label>Feedback<textarea class="f" data-f="text" style="min-height:110px">${esc(x.text)}</textarea></label></div>
+      <div class="full"><label>Next time / what to work on<textarea class="f" data-f="next">${esc(x.next)}</textarea></label></div>
+    </div>${tools(i,L.length)}</div>`).join("");$("c-feedback").textContent=L.length+"";return}
+  $("c-feedback").textContent=L.length?L.length+(L.length===1?" lesson":" lessons"):"";
+  el.innerHTML=L.length?L.map(x=>`<article class="fb">${x.date?`<div class="d">${esc(fmt(x.date))}</div>`:""}${x.lesson?`<h3>${esc(x.lesson)}</h3>`:""}<p>${esc(x.text)}</p>${x.next?`<div class="nx"><b>Next time:</b> ${esc(x.next)}</div>`:""}</article>`).join(""):`<div class="empty">Feedback from our lessons will appear here.</div>`;
+}
+function tools(i,n){return `<div class="tools"><button class="ic" data-mv="-1" ${i===0?"disabled":""} aria-label="Move up">↑</button><button class="ic" data-mv="1" ${i===n-1?"disabled":""} aria-label="Move down">↓</button><span class="sp"></span><button class="ic del" data-del aria-label="Delete">Delete</button></div>`}
+
+/* ---------- student ticks (kept on her device) ---------- */
+document.addEventListener("change",e=>{const id=e.target.dataset&&e.target.dataset.tick;if(id===undefined)return;if(e.target.checked)ticks[id]=Date.now();else delete ticks[id];put(K.ticks,ticks);renderTodo()});
+
+/* ---------- editing ---------- */
+const sectionRender={todo:renderTodo,flashcards:renderCards,topics:renderTopics,feedback:renderFeedback};
+function changed(){data.updated=new Date().toISOString();dirty=true;put(K.draft,{data,dirty:true});setStatus("warn",token()?"Saving…":"Kept on this device. Connect GitHub to publish it");scheduleSave()}
+document.addEventListener("input",e=>{const f=e.target.dataset&&e.target.dataset.f,box=e.target.closest(".ed");if(!editing||!f||!box)return;const it=data[box.dataset.l][+box.dataset.i];it[f]=e.target.type==="checkbox"?e.target.checked:e.target.value;changed();if(box.dataset.l==="todo")$("c-todo").textContent=data.todo.filter(x=>!x.done).length+" left"});
+document.addEventListener("change",e=>{if(editing&&e.target.type==="checkbox"&&e.target.dataset.f)e.target.dispatchEvent(new Event("input",{bubbles:true}))});
+document.addEventListener("click",e=>{
+  if(!editing)return;const t=e.target.closest("button");if(!t)return;
+  if(t.dataset.add){const l=t.dataset.add,today=new Date().toISOString().slice(0,10);
+    const blanks={todo:{text:"",due:"",done:false},flashcards:{word:"",translation:"",example:"",topic:(data.flashcards.at(-1)||{}).topic||""},topics:{date:today,title:"",note:""},feedback:{date:today,lesson:"",text:"",next:""}};
+    const it=Object.assign({id:uid(l[0])},blanks[l]);const top=l==="topics"||l==="feedback";top?data[l].unshift(it):data[l].push(it);changed();sectionRender[l]();
+    const boxes=$("b-"+(l==="flashcards"?"cards":l)).querySelectorAll(".ed");const box=top?boxes[0]:boxes[boxes.length-1];if(box){const f=box.querySelector("input.f:not([type=date]),textarea.f");f&&f.focus()}return}
+  const box=t.closest(".ed");if(!box)return;const l=box.dataset.l,i=+box.dataset.i,L=data[l];
+  if(t.hasAttribute("data-del")){const it=L[i];const label=(it.text||it.word||it.title||it.lesson||"this item").slice(0,40);if(!confirm("Delete “"+label+"”?"))return;L.splice(i,1);changed();sectionRender[l]()}
+  else if(t.dataset.mv){const j=i+(+t.dataset.mv);if(j<0||j>=L.length)return;[L[i],L[j]]=[L[j],L[i]];changed();sectionRender[l]()}
+});
+document.addEventListener("click",e=>{if(!editing||e.target.id!=="bulkAdd")return;const topic=$("bulkTopic").value.trim();let n=0;
+  $("bulkTx").value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).forEach(line=>{const p=line.split(/\t|\s+[-–—]\s+/).map(s=>s.trim());if(!p[0])return;data.flashcards.push({id:uid("f"),word:p[0],translation:p[1]||"",example:p.slice(2).join(" - "),topic});n++});
+  if(n){changed();renderCards();toast(n+" words added")}});
+
+function startEdit(){editing=true;document.body.classList.add("editing");$("editbar").hidden=false;$("setup").hidden=!!token();$("editBtn").hidden=true;
+  if(!dirty)setStatus(token()?"ok":"warn",token()?"Editing. Changes save to GitHub automatically":"Editing. Changes are kept on this device");renderAll()}
+function stopEdit(){if(dirty&&token())saveNow();editing=false;document.body.classList.remove("editing");$("editbar").hidden=true;$("setup").hidden=true;$("editBtn").hidden=false;renderAll();window.scrollTo({top:0,behavior:"smooth"})}
+$("editBtn").onclick=startEdit;$("doneEdit").onclick=stopEdit;
+
+/* ---------- saving to GitHub ---------- */
+const token=()=>{try{return localStorage.getItem(K.tok)||""}catch(e){return""}};
+function setStatus(kind,msg){const s=$("status");s.className="st "+kind;s.textContent=msg}
+$("tokSave").onclick=async()=>{const v=$("tok").value.trim();if(!v)return;
+  try{const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}`,{headers:{Authorization:"Bearer "+v,Accept:"application/vnd.github+json"}});const j=await r.json();
+    if(!r.ok||!(j.permissions&&j.permissions.push))throw new Error(r.ok?"This key cannot save to englishwitholya. Check Contents: Read and write.":"GitHub did not accept this key.");
+    localStorage.setItem(K.tok,v);$("tok").value="";$("setup").hidden=true;toast("Connected to GitHub ♥");if(dirty)saveNow();else setStatus("ok","Connected. Changes save to GitHub automatically")}
+  catch(e){setStatus("err",e.message||"Could not connect");toast(e.message||"Could not connect")}};
+let saveT=null,saving=null,again=false;
+function scheduleSave(){if(!token())return;clearTimeout(saveT);saveT=setTimeout(saveNow,2500)}
+function b64(s){const b=new TextEncoder().encode(s);let out="";for(let i=0;i<b.length;i+=0x8000)out+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(out)}
+async function saveNow(){
+  clearTimeout(saveT);if(!token()){$("setup").hidden=false;$("setup").scrollIntoView({behavior:"smooth",block:"center"});return}
+  if(saving){again=true;return saving}
+  saving=(async()=>{
+    const snap=JSON.parse(JSON.stringify(data));setStatus("warn","Saving to GitHub…");$("saveNow").disabled=true;
+    const H={Authorization:"Bearer "+token(),Accept:"application/vnd.github+json"};
+    try{
+      for(let attempt=0;attempt<2;attempt++){
+        let sha;const g=await fetch(API+"?ref="+BRANCH+"&t="+Date.now(),{headers:H,cache:"no-store"});if(g.ok)sha=(await g.json()).sha;else if(g.status===401)throw new Error("GitHub key expired. Paste a new one.");
+        const r=await fetch(API,{method:"PUT",headers:H,body:JSON.stringify({message:"Kseniia: update page ("+new Date().toLocaleString("en-GB")+")",content:b64(JSON.stringify(snap,null,2)+"\n"),branch:BRANCH,sha})});
+        if(r.ok)break;if(r.status===409&&attempt===0)continue;
+        if(r.status===401){try{localStorage.removeItem(K.tok)}catch(e){}$("setup").hidden=false;throw new Error("GitHub key expired. Paste a new one.")}
+        throw new Error("GitHub said no ("+r.status+"). Your changes are still on this device.");
+      }
+      if(snap.updated===data.updated){dirty=false;put(K.draft,{data,dirty:false})}
+      const t=new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});setStatus("ok","Saved to GitHub at "+t+" ✓");
+    }catch(e){setStatus("err",e.message||"Could not save. Your changes are still on this device.")}
+    finally{$("saveNow").disabled=false;saving=null;if(again){again=false;saveNow()}}
+  })();return saving}
+$("saveNow").onclick=saveNow;
+window.addEventListener("beforeunload",e=>{if(dirty&&editing){e.preventDefault();e.returnValue=""}});
+if(/[?&#]edit\b/.test(location.search+location.hash))setTimeout(startEdit,0);
+load();
+})();
+</script>
+</body>
+</html>

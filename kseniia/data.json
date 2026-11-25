@@ -1,0 +1,79 @@
+{
+  "student": "Kseniia",
+  "level": "B1",
+  "updated": "2026-11-25T16:00:00.000Z",
+  "todo": [
+    {
+      "id": "t1",
+      "text": "Learn the 7 new Black Friday words in Flashcards below",
+      "due": "",
+      "done": false
+    },
+    {
+      "id": "t2",
+      "text": "Pronunciation: practise \"article\" /ˈɑːtɪkl/ and \"chosen\" /ˈtʃəʊzn/. Listen, repeat, and record yourself",
+      "due": "",
+      "done": false
+    }
+  ],
+  "flashcards": [
+    {
+      "id": "f1",
+      "word": "to cut back on",
+      "translation": "скорочувати (витрати на щось)",
+      "example": "I'm trying to cut back on online shopping this month.",
+      "topic": "Black Friday"
+    },
+    {
+      "id": "f2",
+      "word": "to splurge",
+      "translation": "розщедритися, витратити багато грошей",
+      "example": "She splurged on a new coat in the Black Friday sale.",
+      "topic": "Black Friday"
+    },
+    {
+      "id": "f3",
+      "word": "supply and demand",
+      "translation": "попит і пропозиція",
+      "example": "Prices go up and down because of supply and demand.",
+      "topic": "Black Friday"
+    },
+    {
+      "id": "f4",
+      "word": "retailer",
+      "translation": "роздрібний продавець, рітейлер",
+      "example": "Big retailers start their sales a week before Black Friday.",
+      "topic": "Black Friday"
+    },
+    {
+      "id": "f5",
+      "word": "e-commerce",
+      "translation": "електронна комерція, інтернет-торгівля",
+      "example": "E-commerce has grown very fast in the last few years.",
+      "topic": "Black Friday"
+    },
+    {
+      "id": "f6",
+      "word": "to splash out on",
+      "translation": "не шкодувати грошей на щось",
+      "example": "We splashed out on a new TV this year.",
+      "topic": "Black Friday"
+    },
+    {
+      "id": "f7",
+      "word": "to pick up a bargain",
+      "translation": "вигідно щось купити",
+      "example": "I picked up a real bargain: winter boots for half price.",
+      "topic": "Black Friday"
+    }
+  ],
+  "topics": [
+    {
+      "id": "p1",
+      "date": "",
+      "title": "Black Friday: shopping and money vocabulary",
+      "note": ""
+    }
+  ],
+  "feedback": []
+}
