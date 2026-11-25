@@ -53,6 +53,14 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:
 .words{display:flex;flex-wrap:wrap;gap:5px}
 .words span{background:color-mix(in srgb,var(--c) 12%,#fff);border-radius:7px;padding:2px 8px;font-size:14px}
 .more{font:inherit;font-size:13px;font-weight:700;border:0;background:none;color:var(--navy);padding:4px 0;cursor:pointer}
+.hw{border:2px solid #f0c36d;background:#fffaf0;border-radius:16px;padding:14px 16px;margin-bottom:18px}
+.hw h2{margin:0 0 2px;font-size:20px}
+.hw .due{font-size:14px;color:#6b4b00;font-weight:700;margin-bottom:6px}
+.task{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid #f3e2bd}
+.task input{width:24px;height:24px;flex:none;accent-color:var(--ok)}
+.task a{flex:1;color:var(--ink);font-weight:700;font-size:16px;text-decoration:none;min-height:24px}
+.task a span{display:inline-block;margin-left:6px;font-size:13px;font-weight:700;color:#fff;background:var(--navy);border-radius:999px;padding:2px 10px;vertical-align:middle}
+.task.ok a{color:var(--mute);text-decoration:line-through}
 .foot{text-align:center;color:#fff;font-size:12px;opacity:.85;margin:14px 0 0}
 @media(max-width:1180px){.cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:820px){
@@ -69,6 +77,7 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:
     <a class="back" href="./">← Word cards</a>
   </div>
   <div class="panel">
+    <div id="hw"></div>
     <div class="kpis">
       <div class="kpi"><b id="kL">0</b><span>lessons done</span></div>
       <div class="kpi"><b id="kT">0</b><span>NMT tests done</span></div>
@@ -128,6 +137,13 @@ function gramHtml(g){
     (lsn.length?'<div class="gl">At the lesson</div>'+lsn.map(gu).join(""):'')+
     (hw.length?'<div class="gl">Homework'+(g.hwNote?' · '+esc(g.hwNote):'')+'</div>'+hw.map(gu).join(""):'')+'</div>';
 }
+let H={};try{H=JSON.parse(localStorage.getItem("sw-hw")||"{}")||{}}catch(e){}
+function hwHtml(h){
+  const t=(h.tasks||[]).map(x=>{const u=safeUrl(x.url),k=h.due+"|"+x.title,on=!!H[k];
+    return '<label class="task'+(on?' ok':'')+'"><input type="checkbox" data-hw="'+esc(k)+'"'+(on?' checked':'')+' aria-label="Done">'+
+      (u?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(x.title)+'<span>Open</span></a>':'<a>'+esc(x.title)+'</a>')+'</label>'}).join("");
+  return '<section class="hw"><h2>Homework</h2><div class="due">'+(fmt(h.due)?'For '+fmt(h.due):'')+'</div>'+t+'</section>';
+}
 function render(data){
   const lessons=(data&&data.lessons)||[],tests=(data&&data.nmtTests)||[];
   let learnedTotal=0;words.forEach(a=>{learnedTotal+=a.filter(isLearned).length});
@@ -137,12 +153,14 @@ function render(data){
       '<span class="done">✓ Done'+(fmt(x.date)?' · '+fmt(x.date):'')+'</span>'+(x.note?'<div class="lnote">'+esc(x.note)+'</div>':'')+'</div>'}).join("")||'<div class="item none">No lessons yet</div>');
   $("cTests").insertAdjacentHTML("beforeend",tests.map(testHtml).join("")||'<div class="item none">No tests yet</div>');
   $("cWords").insertAdjacentHTML("beforeend",L.map(l=>'<div class="item" style="--c:'+esc(l.c)+'"><div class="lt" style="font-size:15px">'+esc(l.t)+'</div>'+wordsHtml(l.id)+'</div>').join(""));
+  $("hw").innerHTML=((data&&data.homework)||[]).slice().reverse().map(hwHtml).join("");
   const gram=(data&&data.grammar)||[];let nG=0;gram.forEach(g=>{nG+=(g.lesson||[]).length+(g.hw||[]).length});
   $("cGram").insertAdjacentHTML("beforeend",gram.map(gramHtml).join("")||'<div class="item none">No grammar topics yet</div>');
   $("kG").textContent=$("nG").textContent=nG;
   $("kL").textContent=$("nL").textContent=lessons.length;$("kT").textContent=$("nT").textContent=tests.length;$("kW").textContent=$("nW").textContent=learnedTotal;
   if(!hasProgress){$("banner").hidden=false;$("banner").textContent="No flashcard progress on this device. Open this page on the phone Sasha studies on to see the words he has learned. The weekly Telegram report also shows his word counts."}
 }
+document.addEventListener("change",e=>{const k=e.target.dataset&&e.target.dataset.hw;if(k===undefined)return;if(e.target.checked)H[k]=Date.now();else delete H[k];e.target.closest(".task").classList.toggle("ok",e.target.checked);try{localStorage.setItem("sw-hw",JSON.stringify(H))}catch(x){}});
 document.addEventListener("input",e=>{const k=e.target.dataset&&e.target.dataset.k;if(k===undefined)return;R[k]=e.target.value.trim();try{localStorage.setItem("sw-nmt",JSON.stringify(R))}catch(x){}});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-more]");if(!b)return;const w=b.previousElementSibling;w.hidden=!w.hidden;b.textContent=w.hidden?b.dataset.t:(b.dataset.t=b.textContent,"Show fewer")});
 fetch("progress.json",{cache:"no-store"}).then(r=>r.json()).then(render).catch(()=>render({lessons:L.map(l=>({id:l.id})),nmtTests:[]}));

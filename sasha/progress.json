@@ -160,5 +160,24 @@
       ],
       "hwNote": "for a week"
     }
+  ],
+  "homework": [
+    {
+      "due": "2026-12-01",
+      "tasks": [
+        {
+          "title": "Grammar Unit 75: the 3 (children / the children)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-75-the-3-children-the-children#74"
+        },
+        {
+          "title": "Grammar Unit 76: the 4 (the giraffe / the telephone / the piano etc., the + adjective)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-76-the-4-the-giraffe-the-telephone-the-piano-etc-the-adjective#75"
+        },
+        {
+          "title": "Revise all the words with the flashcards",
+          "url": "https://tymkivolyska-bit.github.io/englishwitholya/sasha/"
+        }
+      ]
+    }
   ]
 }
