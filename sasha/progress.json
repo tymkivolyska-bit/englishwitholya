@@ -46,5 +46,119 @@
       "score": "",
       "lesson": ""
     }
+  ],
+  "grammar": [
+    {
+      "title": "Lesson",
+      "date": "",
+      "lesson": [
+        {
+          "unit": 10,
+          "title": "Present perfect continuous and simple (I have been doing and I have done)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-10-present-perfect-continuous-and-simple-i-have-been-doing-and-i-have-done#9"
+        }
+      ],
+      "hw": [
+        {
+          "unit": 53,
+          "title": "verb + -ing (enjoy doing, stop doing etc.)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-53-verb-ing-enjoy-doing-stop-doing-ect#52"
+        },
+        {
+          "unit": 54,
+          "title": "verb + to … (decide to, forget to etc.)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-54-verb-to-decide-to-forget-to-etc/#53"
+        },
+        {
+          "unit": 55,
+          "title": "verb (+ object) + to … (I want you to etc.)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-55-verb-object-to-i-want-you-to-ect/#54"
+        }
+      ],
+      "hwNote": ""
+    },
+    {
+      "title": "Lesson",
+      "date": "",
+      "lesson": [
+        {
+          "unit": 13,
+          "title": "Present perfect and past 1 (I have done and I did)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-13-present-perfect-and-past-1-i-have-done-and-i-did#12"
+        }
+      ],
+      "hw": [
+        {
+          "unit": 56,
+          "title": "verb -ing or to … 1 (remember, regret etc.)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-56-verb-ing-or-to-1-remember-regret-ect#55"
+        },
+        {
+          "unit": 57,
+          "title": "verb -ing or to … 2 (try, need, help)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-57-verb-ing-or-to-2-try-need-help/#56"
+        },
+        {
+          "unit": 58,
+          "title": "verb -ing or to … 3 (like, would like etc.)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-58-verb-ing-or-to-3-like-would-like-etc/#57"
+        }
+      ],
+      "hwNote": ""
+    },
+    {
+      "title": "Lesson",
+      "date": "2026-10-28",
+      "lesson": [
+        {
+          "unit": 16,
+          "title": "Past perfect continuous (I had been doing)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-16-past-perfect-continuous-i-had-been-doing/#15"
+        }
+      ],
+      "hw": [
+        {
+          "unit": 14,
+          "title": "Present perfect and past 2 (I have done and I did)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-14-present-perfect-and-past-2-i-have-done-and-i-did/#13"
+        },
+        {
+          "unit": 24,
+          "title": "will be doing and will have done",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-24-will-be-doing-and-will-have-done/"
+        },
+        {
+          "unit": 25,
+          "title": "when I do / when I've done, when and if",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-25-when-i-do-when-ive-done-when-and-if/#24"
+        },
+        {
+          "unit": 80,
+          "title": "noun + noun (a tennis ball, a headache)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-80-noun-noun-a-tennis-ball-a-headache/#79"
+        },
+        {
+          "unit": 81,
+          "title": "-'s (your sister's name) and of … (the name of the book)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-81-s-your-sisters-name-and-of-the-name-of-the-book#80"
+        },
+        {
+          "unit": 72,
+          "title": "a/an and the",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-72-aan-and-the/#71"
+        },
+        {
+          "unit": 73,
+          "title": "the 1",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-73-the-1/#72"
+        },
+        {
+          "unit": 74,
+          "title": "the 2 (school / the school etc.)",
+          "url": "https://www.essentialenglish.review/apps/english-grammar-in-use-with-answers/unit-74-the-2-school-the-school-etc/#73"
+        }
+      ],
+      "hwNote": "for a week"
+    }
   ]
 }

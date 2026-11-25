@@ -14,17 +14,17 @@
 *{box-sizing:border-box;min-width:0}
 html{background:#7a8cba}
 body{margin:0;color:var(--ink);font:16px/1.5 Onest,system-ui,sans-serif;overflow-x:clip;min-height:100vh;background-color:#7a8cba;background-image:linear-gradient(90deg,rgba(38,56,118,.42) 50%,transparent 50%),linear-gradient(rgba(38,56,118,.42) 50%,transparent 50%);background-size:72px 72px}
-.wrap{max-width:1080px;margin:0 auto;padding-block:clamp(18px,3vw,36px);padding-left:max(4vw,16px,env(safe-area-inset-left,0px));padding-right:max(4vw,16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1320px;margin:0 auto;padding-block:clamp(18px,3vw,36px);padding-left:max(4vw,16px,env(safe-area-inset-left,0px));padding-right:max(4vw,16px,env(safe-area-inset-right,0px))}
 .top{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:14px}
 h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:0;font-weight:800;color:#fff;text-shadow:0 2px 0 rgba(20,30,70,.45)}
 .back{font-weight:700;font-size:15px;color:var(--ink);background:rgba(255,255,255,.9);padding:10px 16px;border-radius:12px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
 .panel{background:#fff;border-radius:20px;padding:clamp(16px,3vw,28px);box-shadow:0 6px 0 rgba(20,30,70,.35)}
-.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:18px}
 .kpi{background:var(--soft);border-radius:12px;padding:10px 14px}
 .kpi b{display:block;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
 .kpi span{font-size:13px;color:var(--mute)}
 .banner{background:#fff4d6;color:#6b4b00;border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:14px}
-.cols{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr) minmax(0,1.5fr);gap:14px;align-items:start}
+.cols{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(0,1.4fr) minmax(0,1.1fr);gap:14px;align-items:start}
 .col{border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
 .col>h2{margin:0;font-size:16px;padding:12px 14px;background:var(--soft);display:flex;justify-content:space-between;gap:8px}
 .col>h2 span{color:var(--mute);font-weight:700;font-variant-numeric:tabular-nums}
@@ -41,6 +41,11 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:
 .res input{font:inherit;font-size:16px;font-weight:700;width:7.5em;padding:6px 10px;border:1.5px dashed #b9c1d8;border-radius:10px;color:var(--ink);background:#fff}
 .res input:focus{outline:none;border:1.5px solid var(--navy)}
 .res b{font-size:18px}
+.gl{font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin:10px 0 4px}
+.gl:first-of-type{margin-top:6px}
+.gu{display:flex;gap:8px;font-size:14px;line-height:1.35;margin:5px 0}
+.gu b{flex:none;min-width:2.1em;font-variant-numeric:tabular-nums;color:var(--c)}
+.gu a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
 .none{font-size:14px;color:var(--mute)}
 .bar{height:10px;border-radius:5px;background:var(--soft);overflow:hidden;margin:4px 0 8px}
 .bar i{display:block;height:100%;background:var(--c)}
@@ -49,6 +54,7 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:
 .words span{background:color-mix(in srgb,var(--c) 12%,#fff);border-radius:7px;padding:2px 8px;font-size:14px}
 .more{font:inherit;font-size:13px;font-weight:700;border:0;background:none;color:var(--navy);padding:4px 0;cursor:pointer}
 .foot{text-align:center;color:#fff;font-size:12px;opacity:.85;margin:14px 0 0}
+@media(max-width:1180px){.cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:820px){
   .kpis{grid-template-columns:minmax(0,1fr)}
   .kpi{display:flex;align-items:baseline;gap:10px}.kpi b{font-size:22px}
@@ -67,12 +73,14 @@ h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.02em;margin:
       <div class="kpi"><b id="kL">0</b><span>lessons done</span></div>
       <div class="kpi"><b id="kT">0</b><span>NMT tests done</span></div>
       <div class="kpi"><b id="kW">0</b><span>words learned</span></div>
+      <div class="kpi"><b id="kG">0</b><span>grammar units</span></div>
     </div>
     <div class="banner" id="banner" hidden></div>
     <div class="cols">
       <section class="col" id="cLessons"><h2>Lessons done <span id="nL"></span></h2></section>
       <section class="col" id="cTests"><h2>NMT tests and results <span id="nT"></span></h2></section>
       <section class="col" id="cWords"><h2>Words learned <span id="nW"></span></h2></section>
+      <section class="col" id="cGram"><h2>Grammar topics <span id="nG"></span></h2></section>
     </div>
   </div>
   <p class="foot" id="foot">Words learned are read from the flashcard progress on this device.</p>
@@ -113,6 +121,13 @@ function wordsHtml(id){
   }else if(hasProgress)h+='<span class="none">Not learned yet</span>';
   return h;
 }
+function gu(x){const u=safeUrl(x.url);return '<div class="gu"><b>'+esc(x.unit)+'</b>'+(u?'<a href="'+esc(u)+'" target="_blank" rel="noopener">'+esc(x.title)+'</a>':'<span>'+esc(x.title)+'</span>')+'</div>'}
+function gramHtml(g){
+  const lsn=g.lesson||[],hw=g.hw||[];
+  return '<div class="item" style="--c:#2c3d78"><div class="lt" style="font-size:15px">'+esc(g.title||"Lesson")+(fmt(g.date)?' · '+fmt(g.date):'')+'</div>'+
+    (lsn.length?'<div class="gl">At the lesson</div>'+lsn.map(gu).join(""):'')+
+    (hw.length?'<div class="gl">Homework'+(g.hwNote?' · '+esc(g.hwNote):'')+'</div>'+hw.map(gu).join(""):'')+'</div>';
+}
 function render(data){
   const lessons=(data&&data.lessons)||[],tests=(data&&data.nmtTests)||[];
   let learnedTotal=0;words.forEach(a=>{learnedTotal+=a.filter(isLearned).length});
@@ -122,6 +137,9 @@ function render(data){
       '<span class="done">✓ Done'+(fmt(x.date)?' · '+fmt(x.date):'')+'</span>'+(x.note?'<div class="lnote">'+esc(x.note)+'</div>':'')+'</div>'}).join("")||'<div class="item none">No lessons yet</div>');
   $("cTests").insertAdjacentHTML("beforeend",tests.map(testHtml).join("")||'<div class="item none">No tests yet</div>');
   $("cWords").insertAdjacentHTML("beforeend",L.map(l=>'<div class="item" style="--c:'+esc(l.c)+'"><div class="lt" style="font-size:15px">'+esc(l.t)+'</div>'+wordsHtml(l.id)+'</div>').join(""));
+  const gram=(data&&data.grammar)||[];let nG=0;gram.forEach(g=>{nG+=(g.lesson||[]).length+(g.hw||[]).length});
+  $("cGram").insertAdjacentHTML("beforeend",gram.map(gramHtml).join("")||'<div class="item none">No grammar topics yet</div>');
+  $("kG").textContent=$("nG").textContent=nG;
   $("kL").textContent=$("nL").textContent=lessons.length;$("kT").textContent=$("nT").textContent=tests.length;$("kW").textContent=$("nW").textContent=learnedTotal;
   if(!hasProgress){$("banner").hidden=false;$("banner").textContent="No flashcard progress on this device. Open this page on the phone Sasha studies on to see the words he has learned. The weekly Telegram report also shows his word counts."}
 }
