@@ -103,6 +103,46 @@ details.all summary{cursor:pointer;font-weight:700;color:var(--rose2);min-height
 .fb .nx{margin-top:10px;font-size:15px}
 .fb .nx b{color:var(--rose2)}
 
+/* 5 vocabulary test */
+.qcard{background:var(--soft);border-radius:20px;padding:22px 18px;text-align:center}
+.qk{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--rose)}
+.qp{margin:6px 0 2px}
+.qopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+.qo{border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:14px;padding:12px;min-height:52px;font-weight:700;font-size:16px;text-align:center;overflow-wrap:anywhere}
+.qo:hover:not(:disabled){border-color:var(--heart)}
+.qo.right{border-color:var(--ok);background:var(--okbg);color:var(--ok)}
+.qo.wrong{border-color:#D9534F;background:#FDECEC;color:#B3261E}
+.qo:disabled{cursor:default}
+.qin{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.qin input{flex:1 1 200px;margin:0}
+.qfb{margin-top:12px;font-weight:700;min-height:1.5em}
+.qfb.ok{color:var(--ok)} .qfb.no{color:#B3261E}
+.qbar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-bottom:12px}
+.qbar i{display:block;height:100%;background:var(--rose);transition:width .3s}
+.big{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:700;font-size:48px;line-height:1;color:var(--rose)}
+.lastres{font-size:14px;color:var(--mute);margin-top:10px}
+.sel{font:inherit;font-size:15px;font-weight:700;border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;min-height:36px;background:#fff;color:var(--ink)}
+
+/* 6 progress check */
+.skills{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.sk{background:var(--soft);border-radius:14px;padding:10px 8px;text-align:center}
+.sk b{display:block;font-size:22px;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--rose2)}
+.sk span{font-size:12px;font-weight:700;color:var(--mute)}
+.pl{list-style:none;margin:0;padding:0}
+.pl li{padding:12px 0;border-top:1px solid var(--line)}
+.pl li:first-child{border-top:0;padding-top:4px}
+.pl .meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px;font-weight:700;color:var(--rose2)}
+.pill{background:var(--soft);border-radius:999px;padding:1px 10px;color:var(--rose2)}
+.pl .t{font-weight:700;margin-top:3px;overflow-wrap:anywhere}
+.pl .k{font-size:15px;overflow-wrap:anywhere}
+.pl .sc{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.pl .c{font-size:15px;color:var(--mute);white-space:pre-wrap;overflow-wrap:anywhere;margin-top:2px}
+.pl a,.tx a,.fb a,.tl a{color:var(--rose2);font-weight:700;overflow-wrap:anywhere}
+.sync{font-size:13px;font-weight:700;color:var(--mute)}
+.sync.ok{color:var(--ok)}
+select.f{display:block;width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:3px;min-height:42px}
+@media (max-width:560px){.skills{grid-template-columns:repeat(3,minmax(0,1fr))}.qopts{grid-template-columns:minmax(0,1fr)}}
+
 /* teacher editing */
 .teacher-foot{text-align:center;margin-top:26px}
 .linkbtn{border:0;background:rgba(255,255,255,.85);color:var(--mute);font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;min-height:36px}
@@ -193,6 +233,14 @@ input.f:focus,textarea.f:focus{outline:none;border-color:var(--rose)}
       <div class="sh"><span class="num">4</span><h2>Teacher's feedback</h2><span class="count" id="c-feedback"></span></div>
       <div id="b-feedback"></div>
     </section>
+    <section class="card" id="s-test">
+      <div class="sh"><span class="num">5</span><h2>Vocabulary test</h2><span class="count" id="c-test"></span></div>
+      <div id="b-test"></div>
+    </section>
+    <section class="card" id="s-progress">
+      <div class="sh"><span class="num">6</span><h2>Progress check</h2><span class="count" id="c-progress"></span></div>
+      <div id="b-progress"></div>
+    </section>
   </main>
   <div class="teacher-foot"><button class="linkbtn" id="editBtn">✎ Teacher: edit this page</button></div>
 </div>
@@ -207,15 +255,21 @@ const $=id=>document.getElementById(id);
 const get=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
 const put=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}};
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const linkify=t=>esc(t).replace(/https?:\/\/[^\s<]+/g,u=>`<a href="${u}" target="_blank" rel="noopener">${u.length>48?u.slice(0,48)+"…":u}</a>`);
 const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const fmt=d=>{if(!d)return"";const t=new Date(d+"T12:00:00");return isNaN(t)?d:t.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})};
 let toastT;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2600)}
 
 let data=null,editing=false,dirty=false;
 let known=get(K.known,{}),ticks=get(K.ticks,{}),ui=Object.assign({topic:"all",ua:false,i:0},get(K.ui,{}));
 const saveUi=()=>put(K.ui,ui);
-const blank=()=>({student:"Kseniia",level:"B1",updated:"",todo:[],flashcards:[],topics:[],feedback:[]});
-function norm(d){const b=blank();d=Object.assign(b,d||{});["todo","flashcards","topics","feedback"].forEach(k=>{if(!Array.isArray(d[k]))d[k]=[];d[k].forEach(x=>{if(!x.id)x.id=uid(k[0])})});return d}
+const blank=()=>({student:"Kseniia",level:"B1",updated:"",settings:{sheetUrl:""},todo:[],flashcards:[],topics:[],feedback:[],progress:[],sheetDeletes:[]});
+const SKILLS=["Vocabulary","Grammar","Listening","Writing","Pronunciation"];
+const sig=x=>JSON.stringify([x.date,x.skill,x.topic,x.task,x.score,x.outOf,x.comment,x.next]);
+function norm(d){const b=blank();d=Object.assign(b,d||{});["todo","flashcards","topics","feedback","progress","sheetDeletes"].forEach(k=>{if(!Array.isArray(d[k]))d[k]=[];if(k!=="sheetDeletes")d[k].forEach(x=>{if(!x.id)x.id=uid(k[0])})});
+  if(!d.settings||typeof d.settings!=="object")d.settings={sheetUrl:""};
+  d.progress.forEach(x=>{if(!SKILLS.includes(x.skill))x.skill="Vocabulary";if(x.sent==="import")x.sent=sig(x)});return d}
 
 /* ---------- load: GitHub first (freshest), then the published file, then this device ---------- */
 async function load(){
@@ -235,7 +289,7 @@ async function load(){
 function renderAll(){
   $("who").textContent=data.student||"Kseniia";$("lvl").textContent=(data.level||"B1")+" English";
   document.title=(data.student||"Kseniia")+"'s English";
-  renderTodo();renderCards();renderTopics();renderFeedback();
+  renderTodo();renderCards();renderTopics();renderFeedback();renderTest();renderProgress();
 }
 function renderTodo(){
   const L=data.todo,el=$("b-todo");
@@ -250,7 +304,7 @@ function renderTodo(){
   if(!L.length){el.innerHTML=`<div class="empty">Nothing here right now. Enjoy your free time ♥</div>`;return}
   el.innerHTML=`<ul class="todo">${L.map(x=>{const d=x.done||ticks[x.id];return `<li class="${d?"is-done":""}">
     <input type="checkbox" data-tick="${esc(x.id)}" ${d?"checked":""} ${x.done?"disabled":""} aria-label="Done">
-    <div style="flex:1"><div class="tx">${esc(x.text)}</div>${x.due?`<span class="due">by ${esc(fmt(x.due))}</span>`:""}</div></li>`}).join("")}</ul>`;
+    <div style="flex:1"><div class="tx">${linkify(x.text)}</div>${x.due?`<span class="due">by ${esc(fmt(x.due))}</span>`:""}</div></li>`}).join("")}</ul>`;
 }
 function topicsOf(){return [...new Set(data.flashcards.map(c=>(c.topic||"").trim()).filter(Boolean))]}
 let shuffled=null;
@@ -307,7 +361,7 @@ function renderTopics(){
       <div class="full"><label>Notes (grammar, words, what we read…)<textarea class="f" data-f="note">${esc(x.note)}</textarea></label></div>
     </div>${tools(i,L.length)}</div>`).join("");$("c-topics").textContent=L.length+"";return}
   $("c-topics").textContent=L.length?L.length+(L.length===1?" topic":" topics"):"";
-  el.innerHTML=L.length?`<ul class="tl">${L.map(x=>`<li><span class="d">${esc(fmt(x.date))||"&nbsp;"}</span><span class="t">${esc(x.title)}</span>${x.note?`<span class="n">${esc(x.note)}</span>`:""}</li>`).join("")}</ul>`:`<div class="empty">Topics will appear here after our lessons.</div>`;
+  el.innerHTML=L.length?`<ul class="tl">${L.map(x=>`<li><span class="d">${esc(fmt(x.date))||"&nbsp;"}</span><span class="t">${esc(x.title)}</span>${x.note?`<span class="n">${linkify(x.note)}</span>`:""}</li>`).join("")}</ul>`:`<div class="empty">Topics will appear here after our lessons.</div>`;
 }
 function renderFeedback(){
   const L=data.feedback,el=$("b-feedback");
@@ -318,26 +372,126 @@ function renderFeedback(){
       <div class="full"><label>Next time / what to work on<textarea class="f" data-f="next">${esc(x.next)}</textarea></label></div>
     </div>${tools(i,L.length)}</div>`).join("");$("c-feedback").textContent=L.length+"";return}
   $("c-feedback").textContent=L.length?L.length+(L.length===1?" lesson":" lessons"):"";
-  el.innerHTML=L.length?L.map(x=>`<article class="fb">${x.date?`<div class="d">${esc(fmt(x.date))}</div>`:""}${x.lesson?`<h3>${esc(x.lesson)}</h3>`:""}<p>${esc(x.text)}</p>${x.next?`<div class="nx"><b>Next time:</b> ${esc(x.next)}</div>`:""}</article>`).join(""):`<div class="empty">Feedback from our lessons will appear here.</div>`;
+  el.innerHTML=L.length?L.map(x=>`<article class="fb">${x.date?`<div class="d">${esc(fmt(x.date))}</div>`:""}${x.lesson?`<h3>${esc(x.lesson)}</h3>`:""}<p>${linkify(x.text)}</p>${x.next?`<div class="nx"><b>Next time:</b> ${linkify(x.next)}</div>`:""}</article>`).join(""):`<div class="empty">Feedback from our lessons will appear here.</div>`;
 }
 function tools(i,n){return `<div class="tools"><button class="ic" data-mv="-1" ${i===0?"disabled":""} aria-label="Move up">↑</button><button class="ic" data-mv="1" ${i===n-1?"disabled":""} aria-label="Move down">↓</button><span class="sp"></span><button class="ic del" data-del aria-label="Delete">Delete</button></div>`}
+
+/* ---------- 5 vocabulary test: made from the flashcards ---------- */
+let TQ=null;const tui={topic:"all",n:10};let lastTests=get("ks-tests",[]);
+const normA=s=>String(s||"").toLowerCase().replace(/[’']/g,"'").replace(/[.,!?;:"“”()]/g," ").replace(/^\s*to\s+/,"").replace(/\s+/g," ").trim();
+function variants(w){const v=new Set([normA(w)]);String(w).split("/").forEach(p=>v.add(normA(p)));v.add(normA(String(w).replace(/\(.*?\)/g,"")));return v}
+const shuffle=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+function testPool(topic){return data.flashcards.filter(c=>c.word&&c.translation&&(topic==="all"||(c.topic||"").trim()===topic))}
+function makeTest(cards,topic,practice){
+  const pool=testPool("all");const qs=shuffle(cards).map((c,i)=>{
+    const canMc=pool.length>=4;const r=Math.random();const kind=!canMc?"type":r<.4?"en":r<.7?"ua":"type";
+    let opts=null;if(kind!=="type"){const others=shuffle(pool.filter(x=>x.id!==c.id&&x.translation!==c.translation&&x.word!==c.word)).slice(0,3);opts=shuffle([c,...others])}
+    return {c,kind,opts}});
+  TQ={qs,i:0,right:0,wrong:[],answered:false,topic,practice};renderTest()}
+function renderTest(){
+  const el=$("b-test"),tl=topicsOf(),pool=testPool(tui.topic);
+  if(tui.topic!=="all"&&!tl.includes(tui.topic))tui.topic="all";
+  $("c-test").textContent=lastTests.length?"last: "+lastTests[lastTests.length-1].pct+"%":"";
+  if(editing){el.innerHTML=`<div class="empty">The test is made by itself from the words in <b>Flashcards</b>. Add words there (with a translation) and they appear in the test. Kseniia picks a topic or all words. Each finished test is saved on the <b>Vocabulary</b> tab of the progress sheet.</div>`;return}
+  if(!TQ){
+    if(testPool("all").length<1){el.innerHTML=`<div class="empty">The test will appear when there are flashcards with translations.</div>`;return}
+    const n=Math.min(tui.n,pool.length);
+    el.innerHTML=`<p style="margin:0 0 10px">Check the words you studied: choose the right answer or type the English word.</p>
+      ${tl.length>1?`<div class="chips">${["all",...tl].map(t=>`<button class="chip" data-ttopic="${esc(t)}" aria-pressed="${tui.topic===t}">${t==="all"?"All words":esc(t)}</button>`).join("")}</div>`:""}
+      <div class="row"><label class="sh" style="margin:0;gap:8px;font-weight:700">Questions <select class="sel" id="tn">${[5,10,15,20,1000].map(k=>`<option value="${k}" ${tui.n===k?"selected":""}>${k===1000?"All ("+pool.length+")":k}</option>`).join("")}</select></label>
+      <button class="btn" id="tStart">Start the test (${n})</button></div>
+      ${lastTests.length?`<div class="lastres">Your last tests: ${lastTests.slice(-3).reverse().map(t=>`${esc(t.topic)} ${t.score}/${t.n}`).join(" · ")}</div>`:""}`;
+    el.querySelectorAll("[data-ttopic]").forEach(b=>b.onclick=()=>{tui.topic=b.dataset.ttopic;renderTest()});
+    $("tn").onchange=e=>{tui.n=+e.target.value;renderTest()};
+    $("tStart").onclick=()=>makeTest(shuffle(pool).slice(0,n),tui.topic==="all"?"All words":tui.topic,false);return}
+  const T=TQ,n=T.qs.length;
+  if(T.i>=n){const pct=Math.round(T.right/n*100);
+    el.innerHTML=`<div class="qcard"><div class="qk">${T.practice?"Practice round":"Your result"}</div><div class="big" style="margin:8px 0">${T.right} / ${n}</div><div>${pct>=90?"Excellent! ♥":pct>=70?"Well done!":pct>=50?"Good try. Review the words below.":"Let's practise these words again."}</div>
+      ${T.wrong.length?`<ul class="wl" style="text-align:left;margin-top:12px">${T.wrong.map(c=>`<li><b>${esc(c.word)}</b> <span>— ${esc(c.translation)}</span></li>`).join("")}</ul>`:""}
+      <div class="qfb" id="tSend"></div>
+      <div class="row" style="justify-content:center;margin-top:8px">${T.wrong.length?`<button class="btn" id="tAgain">Practise the wrong words</button>`:""}<button class="btn ghost" id="tNew">New test</button></div></div>`;
+    if(T.wrong.length)$("tAgain").onclick=()=>makeTest(T.wrong,T.topic,true);
+    $("tNew").onclick=()=>{TQ=null;renderTest()};
+    if(!T.practice&&!T.saved){T.saved=true;const res={at:Date.now(),topic:T.topic,score:T.right,n,pct,wrong:T.wrong.map(c=>c.word)};lastTests.push(res);put("ks-tests",lastTests.slice(-50));$("c-test").textContent="last: "+pct+"%";sendTest(res)}
+    return}
+  const q=T.qs[T.i],c=q.c;
+  const prompt=q.kind==="en"?`<div class="qk">What does it mean?</div><div class="fw qp">${esc(c.word)}</div>`:q.kind==="ua"?`<div class="qk">Choose the English word</div><div class="ft qp">${esc(c.translation)}</div>`:`<div class="qk">Type the English word</div><div class="ft qp">${esc(c.translation)}</div>`;
+  el.innerHTML=`<div class="qbar"><i style="width:${T.i/n*100}%"></i></div><div class="qcard"><div class="pos" style="font-size:13px">${T.i+1} / ${n}</div>${prompt}
+    ${q.kind==="type"?`<form class="qin" id="tForm"><input class="f" id="tIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="English word"><button class="btn">Check</button></form>`:`<div class="qopts">${q.opts.map((o,k)=>`<button class="qo" data-o="${k}">${esc(q.kind==="en"?o.translation:o.word)}</button>`).join("")}</div>`}
+    <div class="qfb" id="tFb"></div><div id="tNext" hidden style="margin-top:6px"><button class="btn" id="tGo">${T.i+1<n?"Next →":"See my result"}</button></div></div>`;
+  const answer=(ok,shown)=>{if(T.answered)return;T.answered=true;if(ok)T.right++;else T.wrong.push(c);
+    const fb=$("tFb");fb.className="qfb "+(ok?"ok":"no");fb.innerHTML=ok?"Correct ♥":"The answer is: <b>"+esc(shown)+"</b>";
+    if(q.kind!=="en"||true)speak(c.word);$("tNext").hidden=false;$("tGo").focus()};
+  $("tGo")&&($("tGo").onclick=()=>{T.i++;T.answered=false;renderTest()});
+  if(q.kind==="type"){const inp=$("tIn");setTimeout(()=>inp.focus(),50);$("tForm").onsubmit=e=>{e.preventDefault();if(T.answered){$("tGo").click();return}if(!inp.value.trim())return;const ok=variants(c.word).has(normA(inp.value));inp.disabled=true;answer(ok,c.word)}}
+  else el.querySelectorAll(".qo").forEach(b=>b.onclick=()=>{const o=q.opts[+b.dataset.o],ok=o.id===c.id;el.querySelectorAll(".qo").forEach(x=>{x.disabled=true;if(q.opts[+x.dataset.o].id===c.id)x.classList.add("right")});if(!ok)b.classList.add("wrong");answer(ok,q.kind==="en"?c.translation:c.word)});
+}
+async function sendTest(r){
+  const el=$("tSend");if(!data.settings.sheetUrl){return}
+  el.className="qfb";el.textContent="Sending your result to your teacher…";
+  try{await sheetCall({action:"save",tab:"Vocabulary",date:todayStr(),topic:r.topic,task:"Vocabulary test on her page ("+r.n+" questions)",score:r.score,outOf:r.n,comment:r.wrong.length?"Mistakes: "+r.wrong.join(", "):"All correct",next:r.wrong.length?"Review: "+r.wrong.join(", "):""});
+    if($("tSend")){el.className="qfb ok";el.textContent="Your result is saved for your teacher ✓"}}
+  catch(e){if($("tSend")){el.className="qfb no";el.textContent="Could not send the result. It is saved on this phone."}}
+}
+
+/* ---------- 6 progress check: one entry per task, saved to the matching skill tab ---------- */
+function pct(x){const s=parseFloat(String(x.score).replace(",",".")),o=parseFloat(String(x.outOf).replace(",","."));return isFinite(s)&&isFinite(o)&&o>0?Math.round(s/o*100):null}
+function renderProgress(){
+  const L=data.progress,el=$("b-progress");
+  if(editing){
+    const url=data.settings.sheetUrl;
+    el.innerHTML=`<div class="setup" style="background:${url?"var(--okbg)":"#FFF8E6"};border-color:${url?"#BFE3CC":"#F2D58C"}">
+      ${url?`<h3>✓ Connected to the Google Sheet</h3>Progress entries and Kseniia's test results go to <b>Kseniia B1 Progress Check</b>, on the tab of each skill.
+        <div class="row" style="margin-top:8px"><a href="https://docs.google.com/spreadsheets/d/1PCMSkYdRKme-8TGO_SupbfwJpk-5KF4TnsRsc02SLBQ/edit" target="_blank" rel="noopener">Open the sheet</a><span class="sp" style="flex:1"></span><button class="btn small ghost" id="shOff">Change link</button></div>`
+      :`<h3>Connect the Google Sheet once</h3>So that entries here and Kseniia's test results go into <b>Kseniia B1 Progress Check</b>:
+      <ol><li><a href="https://docs.google.com/spreadsheets/d/1PCMSkYdRKme-8TGO_SupbfwJpk-5KF4TnsRsc02SLBQ/edit" target="_blank" rel="noopener">Open the sheet</a> → <b>Extensions</b> → <b>Apps Script</b>.</li>
+      <li>Delete what is there, then paste the code: <button class="btn small" id="shCopy">Copy the code</button></li>
+      <li>Press <b>Save</b>, then <b>Deploy</b> → <b>New deployment</b> → gear → <b>Web app</b>. Execute as: <b>Me</b>. Who has access: <b>Anyone</b>. Press <b>Deploy</b> and allow access (Advanced → Go to… → Allow).</li>
+      <li>Copy the <b>Web app URL</b> and paste it here:</li></ol>
+      <div class="row"><input class="f" id="shUrl" placeholder="https://script.google.com/macros/s/…/exec" style="flex:1 1 240px;margin:0"><button class="btn small" id="shGo">Connect</button></div>`}
+    </div><div class="addrow" style="margin:0 0 10px"><button class="btn small" data-add="progress">+ Add a progress entry</button></div><datalist id="ptopics">${[...new Set([...data.topics.map(t=>t.title),...topicsOf()].filter(Boolean))].map(t=>`<option value="${esc(t)}">`).join("")}</datalist>`+
+    L.map((x,i)=>`<div class="ed" data-l="progress" data-i="${i}"><div class="grid">
+      <div><label>Date<input class="f" type="date" data-f="date" value="${esc(x.date)}"></label></div>
+      <div><label>Skill (sheet tab)<select class="f" data-f="skill">${SKILLS.map(s=>`<option ${x.skill===s?"selected":""}>${s}</option>`).join("")}</select></label></div>
+      <div><label>Lesson topic<input class="f" data-f="topic" list="ptopics" value="${esc(x.topic)}"></label></div>
+      <div><label>Task / activity<input class="f" data-f="task" value="${esc(x.task)}"></label></div>
+      <div><label>Score<input class="f" data-f="score" inputmode="decimal" value="${esc(x.score)}"></label></div>
+      <div><label>Out of<input class="f" data-f="outOf" inputmode="decimal" value="${esc(x.outOf)}"></label></div>
+      <div class="full"><label>Teacher's comments<textarea class="f" data-f="comment">${esc(x.comment)}</textarea></label></div>
+      <div class="full"><label>Next step / homework<input class="f" data-f="next" value="${esc(x.next)}"></label></div>
+    </div><div class="sync ${x.sheetRow&&x.sent===sig(x)?"ok":""}" data-sync="${x.id}" style="margin-top:6px">${x.sheetRow?(x.sent===sig(x)?"In the sheet: "+esc(x.sheetTab)+", row "+x.sheetRow+" ✓":"Changes will be sent to the sheet"):"Will be added to the sheet"}</div>${tools(i,L.length)}</div>`).join("");
+    $("c-progress").textContent=L.length+"";
+    if($("shCopy"))$("shCopy").onclick=async()=>{try{const t=await (await fetch("apps-script.gs?t="+Date.now(),{cache:"no-store"})).text();await navigator.clipboard.writeText(t);toast("Code copied. Paste it in Apps Script")}catch(e){window.open("apps-script.gs","_blank")}};
+    if($("shGo"))$("shGo").onclick=async()=>{const u=$("shUrl").value.trim();if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(u)){toast("Paste the Web app URL from Apps Script");return}
+      $("shGo").disabled=true;try{const j=await sheetCall({action:"ping"},u);data.settings.sheetUrl=u;changed();renderProgress();toast("Connected to "+(j.sheet||"the sheet")+" ♥")}catch(e){toast(e.message);$("shGo").disabled=false}};
+    if($("shOff"))$("shOff").onclick=()=>{if(!confirm("Disconnect the sheet link? Nothing in the sheet is deleted."))return;data.settings.sheetUrl="";changed();renderProgress()};
+    return}
+  const S=SKILLS.map(s=>{const v=L.filter(x=>x.skill===s).map(pct).filter(p=>p!==null);return {s,n:L.filter(x=>x.skill===s).length,avg:v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):null}});
+  $("c-progress").textContent=L.length?L.length+(L.length===1?" entry":" entries"):"";
+  if(!L.length){el.innerHTML=`<div class="empty">Your progress will appear here after our lessons.</div>`;return}
+  const sorted=L.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  const link=linkify;
+  el.innerHTML=`<div class="skills">${S.map(k=>`<div class="sk"><b>${k.avg===null?"—":k.avg+"%"}</b><span>${k.s}</span></div>`).join("")}</div>
+  <ul class="pl">${sorted.map(x=>{const p=pct(x);return `<li><div class="meta">${x.date?`<span>${esc(fmt(x.date))}</span>`:""}<span class="pill">${esc(x.skill)}</span>${p!==null?`<span class="sc">${esc(x.score)}/${esc(x.outOf)} · ${p}%</span>`:""}</div>
+    <div class="t">${esc(x.topic)}</div>${x.task?`<div class="k">${esc(x.task)}</div>`:""}${x.comment?`<div class="c">${link(x.comment)}</div>`:""}${x.next?`<div class="c"><b style="color:var(--rose2)">Next:</b> ${link(x.next)}</div>`:""}</li>`}).join("")}</ul>`;
+}
 
 /* ---------- student ticks (kept on her device) ---------- */
 document.addEventListener("change",e=>{const id=e.target.dataset&&e.target.dataset.tick;if(id===undefined)return;if(e.target.checked)ticks[id]=Date.now();else delete ticks[id];put(K.ticks,ticks);renderTodo()});
 
 /* ---------- editing ---------- */
-const sectionRender={todo:renderTodo,flashcards:renderCards,topics:renderTopics,feedback:renderFeedback};
-function changed(){data.updated=new Date().toISOString();dirty=true;put(K.draft,{data,dirty:true});setStatus("warn",token()?"Saving…":"Kept on this device. Connect GitHub to publish it");scheduleSave()}
+const sectionRender={todo:renderTodo,flashcards:renderCards,topics:renderTopics,feedback:renderFeedback,progress:renderProgress};
+function changed(){data.updated=new Date().toISOString();dirty=true;put(K.draft,{data,dirty:true});setStatus("warn",(token()||data.settings.sheetUrl)?"Saving…":"Kept on this device. Connect GitHub to publish it");scheduleSave()}
 document.addEventListener("input",e=>{const f=e.target.dataset&&e.target.dataset.f,box=e.target.closest(".ed");if(!editing||!f||!box)return;const it=data[box.dataset.l][+box.dataset.i];it[f]=e.target.type==="checkbox"?e.target.checked:e.target.value;changed();if(box.dataset.l==="todo")$("c-todo").textContent=data.todo.filter(x=>!x.done).length+" left"});
 document.addEventListener("change",e=>{if(editing&&e.target.type==="checkbox"&&e.target.dataset.f)e.target.dispatchEvent(new Event("input",{bubbles:true}))});
 document.addEventListener("click",e=>{
   if(!editing)return;const t=e.target.closest("button");if(!t)return;
-  if(t.dataset.add){const l=t.dataset.add,today=new Date().toISOString().slice(0,10);
-    const blanks={todo:{text:"",due:"",done:false},flashcards:{word:"",translation:"",example:"",topic:(data.flashcards.at(-1)||{}).topic||""},topics:{date:today,title:"",note:""},feedback:{date:today,lesson:"",text:"",next:""}};
-    const it=Object.assign({id:uid(l[0])},blanks[l]);const top=l==="topics"||l==="feedback";top?data[l].unshift(it):data[l].push(it);changed();sectionRender[l]();
+  if(t.dataset.add){const l=t.dataset.add,today=todayStr();
+    const blanks={todo:{text:"",due:"",done:false},flashcards:{word:"",translation:"",example:"",topic:(data.flashcards.at(-1)||{}).topic||""},topics:{date:today,title:"",note:""},feedback:{date:today,lesson:"",text:"",next:""},progress:{date:today,skill:"Vocabulary",topic:(data.topics[0]||{}).title||"",task:"",score:"",outOf:"",comment:"",next:""}};
+    const it=Object.assign({id:uid(l[0])},blanks[l]);const top=l==="topics"||l==="feedback"||l==="progress";top?data[l].unshift(it):data[l].push(it);changed();sectionRender[l]();
     const boxes=$("b-"+(l==="flashcards"?"cards":l)).querySelectorAll(".ed");const box=top?boxes[0]:boxes[boxes.length-1];if(box){const f=box.querySelector("input.f:not([type=date]),textarea.f");f&&f.focus()}return}
   const box=t.closest(".ed");if(!box)return;const l=box.dataset.l,i=+box.dataset.i,L=data[l];
-  if(t.hasAttribute("data-del")){const it=L[i];const label=(it.text||it.word||it.title||it.lesson||"this item").slice(0,40);if(!confirm("Delete “"+label+"”?"))return;L.splice(i,1);changed();sectionRender[l]()}
+  if(t.hasAttribute("data-del")){const it=L[i];const label=(it.text||it.word||it.title||it.lesson||"this item").slice(0,40);if(!confirm("Delete “"+label+"”?"))return;if(l==="progress"&&it.sheetRow)data.sheetDeletes.push({tab:it.sheetTab,row:it.sheetRow});L.splice(i,1);changed();sectionRender[l]()}
   else if(t.dataset.mv){const j=i+(+t.dataset.mv);if(j<0||j>=L.length)return;[L[i],L[j]]=[L[j],L[i]];changed();sectionRender[l]()}
 });
 document.addEventListener("click",e=>{if(!editing||e.target.id!=="bulkAdd")return;const topic=$("bulkTopic").value.trim();let n=0;
@@ -346,7 +500,7 @@ document.addEventListener("click",e=>{if(!editing||e.target.id!=="bulkAdd")retur
 
 function startEdit(){editing=true;document.body.classList.add("editing");$("editbar").hidden=false;$("setup").hidden=!!token();$("editBtn").hidden=true;
   if(!dirty)setStatus(token()?"ok":"warn",token()?"Editing. Changes save to GitHub automatically":"Editing. Changes are kept on this device");renderAll()}
-function stopEdit(){if(dirty&&token())saveNow();editing=false;document.body.classList.remove("editing");$("editbar").hidden=true;$("setup").hidden=true;$("editBtn").hidden=false;renderAll();window.scrollTo({top:0,behavior:"smooth"})}
+function stopEdit(){if(dirty&&(token()||data.settings.sheetUrl))saveNow(false);editing=false;document.body.classList.remove("editing");$("editbar").hidden=true;$("setup").hidden=true;$("editBtn").hidden=false;renderAll();window.scrollTo({top:0,behavior:"smooth"})}
 $("editBtn").onclick=startEdit;$("doneEdit").onclick=stopEdit;
 
 /* ---------- saving to GitHub ---------- */
@@ -355,31 +509,53 @@ function setStatus(kind,msg){const s=$("status");s.className="st "+kind;s.textCo
 $("tokSave").onclick=async()=>{const v=$("tok").value.trim();if(!v)return;
   try{const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}`,{headers:{Authorization:"Bearer "+v,Accept:"application/vnd.github+json"}});const j=await r.json();
     if(!r.ok||!(j.permissions&&j.permissions.push))throw new Error(r.ok?"This key cannot save to englishwitholya. Check Contents: Read and write.":"GitHub did not accept this key.");
-    localStorage.setItem(K.tok,v);$("tok").value="";$("setup").hidden=true;toast("Connected to GitHub ♥");if(dirty)saveNow();else setStatus("ok","Connected. Changes save to GitHub automatically")}
+    localStorage.setItem(K.tok,v);$("tok").value="";$("setup").hidden=true;toast("Connected to GitHub ♥");if(dirty)saveNow(false);else setStatus("ok","Connected. Changes save to GitHub automatically")}
   catch(e){setStatus("err",e.message||"Could not connect");toast(e.message||"Could not connect")}};
 let saveT=null,saving=null,again=false;
-function scheduleSave(){if(!token())return;clearTimeout(saveT);saveT=setTimeout(saveNow,2500)}
+function scheduleSave(){clearTimeout(saveT);if(!token()&&!data.settings.sheetUrl)return;saveT=setTimeout(()=>saveNow(false),2500)}
 function b64(s){const b=new TextEncoder().encode(s);let out="";for(let i=0;i<b.length;i+=0x8000)out+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000));return btoa(out)}
-async function saveNow(){
-  clearTimeout(saveT);if(!token()){$("setup").hidden=false;$("setup").scrollIntoView({behavior:"smooth",block:"center"});return}
+async function saveGitHub(){
+  const snap=JSON.parse(JSON.stringify(data));
+  const H={Authorization:"Bearer "+token(),Accept:"application/vnd.github+json"};
+  for(let attempt=0;attempt<2;attempt++){
+    let sha;const g=await fetch(API+"?ref="+BRANCH+"&t="+Date.now(),{headers:H,cache:"no-store"});if(g.ok)sha=(await g.json()).sha;else if(g.status===401)throw new Error("GitHub key expired. Paste a new one.");
+    const r=await fetch(API,{method:"PUT",headers:H,body:JSON.stringify({message:"Kseniia: update page ("+new Date().toLocaleString("en-GB")+")",content:b64(JSON.stringify(snap,null,2)+"\n"),branch:BRANCH,sha})});
+    if(r.ok)break;if(r.status===409&&attempt===0)continue;
+    if(r.status===401){try{localStorage.removeItem(K.tok)}catch(e){}$("setup").hidden=false;throw new Error("GitHub key expired. Paste a new one.")}
+    throw new Error("GitHub said no ("+r.status+"). Your changes are still on this device.");
+  }
+  if(JSON.stringify(snap)===JSON.stringify(data)){dirty=false;put(K.draft,{data,dirty:false})}
+}
+async function saveNow(manual){
+  clearTimeout(saveT);
+  if(manual===true&&!token()){$("setup").hidden=false;$("setup").scrollIntoView({behavior:"smooth",block:"center"})}
   if(saving){again=true;return saving}
   saving=(async()=>{
-    const snap=JSON.parse(JSON.stringify(data));setStatus("warn","Saving to GitHub…");$("saveNow").disabled=true;
-    const H={Authorization:"Bearer "+token(),Accept:"application/vnd.github+json"};
-    try{
-      for(let attempt=0;attempt<2;attempt++){
-        let sha;const g=await fetch(API+"?ref="+BRANCH+"&t="+Date.now(),{headers:H,cache:"no-store"});if(g.ok)sha=(await g.json()).sha;else if(g.status===401)throw new Error("GitHub key expired. Paste a new one.");
-        const r=await fetch(API,{method:"PUT",headers:H,body:JSON.stringify({message:"Kseniia: update page ("+new Date().toLocaleString("en-GB")+")",content:b64(JSON.stringify(snap,null,2)+"\n"),branch:BRANCH,sha})});
-        if(r.ok)break;if(r.status===409&&attempt===0)continue;
-        if(r.status===401){try{localStorage.removeItem(K.tok)}catch(e){}$("setup").hidden=false;throw new Error("GitHub key expired. Paste a new one.")}
-        throw new Error("GitHub said no ("+r.status+"). Your changes are still on this device.");
-      }
-      if(snap.updated===data.updated){dirty=false;put(K.draft,{data,dirty:false})}
-      const t=new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});setStatus("ok","Saved to GitHub at "+t+" ✓");
-    }catch(e){setStatus("err",e.message||"Could not save. Your changes are still on this device.")}
-    finally{$("saveNow").disabled=false;saving=null;if(again){again=false;saveNow()}}
+    $("saveNow").disabled=true;const done=[],errs=[];
+    if(data.settings.sheetUrl){setStatus("warn","Saving to the Google Sheet…");try{await syncSheet();done.push("the sheet")}catch(e){errs.push("Sheet: "+(e.message||"could not save"))}}
+    if(token()){setStatus("warn","Saving to GitHub…");try{await saveGitHub();done.push("GitHub")}catch(e){errs.push(e.message||"Could not save to GitHub. Your changes are still on this device.")}}
+    const t=new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+    if(errs.length)setStatus("err",errs.join(" · "));
+    else if(done.length)setStatus("ok","Saved to "+done.join(" and ")+" at "+t+" ✓");
+    else setStatus("warn","Kept on this device. Connect GitHub to publish it");
+    $("saveNow").disabled=false;saving=null;if(again){again=false;saveNow(false)}
   })();return saving}
-$("saveNow").onclick=saveNow;
+
+/* ---------- Google Sheet: an Apps Script web app bound to "Kseniia B1 Progress Check" (see apps-script.gs) ---------- */
+async function sheetCall(body,url){
+  const r=await fetch(url||data.settings.sheetUrl,{method:"POST",body:JSON.stringify(body)});
+  let j;try{j=await r.json()}catch(e){throw new Error("The sheet link did not answer. Check it is the Web app URL and access is Anyone.")}
+  if(!j.ok)throw new Error(j.error||"The sheet said no");return j}
+async function syncSheet(){
+  while(data.sheetDeletes.length){const d=data.sheetDeletes[0];await sheetCall({action:"delete",tab:d.tab,row:d.row});data.sheetDeletes.shift();put(K.draft,{data,dirty:true})}
+  for(const x of data.progress){
+    if(!x.topic&&!x.task&&!x.score)continue;const s=sig(x);if(x.sent===s)continue;
+    const j=await sheetCall({action:"save",tab:x.skill,oldTab:x.sheetTab||"",row:x.sheetRow||0,date:x.date,topic:x.topic,task:x.task,score:x.score,outOf:x.outOf,comment:x.comment,next:x.next});
+    x.sheetTab=j.tab;x.sheetRow=j.row;x.sent=s;put(K.draft,{data,dirty:true});
+    const el=document.querySelector(`[data-sync="${x.id}"]`);if(el){el.className="sync ok";el.textContent="In the sheet: "+j.tab+", row "+j.row+" ✓"}
+  }
+}
+$("saveNow").onclick=()=>saveNow(true);
 window.addEventListener("beforeunload",e=>{if(dirty&&editing){e.preventDefault();e.returnValue=""}});
 if(/[?&#]edit\b/.test(location.search+location.hash))setTimeout(startEdit,0);
 load();

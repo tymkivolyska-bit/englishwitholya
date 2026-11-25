@@ -1,8 +1,20 @@
 {
   "student": "Kseniia",
   "level": "B1",
-  "updated": "2026-11-25T16:00:00.000Z",
+  "updated": "2026-11-25T16:40:00.000Z",
   "todo": [
+    {
+      "id": "t3",
+      "text": "Quizlet: practise the \"Let's get nails done\" flashcards\nhttps://quizlet.com/ua/1165325421/a2-b1-lets-get-nails-done-flash-cards/?i=45ddyf&x=1jqY",
+      "due": "2026-11-28",
+      "done": false
+    },
+    {
+      "id": "t4",
+      "text": "Write ten sentences with words from the lesson about nails. Look through the word cloud and practise making sentences using vocabulary from the lesson.",
+      "due": "2026-11-28",
+      "done": false
+    },
     {
       "id": "t1",
       "text": "Learn the 7 new Black Friday words in Flashcards below",
@@ -65,15 +77,195 @@
       "translation": "вигідно щось купити",
       "example": "I picked up a real bargain: winter boots for half price.",
       "topic": "Black Friday"
+    },
+    {
+      "id": "f8",
+      "word": "manicure",
+      "translation": "манікюр",
+      "example": "I get a manicure every three weeks.",
+      "topic": "Nails"
+    },
+    {
+      "id": "f9",
+      "word": "gel polish",
+      "translation": "гель-лак",
+      "example": "Gel polish lasts much longer than normal nail polish.",
+      "topic": "Nails"
+    },
+    {
+      "id": "f10",
+      "word": "nail file",
+      "translation": "пилочка для нігтів",
+      "example": "She used a nail file to shape her nails.",
+      "topic": "Nails"
+    },
+    {
+      "id": "f11",
+      "word": "cuticle",
+      "translation": "кутикула",
+      "example": "The manicurist gently pushed back my cuticles.",
+      "topic": "Nails"
+    },
+    {
+      "id": "f12",
+      "word": "colour chart",
+      "translation": "палітра кольорів",
+      "example": "Can I see the colour chart, please?",
+      "topic": "Nails"
+    },
+    {
+      "id": "f13",
+      "word": "nail extensions",
+      "translation": "нарощені нігті, нарощування",
+      "example": "She got long nail extensions for the party.",
+      "topic": "Nails"
+    },
+    {
+      "id": "f14",
+      "word": "natural nails",
+      "translation": "натуральні нігті",
+      "example": "I prefer natural nails. They're healthier.",
+      "topic": "Nails"
+    },
+    {
+      "id": "f15",
+      "word": "UV lamp",
+      "translation": "УФ-лампа",
+      "example": "Gel polish dries under a UV lamp.",
+      "topic": "Nails"
+    },
+    {
+      "id": "f16",
+      "word": "buffer",
+      "translation": "баф (для полірування нігтів)",
+      "example": "Use a buffer to make your nails smooth and shiny.",
+      "topic": "Nails"
+    },
+    {
+      "id": "f17",
+      "word": "edge",
+      "translation": "край (нігтя)",
+      "example": "File the edge of the nail gently.",
+      "topic": "Nail shapes"
+    },
+    {
+      "id": "f18",
+      "word": "stiletto",
+      "translation": "стилет (довгі гострі нігті)",
+      "example": "Stiletto nails are long and very pointed.",
+      "topic": "Nail shapes"
+    },
+    {
+      "id": "f19",
+      "word": "squoval / soft square",
+      "translation": "м'який квадрат",
+      "example": "Squoval nails are square with soft, rounded corners.",
+      "topic": "Nail shapes"
+    },
+    {
+      "id": "f20",
+      "word": "oval",
+      "translation": "овал",
+      "example": "Oval nails make your fingers look longer.",
+      "topic": "Nail shapes"
+    },
+    {
+      "id": "f21",
+      "word": "coffin / ballerina",
+      "translation": "балерина",
+      "example": "Coffin nails are long with a flat, square tip.",
+      "topic": "Nail shapes"
+    },
+    {
+      "id": "f22",
+      "word": "round",
+      "translation": "круглі",
+      "example": "Short round nails are easy to look after.",
+      "topic": "Nail shapes"
+    },
+    {
+      "id": "f23",
+      "word": "mountain peak",
+      "translation": "гірська вершина (гострий кінчик)",
+      "example": "Mountain peak nails have a sharp tip, like the top of a mountain.",
+      "topic": "Nail shapes"
+    },
+    {
+      "id": "f24",
+      "word": "square",
+      "translation": "квадрат",
+      "example": "Square nails have straight sides and a flat edge.",
+      "topic": "Nail shapes"
+    },
+    {
+      "id": "f25",
+      "word": "almond",
+      "translation": "мигдаль",
+      "example": "Almond nails are oval with a slightly pointed tip.",
+      "topic": "Nail shapes"
     }
   ],
   "topics": [
     {
       "id": "p1",
-      "date": "",
+      "date": "2026-11-23",
       "title": "Black Friday: shopping and money vocabulary",
       "note": ""
+    },
+    {
+      "id": "p2",
+      "date": "2026-10-25",
+      "title": "Let's get nails done",
+      "note": "Nail salon words: manicure, gel polish, nail file, cuticle, colour chart, nail extensions, natural nails, UV lamp, buffer.\nNail shapes: edge, stiletto, squoval / soft square, oval, coffin / ballerina, round, mountain peak, square, almond.\nLesson: https://enghub.pro/lets-get-nails-done/attachments/students_version"
     }
   ],
-  "feedback": []
+  "feedback": [],
+  "settings": {
+    "sheetUrl": ""
+  },
+  "sheetDeletes": [],
+  "progress": [
+    {
+      "id": "g1",
+      "date": "2026-11-23",
+      "skill": "Vocabulary",
+      "topic": "Black Friday",
+      "task": "Discussion ",
+      "score": "5",
+      "outOf": "10",
+      "comment": "Most of the words were mispronounced ",
+      "next": "https://claude.ai/artifact/TcaKVEbXDZRtXqn4wwiZe9#send",
+      "sheetTab": "Vocabulary",
+      "sheetRow": 5,
+      "sent": "import"
+    },
+    {
+      "id": "g2",
+      "date": "2026-11-25",
+      "skill": "Vocabulary",
+      "topic": "Black Friday",
+      "task": "Homework check: vocabulary + Quizlet",
+      "score": "8",
+      "outOf": "10",
+      "comment": "Didn't study (not learned): to cut back on, to splurge, supply and demand, retailer, e-commerce, to splash out on, to pick up a bargain. Quizlet homework not done.",
+      "next": "Review these 7 words and complete the Quizlet set before next lesson",
+      "sheetTab": "Vocabulary",
+      "sheetRow": 6,
+      "sent": "import"
+    },
+    {
+      "id": "g3",
+      "date": "2026-10-25",
+      "skill": "Vocabulary",
+      "topic": "Let's get nails done",
+      "task": "Lesson: nail salon words and nail shapes (18 words)",
+      "score": "",
+      "outOf": "",
+      "comment": "Words to study: manicure, gel polish, nail file, cuticle, colour chart, nail extensions, natural nails, UV lamp, buffer. Shapes: edge, stiletto, squoval / soft square, oval, coffin / ballerina, round, mountain peak, square, almond.",
+      "next": "By Sat 28.11: Quizlet set + write ten sentences with the nails words",
+      "sheetTab": "Vocabulary",
+      "sheetRow": 7,
+      "sent": "import"
+    }
+  ]
 }
