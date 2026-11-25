@@ -129,9 +129,15 @@ const PER_SESSION=10;
 
 /* ---------- pronunciation (browser voice, British English if available) ---------- */
 let voice=null;
-function pickVoice(){try{const v=speechSynthesis.getVoices();voice=v.find(x=>/en-GB/i.test(x.lang)&&/female|google|serena|kate|libby|sonia/i.test(x.name))||v.find(x=>/en-GB/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null}catch(e){}}
+const FEMALE=/female|woman|serena|kate|stephanie|martha|fiona|moira|tessa|karen|samantha|victoria|allison|ava|susan|zira|hazel|libby|sonia|maisie|mia|abbie|bella|amy|emma|jenny|aria|natasha|olivia|x-gba|x-gbc|x-gbg|x-sfg|x-tpc|x-iob/i;
+const MALE=/\bmale\b|daniel|arthur|oliver|george|ryan|thomas|rishi|alfie|elliot|noah|ethan|guy|david|mark|james|fred|alex|aaron|gordon|lee|x-gbb|x-gbd|x-rjs/i;
+let fallbackPitch=1;
+function pickVoice(){try{const v=speechSynthesis.getVoices().filter(x=>/^en/i.test(x.lang));const gb=v.filter(x=>/en[-_]GB/i.test(x.lang));
+  const fem=l=>l.find(x=>FEMALE.test(x.name)&&!/\bmale\b/i.test(x.name.replace(/female/i,"")));
+  voice=fem(gb)||fem(v)||gb.find(x=>!MALE.test(x.name))||v.find(x=>!MALE.test(x.name))||gb[0]||v[0]||null;
+  fallbackPitch=voice&&FEMALE.test(voice.name)?1:1.25}catch(e){}}
 try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
-function say(text){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace(/^to /,"to "));if(voice)u.voice=voice;u.lang=voice?voice.lang:"en-GB";u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+function say(text){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace(/^to /,"to "));if(voice)u.voice=voice;u.lang=voice?voice.lang:"en-GB";u.rate=.9;u.pitch=fallbackPitch;speechSynthesis.speak(u)}catch(e){}}
 const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
 const sayBtn=t=>`<button class="say" data-say="${esc(t)}">${SPK} Listen</button>`;
 function wireSay(root){root.querySelectorAll("[data-say]").forEach(b=>b.onclick=e=>{e.stopPropagation();say(b.dataset.say)})}
