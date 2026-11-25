@@ -8,7 +8,8 @@
   "ipa": "/ɪmˈpəʊzɪŋ/",
   "example": "The new tower is so imposing that it dominates the whole skyline.",
   "order": 0,
-  "def": "large and impressive, slightly intimidating"
+  "def": "large and impressive, slightly intimidating",
+  "focus": true
  },
  {
   "id": "l01-eyesore",
@@ -129,7 +130,8 @@
   "ipa": "/ˈædvəsəri/",
   "example": "His political adversaries used the gold scandal against him.",
   "order": 11,
-  "def": "an opponent or enemy"
+  "def": "an opponent or enemy",
+  "focus": true
  },
  {
   "id": "l03-craftsmanship",
@@ -184,7 +186,8 @@
   "ipa": "/ˈtiːdiəs/",
   "example": "Checking every window schedule is a tedious task.",
   "order": 16,
-  "def": "boring because it is long and repetitive"
+  "def": "boring because it is long and repetitive",
+  "focus": true
  },
  {
   "id": "l03-human-oversight",
@@ -206,7 +209,8 @@
   "ipa": "/rɪˈfaɪnmənt/",
   "example": "The first concept needed several rounds of refinement.",
   "order": 18,
-  "def": "a series of small improvements"
+  "def": "a series of small improvements",
+  "focus": true
  },
  {
   "id": "l03-irreplaceable",
@@ -240,5 +244,29 @@
   "example": "Every design decision should align with the client's objectives.",
   "order": 21,
   "def": "to match or support (goals, objectives)"
+ },
+ {
+  "id": "l02-accuse-of",
+  "lesson": 2,
+  "lessonTitle": "A Day in the Life",
+  "word": "accuse sb of (doing) sth",
+  "pos": "v phr",
+  "ipa": "/əˈkjuːz/",
+  "example": "The council accused the developer of ignoring the heritage rules.",
+  "order": 4,
+  "def": "to say that someone has done something wrong",
+  "focus": true
+ },
+ {
+  "id": "l04-obscure",
+  "lesson": 4,
+  "lessonTitle": "Talking Architecture: Revision",
+  "word": "obscure",
+  "pos": "adj / v",
+  "ipa": "/əbˈskjʊə/",
+  "example": "The new tower obscures the view of the old cathedral.",
+  "order": 0,
+  "def": "not well known; or (verb) to hide something from view",
+  "focus": true
  }
 ]
