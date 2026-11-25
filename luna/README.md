@@ -8,4 +8,4 @@ Design: cream paper clipped to a pink striped wall (from a Pinterest picture), d
 - `img/`: pictures for the lessons (cut-out WebP stickers).
 - Progress (answers and stars) is saved in the browser on Luna's device (localStorage key `luna-english-v1`). "start again" at the bottom clears it.
 
-Lesson 1 "There is a panda on the bus!" is built from the ESL Level 2 Lesson 4 worksheet (adjectives tall/short/big/small/cute/scary, panda, wolf, bus, giraffe) plus there is / there are / there isn't / there aren't practice.
+The lesson "There is a panda on the bus!" is built from the ESL Level 2 Lesson 4 worksheet (adjectives tall/short/big/small/cute/scary, panda, wolf, bus, giraffe) plus there is / there are / there isn't / there aren't practice.
