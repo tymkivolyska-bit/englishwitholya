@@ -182,7 +182,14 @@ function answer(ok){const w=cur;if(!w)return;const p=Object.assign({box:0,right:
   sess[ok?'right':'wrong']++;if(!ok&&!sess.missed.includes(w.word))sess.missed.push(w.word);
   const t=sess.right+sess.wrong;$('#sessScore').textContent=sess.right+' / '+t;$('#sessAcc').textContent=Math.round(100*sess.right/t)+'% known';
   setSave('Saved on this device. Press Finish to send it to your teacher.');
-  next();side();}
+  next();side();backup(false);}
+function snapshot(){return {v:1,student:'lera',at:new Date().toISOString(),mastered:mastered(),totalWords:words.length,prog,sessions:sessions.slice(-60)};}
+let syncT=null;
+function backup(now){if(!window.PROGRESS_URL)return;clearTimeout(syncT);syncT=null;
+  const send=()=>{syncT=null;const body=new URLSearchParams({data:JSON.stringify(snapshot())});let ok=false;
+    if(now){try{ok=navigator.sendBeacon(window.PROGRESS_URL,body);}catch(e){}}
+    if(!ok){try{fetch(window.PROGRESS_URL,{method:'POST',mode:'no-cors',keepalive:true,body}).catch(()=>{});}catch(e){}}};
+  if(now)send();else syncT=setTimeout(send,20000);}
 function mastered(){return words.filter(w=>lvl(prog[w.id])===6).length;}
 function finish(){const s=sess;if(!s)return;sess=null;sessions.push({at:s.at,right:s.right,wrong:s.wrong,lesson:s.lesson});save('lera.sessions',sessions);
   const payload=JSON.stringify({...s,mastered:mastered(),totalWords:words.length});
@@ -190,9 +197,9 @@ function finish(){const s=sess;if(!s)return;sess=null;sessions.push({at:s.at,rig
     if(!sent){fetch(window.RESULTS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:payload}).catch(()=>{});}
     setSave('Session sent to your teacher. Well done!');}
   else setSave('Session saved on this device.');
-  $('#sessScore').textContent='0 / 0';$('#sessAcc').textContent='answer a card to start';render();}
+  backup(true);$('#sessScore').textContent='0 / 0';$('#sessAcc').textContent='answer a card to start';render();}
 addEventListener('pagehide',()=>{if(sess&&sess.right+sess.wrong>=5)finish();});
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&sess&&sess.right+sess.wrong>=5)finish();});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')return;if(sess&&sess.right+sess.wrong>=5)finish();else if(syncT)backup(true);});
 function side(){$('#sideMastered').textContent=mastered();$('#sideOf').textContent='of '+words.length+' words';
   $('#countPill').textContent=words.length+' words / '+lessons().length+' lessons';}
 function fbView(){
