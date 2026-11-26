@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Romanticizing Winter · Day 1</title>
+<meta name="theme-color" content="#f1eeea">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Fredoka:wght@600;700&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f1eeea; --card: #fbf9f6; --ink: #3d3a38; --soft: #6d6764;
+  --red: #8e1b2c; --line: #9b3446; --green: #2f6b3f; --ok: #2f6b3f; --bad: #b3261e;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Josefin Sans", system-ui, sans-serif; font-size: 18px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+a { color: var(--red); }
+.wrap { max-width: 780px; margin: 0 auto; padding: 20px 16px 60px; }
+
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.back { color: var(--red); text-decoration: none; letter-spacing: .04em; }
+.back:hover { text-decoration: underline; }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: var(--soft); cursor: pointer; user-select: none; }
+.toggle input { accent-color: var(--red); width: 18px; height: 18px; }
+
+header.hero { text-align: center; margin: 28px 0 20px; }
+.daynum { font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 88px; line-height: 1;
+  background: linear-gradient(170deg, #e47784 0%, #b42238 28%, #7c0f22 55%, #a8213a 78%, #d45263 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px #6a0c1c;
+  filter: drop-shadow(0 4px 4px rgba(80,10,20,.28)); }
+.hero h1 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 500; color: var(--red); font-size: clamp(34px, 7vw, 52px); line-height: 1.1; margin: 8px 0 6px; letter-spacing: .02em; }
+.hero .meta { color: var(--soft); font-size: 15px; letter-spacing: .08em; text-transform: uppercase; }
+
+.stages-nav { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 18px 0 30px; }
+.stages-nav a { font-size: 14px; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px 2px; color: var(--red); background: var(--card); }
+.stages-nav a.done { background: var(--red); color: #fff; }
+
+section.stage { background: var(--card); border: 1.5px solid var(--line); padding: 22px 22px 26px; margin-bottom: 22px; scroll-margin-top: 12px; }
+.stage-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #e3d5d3; padding-bottom: 10px; margin-bottom: 14px; }
+.stage-head h2 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; color: var(--red); font-size: 28px; margin: 0; line-height: 1.15; }
+.stage-head .kicker { display: block; font-family: "Josefin Sans", sans-serif; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--soft); font-weight: 400; }
+.tmeta { font-size: 14px; color: var(--soft); white-space: nowrap; }
+h3 { font-size: 18px; font-weight: 600; margin: 22px 0 8px; color: var(--ink); }
+h3:first-of-type { margin-top: 4px; }
+.instr { color: var(--soft); margin: 0 0 12px; }
+
+.tnote { background: #f6ece9; border-left: 3px solid var(--red); padding: 10px 14px; margin: 12px 0; font-size: 16px; }
+.tnote b { color: var(--red); font-weight: 600; }
+body:not(.teacher) .tnote, body:not(.teacher) .tmeta { display: none; }
+
+ol.q { padding-left: 24px; margin: 0; }
+ol.q > li { margin: 0 0 14px; padding-left: 4px; }
+
+/* lead-in pictures */
+.pics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 6px 0 16px; }
+.pics figure { margin: 0; }
+.pics svg { width: 100%; height: auto; display: block; border-radius: 4px; }
+.pics figcaption { font-size: 13px; color: var(--soft); text-align: center; margin-top: 4px; }
+
+/* inputs */
+select, input[type=text], textarea {
+  font: inherit; font-size: 17px; color: var(--ink); background: #fff;
+  border: 1px solid #cdbfbd; border-radius: 6px; padding: 8px 10px; max-width: 100%;
+}
+textarea { width: 100%; min-height: 70px; resize: vertical; line-height: 1.45; }
+input[type=text] { width: 100%; }
+select:focus, input:focus, textarea:focus { outline: 2px solid rgba(142,27,44,.35); border-color: var(--red); }
+.ok { border-color: var(--ok) !important; background: #eef6ef !important; }
+.bad { border-color: var(--bad) !important; background: #fbeeed !important; }
+
+.match { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.match-row { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: center; }
+.match-row select { width: 100%; }
+.defs { list-style: none; padding: 0; margin: 0 0 14px; font-size: 16px; }
+.defs li { padding: 3px 0; }
+.defs b { color: var(--red); }
+
+.choices { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.choice { display: flex; gap: 10px; align-items: flex-start; border: 1px solid #ddd0ce; border-radius: 6px; padding: 9px 12px; cursor: pointer; background: #fff; }
+.choice input { margin-top: 5px; accent-color: var(--red); }
+.choice.ok { border-color: var(--ok); background: #eef6ef; }
+.choice.bad { border-color: var(--bad); background: #fbeeed; }
+
+.tfng { display: inline-flex; gap: 6px; margin: 6px 0; }
+.tfng button { font: inherit; font-size: 15px; min-width: 52px; padding: 5px 10px 3px; border: 1px solid var(--line); background: #fff; color: var(--red); border-radius: 999px; cursor: pointer; }
+.tfng button.sel { background: var(--red); color: #fff; }
+.tfng button.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.tfng button.bad { background: var(--bad); border-color: var(--bad); color: #fff; }
+.fix { margin-top: 4px; }
+
+.btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.btn { font: inherit; font-size: 16px; letter-spacing: .04em; padding: 9px 18px 7px; border-radius: 999px; border: 1.5px solid var(--red); background: var(--red); color: #fff; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--red); }
+.btn:hover { filter: brightness(1.08); }
+.score { align-self: center; font-size: 16px; color: var(--soft); }
+.answer { margin-top: 6px; font-size: 16px; color: var(--green); background: #eef6ef; border-radius: 6px; padding: 6px 10px; }
+
+.article-card { border: 1.5px solid var(--line); background: #fff; padding: 18px 20px; text-align: center; margin: 4px 0 18px; }
+.article-card .pub { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--soft); }
+.article-card .atitle { font-family: "Cormorant Garamond", Georgia, serif; font-size: 27px; font-weight: 600; color: var(--ink); line-height: 1.2; margin: 6px 0 4px; }
+.article-card .asub { font-style: italic; color: var(--soft); margin-bottom: 4px; }
+.article-card .by { font-size: 15px; color: var(--soft); margin-bottom: 14px; }
+.article-card .btn { text-decoration: none; display: inline-block; }
+
+.preds { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.preds label { display: flex; gap: 8px; align-items: center; font-size: 15px; color: var(--soft); }
+.headings { padding-left: 22px; margin: 8px 0 0; }
+.headings li { margin: 4px 0; }
+
+.timer { display: inline-flex; gap: 8px; align-items: center; font-family: "Fredoka", sans-serif; font-size: 20px; color: var(--red); margin-left: 6px; }
+.timer button { font: inherit; font-family: "Josefin Sans", sans-serif; font-size: 14px; border: 1px solid var(--line); background: #fff; color: var(--red); border-radius: 999px; padding: 3px 10px 1px; cursor: pointer; }
+
+.sayings { margin: 0 0 10px; padding-left: 0; list-style: none; }
+.sayings li { font-family: "Cormorant Garamond", Georgia, serif; font-size: 22px; font-style: italic; color: var(--red); margin: 4px 0; }
+
+.guide-tip { border: 1px dashed #cdbfbd; border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; background: #fffdfb; }
+.guide-tip input { margin-bottom: 6px; font-weight: 600; }
+.vocab-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.chip { font-size: 14px; border: 1px solid #ddd0ce; border-radius: 999px; padding: 3px 10px 1px; background: #fff; color: var(--soft); }
+.chip.used { background: var(--green); border-color: var(--green); color: #fff; }
+.count { font-size: 15px; color: var(--soft); margin-top: 6px; }
+
+details.key { background: var(--card); border: 1.5px solid var(--line); padding: 14px 22px; margin-bottom: 22px; }
+details.key summary { cursor: pointer; font-family: "Cormorant Garamond", Georgia, serif; font-size: 26px; font-weight: 600; color: var(--red); }
+details.key dl { margin: 12px 0 0; font-size: 16px; }
+details.key dt { font-weight: 600; margin-top: 10px; }
+details.key dd { margin: 2px 0 0 0; }
+
+.finish { text-align: center; margin-top: 30px; }
+.embed-wrap { display: flex; justify-content: center; margin: 0 0 18px; }
+.embed-wrap .substack-post-embed { display: none; }
+.embed-wrap iframe { max-width: 100% !important; }
+.small { font-size: 14px; color: var(--soft); }
+.linkbtn { background: none; border: 0; font: inherit; font-size: 14px; color: var(--soft); text-decoration: underline; cursor: pointer; }
+
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  section.stage { padding: 18px 14px 22px; }
+  .match-row { grid-template-columns: 1fr; gap: 4px; }
+  .pics { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .preds { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../">&larr; Advent calendar</a>
+    <label class="toggle"><input type="checkbox" id="teacherMode"> Teacher notes</label>
+  </div>
+
+  <header class="hero">
+    <div class="daynum">1</div>
+    <h1>Romanticizing Winter</h1>
+    <div class="meta">Reading lesson · B2–C1 · about 60 minutes</div>
+  </header>
+
+  <div class="tnote">
+    <b>Aims.</b> Main: reading for gist and for specific detail in an informal blog article about embracing winter. Subsidiary: descriptive vocabulary and idioms from the text (embrace, insulation, ambiance, worth every penny…). Productive: fluency practice discussing winter habits and creating a “cosy winter guide” for their own city.<br><br>
+    <b>Anticipated problems.</b> The text is long (~1,300 words): set clear time limits; for gist, Ss read only the intro, the 7 headings and the closing. <i>Gezelligheid</i> is unfamiliar: model /xəˈzɛləxhɛit/ roughly; approximations are fine. Informal idioms (keep on keeping on, pull up a chair): deal with them in Task 6 through context, not before reading.
+  </div>
+
+  <nav class="stages-nav" id="stagesNav"></nav>
+
+  <!-- Stage 1 -->
+  <section class="stage" id="s1" data-title="Lead-in">
+    <div class="stage-head"><h2><span class="kicker">Stage 1</span>Lead-in</h2><span class="tmeta">5 min · T–S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to generate interest in the topic and activate schemata. Brief open-class feedback; board any useful language Ss produce.</div>
+    <div class="pics">
+      <figure>
+        <svg viewBox="0 0 120 90" role="img" aria-label="A rainy grey street">
+          <rect width="120" height="90" fill="#9aa3ab"/>
+          <rect x="0" y="62" width="120" height="28" fill="#6f777e"/>
+          <rect x="8" y="22" width="26" height="40" fill="#7d858c"/><rect x="38" y="12" width="30" height="50" fill="#868e95"/><rect x="72" y="26" width="40" height="36" fill="#7a8289"/>
+          <g fill="#b9c0c6" opacity=".8"><rect x="13" y="28" width="6" height="7"/><rect x="23" y="28" width="6" height="7"/><rect x="44" y="18" width="7" height="8"/><rect x="56" y="18" width="7" height="8"/><rect x="44" y="32" width="7" height="8"/><rect x="56" y="32" width="7" height="8"/><rect x="78" y="32" width="8" height="7"/><rect x="96" y="32" width="8" height="7"/></g>
+          <g stroke="#dfe5ea" stroke-width="1" opacity=".75">
+            <path d="M10 4l-4 12M30 10l-4 12M50 2l-4 12M70 8l-4 12M90 4l-4 12M110 10l-4 12M20 40l-4 12M60 48l-4 12M100 44l-4 12M40 66l-4 12M80 70l-4 12M115 66l-4 12"/>
+          </g>
+          <path d="M52 70 q10 -10 20 0z" fill="#2f3438"/><path d="M62 70 v12" stroke="#2f3438" stroke-width="1.5"/>
+          <ellipse cx="30" cy="80" rx="14" ry="2" fill="#8d959c"/><ellipse cx="92" cy="84" rx="12" ry="2" fill="#8d959c"/>
+        </svg>
+        <figcaption>a rainy grey street</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 120 90" role="img" aria-label="A candlelit window at night">
+          <rect width="120" height="90" fill="#1f2a3a"/>
+          <rect x="22" y="10" width="76" height="66" fill="#5b3a2a"/>
+          <rect x="28" y="16" width="64" height="52" fill="#f3c27a"/>
+          <radialGradient id="glow" cx=".5" cy=".7" r=".6"><stop offset="0" stop-color="#fff1c9"/><stop offset="1" stop-color="#e0a050"/></radialGradient>
+          <rect x="28" y="16" width="64" height="52" fill="url(#glow)"/>
+          <path d="M60 16v52M28 42h64" stroke="#5b3a2a" stroke-width="3"/>
+          <rect x="22" y="68" width="76" height="6" fill="#3d2618"/>
+          <g><rect x="40" y="56" width="6" height="12" fill="#fbf4e6"/><path d="M43 48 q3 4 0 8 q-3 -4 0 -8z" fill="#ffb53b"/></g>
+          <g><rect x="72" y="58" width="6" height="10" fill="#fbf4e6"/><path d="M75 50 q3 4 0 8 q-3 -4 0 -8z" fill="#ffb53b"/></g>
+          <path d="M52 66 q8 -14 16 0z" fill="#2f6b3f"/>
+          <g fill="#fff" opacity=".8"><circle cx="8" cy="20" r="1"/><circle cx="110" cy="30" r="1"/><circle cx="14" cy="60" r="1"/><circle cx="106" cy="70" r="1"/></g>
+        </svg>
+        <figcaption>a candlelit window</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 120 90" role="img" aria-label="People cycling in the snow">
+          <rect width="120" height="90" fill="#cfd9e2"/>
+          <path d="M0 60 Q30 54 60 60 T120 58 V90 H0Z" fill="#f7f9fb"/>
+          <g fill="#fff"><circle cx="10" cy="10" r="1.5"/><circle cx="30" cy="24" r="1.2"/><circle cx="52" cy="8" r="1.5"/><circle cx="76" cy="20" r="1.2"/><circle cx="98" cy="12" r="1.5"/><circle cx="112" cy="34" r="1.2"/><circle cx="20" cy="40" r="1.2"/><circle cx="88" cy="44" r="1.2"/></g>
+          <g stroke="#2f3438" stroke-width="2" fill="none"><circle cx="40" cy="70" r="9"/><circle cx="66" cy="70" r="9"/><path d="M40 70 L50 56 L62 56 L66 70 M50 56 L54 70 L40 70 M60 52 L62 56"/></g>
+          <path d="M52 52 L56 36" stroke="#8e1b2c" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="57" cy="31" r="4.5" fill="#e9c8a8"/><path d="M52 29 q5 -7 10 0z" fill="#2f6b3f"/>
+          <path d="M55 38 L64 50" stroke="#8e1b2c" stroke-width="3" stroke-linecap="round"/>
+          <path d="M52 52 L54 64" stroke="#2f3438" stroke-width="3" stroke-linecap="round"/>
+          <path d="M54 37 L46 40" stroke="#c9a26a" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+        <figcaption>cycling in the snow</figcaption>
+      </figure>
+    </div>
+    <p class="instr">Look at the pictures and discuss in pairs.</p>
+    <ol class="q">
+      <li>How do you feel when winter starts: excited, neutral or a bit miserable? Why?</li>
+      <li>What do people in your country usually do to survive the cold, dark months?</li>
+      <li>What does “romanticizing” something mean? Can you romanticize winter?</li>
+    </ol>
+  </section>
+
+  <!-- Stage 2 -->
+  <section class="stage" id="s2" data-title="Vocabulary">
+    <div class="stage-head"><h2><span class="kicker">Stage 2</span>Key words</h2><span class="tmeta">7 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to pre-teach words Ss need to understand the gist.<br>
+      <b>CCQs:</b> If you use the heating sparingly, is your flat very warm? (No) · If a café has a nice ambiance, is that about the food or the feeling? (the feeling)<br>
+      <b>Drill:</b> ambiance /ˈæmbiəns/, insulation /ˌɪnsjuˈleɪʃn/.</div>
+    <h3>Task 1 · Match the words to the definitions</h3>
+    <ul class="defs" id="t1defs"></ul>
+    <div class="match" id="t1"></div>
+    <div class="btns"><button class="btn" data-check="t1">Check</button><span class="score" id="t1score"></span></div>
+  </section>
+
+  <!-- Stage 3 -->
+  <section class="stage" id="s3" data-title="Prediction">
+    <div class="stage-head"><h2><span class="kicker">Stage 3</span>Prediction</h2><span class="tmeta">4 min · S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to create a reason to read. Write Ss’ ideas on the board; they check them in the next stage.</div>
+    <h3>Task 2 · What are the 7 tips?</h3>
+    <p class="instr">Here are the title and subtitle of a blog article. In pairs, predict the 7 tips.</p>
+    <div class="article-card" style="margin-bottom:14px">
+      <div class="atitle">What Living in Northern Europe Taught Me About Romanticizing Winter</div>
+      <div class="asub">7 tips that made me really love living in cold weather</div>
+    </div>
+    <div class="preds" id="t2"></div>
+  </section>
+
+  <!-- Stage 4 -->
+  <section class="stage" id="s4" data-title="Gist">
+    <div class="stage-head"><h2><span class="kicker">Stage 4</span>Reading for gist</h2><span class="tmeta">6 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to give Ss practice reading quickly for the main idea. Peer-check, then open-class feedback.</div>
+    <div class="article-card">
+      <div class="pub">Folded Napkins · Substack</div>
+      <div class="atitle">What Living in Northern Europe Taught Me About Romanticizing Winter</div>
+      <div class="asub">7 tips that made me really love living in cold weather</div>
+      <div class="by">Maya Top · 19 November 2026</div>
+      <a class="btn" href="https://foldednapkins.substack.com/p/what-living-in-northern-europe-taught" target="_blank" rel="noopener">Read the article &rarr;</a>
+    </div>
+    <div class="embed-wrap">
+      <div class="substack-post-embed"><p lang="en">What Living in Northern Europe Taught Me About Romanticizing Winter by Maya Top</p><p>7 tips that made me really love living in cold weather</p><a data-post-link href="https://foldednapkins.substack.com/p/what-living-in-northern-europe-taught">Read on Substack</a></div>
+      <script async src="https://substack.com/embedjs/embed.js" charset="utf-8"></script>
+    </div>
+    <h3>Task 3a · Read fast <span class="timer" data-secs="120"><span>2:00</span><button type="button">Start</button></span></h3>
+    <p class="instr">Read only the introduction, the 7 tip headings and the closing. How many of your predictions were right?</p>
+    <div class="btns" style="margin-top:0"><button class="btn ghost" id="showHeads" type="button">Show the 7 headings</button></div>
+    <ol class="headings" id="heads" hidden>
+      <li>Dress for the Temperature</li>
+      <li>Make Your Home the Coziest Place to Be</li>
+      <li>Drink Fresh Hot Tea All Day Long</li>
+      <li>Invest in Really Good Clothing</li>
+      <li>Rain Isn’t An Excuse to Cancel Plans</li>
+      <li>Make Your Evenings Fun</li>
+      <li>Gezelligheid!</li>
+    </ol>
+    <h3>Task 3b · Choose the best summary of the article</h3>
+    <div class="choices" id="t3b"></div>
+    <div class="btns"><button class="btn" data-check="t3b">Check</button><span class="score" id="t3bscore"></span></div>
+  </section>
+
+  <!-- Stage 5 -->
+  <section class="stage" id="s5" data-title="Detail">
+    <div class="stage-head"><h2><span class="kicker">Stage 5</span>Reading for detail</h2><span class="tmeta">12 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to give Ss practice reading for detail. Ss compare answers in pairs, then whole-class feedback; nominate Ss to show where in the text they found the answer.</div>
+    <p class="instr">Now read the whole <a href="https://foldednapkins.substack.com/p/what-living-in-northern-europe-taught" target="_blank" rel="noopener">article</a>.</p>
+    <h3>Task 4 · True, False or Not Given?</h3>
+    <p class="instr">Correct the false sentences.</p>
+    <ol class="q" id="t4"></ol>
+    <div class="btns"><button class="btn" data-check="t4">Check</button><span class="score" id="t4score"></span></div>
+
+    <h3>Task 5 · Answer the questions</h3>
+    <ol class="q" id="t5"></ol>
+    <div class="btns"><button class="btn ghost" data-reveal="t5" type="button">Show model answers</button></div>
+  </section>
+
+  <!-- Stage 6 -->
+  <section class="stage" id="s6" data-title="Phrases">
+    <div class="stage-head"><h2><span class="kicker">Stage 6</span>Vocabulary from context</h2><span class="tmeta">8 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to clarify useful phrases and idioms from the text.</div>
+    <h3>Task 6 · What do they mean?</h3>
+    <p class="instr">Find these phrases in the article. Use the context to choose the correct meaning.</p>
+    <ol class="q" id="t6"></ol>
+    <div class="btns"><button class="btn" data-check="t6">Check</button><span class="score" id="t6score"></span></div>
+
+    <h3>Task 7 · Dutch sayings</h3>
+    <p class="instr">The author quotes two Dutch sayings. Find them and discuss.</p>
+    <ul class="sayings">
+      <li>“There’s no such thing as bad weather, only bad clothing.”</li>
+      <li>“The Dutch aren’t made of sugar.”</li>
+    </ul>
+    <ol class="q" type="a">
+      <li>What do they mean?<textarea data-save="t7a" placeholder="Your ideas…"></textarea></li>
+      <li>Do you have similar sayings in your language? Translate them into English for your partner.<textarea data-save="t7b" placeholder="A saying from my language…"></textarea></li>
+    </ol>
+    <div class="btns"><button class="btn ghost" data-reveal="t7" type="button">Show model answer</button></div>
+    <div class="answer" id="t7ans" hidden>Bad weather shouldn’t stop you if you dress properly; rain won’t hurt you, so it’s no excuse to stay home or cancel plans.</div>
+  </section>
+
+  <!-- Stage 7 -->
+  <section class="stage" id="s7" data-title="Practice">
+    <div class="stage-head"><h2><span class="kicker">Stage 7</span>Controlled practice</h2><span class="tmeta">5 min · S</span></div>
+    <div class="tnote"><b>Aim:</b> to check Ss can use the new vocabulary accurately.</div>
+    <h3>Task 8 · Complete the sentences</h3>
+    <p class="instr">Use a word or phrase from Tasks 1 and 6. Change the form if needed.</p>
+    <ol class="q" id="t8"></ol>
+    <div class="btns"><button class="btn" data-check="t8">Check</button><span class="score" id="t8score"></span></div>
+  </section>
+
+  <!-- Stage 8 -->
+  <section class="stage" id="s8" data-title="Speaking">
+    <div class="stage-head"><h2><span class="kicker">Stage 8</span>Speaking</h2><span class="tmeta">12 min · S–S, groups</span></div>
+    <div class="tnote"><b>Aim:</b> to give Ss fluency practice personalising the topic. Groups present their guide; the class votes for the most <i>gezellig</i> city. <b>1:1 variant:</b> T and S each write a guide for a different city, then compare and “sell” their city to each other.</div>
+    <h3>Task 9 · Discussion <span class="timer" data-secs="240"><span>4:00</span><button type="button">Start</button></span></h3>
+    <ol class="q">
+      <li>Which of the 7 tips do you already follow? Which would you try?</li>
+      <li>Would the Dutch habit of using heating sparingly work in your country? Why / why not?</li>
+      <li>Is there a word in your language like <i>gezelligheid</i>? When do you feel it?</li>
+    </ol>
+    <h3>Task 10 · “Make the most of winter in <input type="text" data-save="t10city" placeholder="your city" style="width:150px;display:inline-block;padding:3px 8px">” <span class="timer" data-secs="480"><span>8:00</span><button type="button">Start</button></span></h3>
+    <p class="instr">Write a mini-guide with 5 tips for enjoying winter in your city, in the style of the article: a catchy heading and 2 sentences each. Use at least 4 words or phrases from today’s lesson.</p>
+    <div id="t10"></div>
+    <div class="vocab-chips" id="chips"></div>
+    <div class="count" id="vocabCount"></div>
+  </section>
+
+  <!-- Stage 9 -->
+  <section class="stage" id="s9" data-title="Feedback">
+    <div class="stage-head"><h2><span class="kicker">Stage 9</span>Feedback</h2><span class="tmeta">3 min · T–S</span></div>
+    <div class="tnote"><b>Aim:</b> to praise good language use and correct key errors. Board 3–4 good sentences and 3–4 errors noted during Stage 8. Ss correct the errors in pairs.</div>
+    <h3>Good sentences and corrections from today</h3>
+    <textarea data-save="t11" placeholder="Write the sentences from the board here…" style="min-height:110px"></textarea>
+    <h3>Homework (optional)</h3>
+    <p class="instr">Write a 150–180-word blog post: <b>How I romanticize winter</b>. Use at least 6 words or phrases from the lesson.</p>
+    <textarea data-save="hw" id="hw" placeholder="How I romanticize winter…" style="min-height:200px"></textarea>
+    <div class="count" id="hwCount"></div>
+  </section>
+
+  <details class="key" id="key">
+    <summary>Answer key</summary>
+    <dl>
+      <dt>Task 1</dt><dd>1c · 2a · 3e · 4b · 5d · 6f</dd>
+      <dt>Task 3b</dt><dd>B</dd>
+      <dt>Task 4</dt><dd>1 T · 2 F (many are old and poorly insulated) · 3 F (people open the windows a little even in cold weather) · 4 F (they often stay up after the holidays) · 5 T · 6 F (they weren’t warm enough, so she bought wool and knitwear) · 7 F (she admits it’s expensive but worth it) · 8 T · 9 T · 10 F (about a month) · 11 NG</dd>
+      <dt>Task 5</dt><dd id="keyT5"></dd>
+      <dt>Task 6</dt><dd>1b · 2a · 3b · 4a · 5b · 6a · 7a · 8a</dd>
+      <dt>Task 7</dt><dd>a) Bad weather shouldn’t stop you if you dress properly; rain won’t hurt you, so it’s no excuse to stay home or cancel plans.</dd>
+      <dt>Task 8</dt><dd>1 insulation · 2 worth every penny · 3 come to a halt; keep on keeping on · 4 lingered · 5 invigorating · 6 synonymous with · 7 make the most of it</dd>
+    </dl>
+  </details>
+
+  <div class="finish">
+    <a class="btn" href="../#day-1">Finish and mark day 1 as done</a>
+    <p class="small">Your answers are saved on this device. <button class="linkbtn" id="clearAll" type="button">Clear my answers</button></p>
+  </div>
+</div>
+
+<script>
+(() => {
+  const KEY = "advent-day1-v1";
+  let st = {};
+  try { st = JSON.parse(localStorage.getItem(KEY)) || {}; } catch { st = {}; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch {} };
+  const $ = id => document.getElementById(id);
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const norm = s => (s || "").toLowerCase().replace(/[’']/g, "'").replace(/[^a-z' ]/g, " ").replace(/\s+/g, " ").trim();
+
+  // ---------- teacher mode ----------
+  const tm = $("teacherMode");
+  tm.checked = !!st.teacher;
+  document.body.classList.toggle("teacher", tm.checked);
+  tm.addEventListener("change", () => { st.teacher = tm.checked; document.body.classList.toggle("teacher", tm.checked); save(); });
+
+  // ---------- stage nav ----------
+  const nav = $("stagesNav");
+  document.querySelectorAll("section.stage").forEach((s, i) => {
+    const a = document.createElement("a");
+    a.href = "#" + s.id; a.textContent = `${i + 1} · ${s.dataset.title}`; a.id = "nav-" + s.id;
+    nav.appendChild(a);
+  });
+  const markStage = (sid) => { st.stages = st.stages || {}; st.stages[sid] = true; save(); paintNav(); };
+  const paintNav = () => document.querySelectorAll(".stages-nav a").forEach(a => a.classList.toggle("done", !!(st.stages || {})[a.id.slice(4)]));
+
+  // ---------- Task 1: matching ----------
+  const T1 = {
+    words: ["insulation", "embrace", "sparingly", "ambiance", "belonging", "humbling"],
+    defs: { a: "to accept something with enthusiasm", b: "the mood or feeling a place has", c: "material that stops heat escaping from a building", d: "a feeling of being accepted as part of a group", e: "in small amounts; only when necessary", f: "making you realise you are less important or capable than you thought" },
+    key: ["c", "a", "e", "b", "d", "f"],
+  };
+  $("t1defs").innerHTML = Object.entries(T1.defs).map(([k, v]) => `<li><b>${k}.</b> ${v}</li>`).join("");
+  $("t1").innerHTML = T1.words.map((w, i) => `
+    <div class="match-row"><label for="t1-${i}"><b>${i + 1}.</b> ${w}</label>
+      <select id="t1-${i}" data-save="t1-${i}"><option value="">choose…</option>${Object.entries(T1.defs).map(([k, v]) => `<option value="${k}">${k}. ${v}</option>`).join("")}</select>
+    </div>`).join("");
+
+  // ---------- Task 2: predictions ----------
+  $("t2").innerHTML = Array.from({ length: 7 }, (_, i) => `<label>${i + 1}<input type="text" data-save="t2-${i}" placeholder="Tip ${i + 1}"></label>`).join("");
+  $("showHeads").addEventListener("click", () => { $("heads").hidden = !$("heads").hidden; $("showHeads").textContent = $("heads").hidden ? "Show the 7 headings" : "Hide the headings"; });
+
+  // ---------- Task 3b ----------
+  const T3 = [
+    ["A", "The author explains why winter in the Netherlands is much harder than in the USA."],
+    ["B", "The author shares how Dutch habits and attitudes helped her enjoy winter instead of just surviving it."],
+    ["C", "The author gives advice on buying expensive winter clothes in Europe."],
+  ];
+  $("t3b").innerHTML = T3.map(([k, t]) => `<label class="choice"><input type="radio" name="t3b" value="${k}" data-save="t3b"><span><b>${k}.</b> ${t}</span></label>`).join("");
+
+  // ---------- Task 4: T/F/NG ----------
+  const T4 = [
+    ["The article describes the author's first winter in the Netherlands.", "T"],
+    ["Most Dutch homes are modern and well insulated.", "F", "Many are old and poorly insulated."],
+    ["Dutch people keep their windows firmly shut all winter.", "F", "People open the windows a little even in cold weather."],
+    ["Christmas decorations in Dutch windows are usually taken down straight after the holidays.", "F", "They often stay up after the holidays."],
+    ["The author's colleagues made tea from fresh ginger rather than tea bags.", "T"],
+    ["The sweaters the author brought from California were warm enough.", "F", "They weren't warm enough, so she bought wool and knitwear."],
+    ["The author thinks good-quality winter clothing is cheap if you know where to shop.", "F", "She admits it's expensive but worth it."],
+    ["Seeing an elderly woman cycling in the snow changed the author's attitude.", "T"],
+    ["The author found winter in Portland, Oregon, harder than in the Netherlands.", "T"],
+    ["The Christmas market the author visited lasted about a week.", "F", "It lasted about a month."],
+    ["The author is planning to move back to California next year.", "NG"],
+  ];
+  $("t4").innerHTML = T4.map(([s], i) => `
+    <li>${esc(s)}<br>
+      <span class="tfng" data-q="${i}">${["T", "F", "NG"].map(v => `<button type="button" data-v="${v}">${v === "NG" ? "Not given" : v === "T" ? "True" : "False"}</button>`).join("")}</span>
+      <input type="text" class="fix" data-save="t4fix-${i}" placeholder="Correction (if false)" hidden>
+      <div class="answer" id="t4ans-${i}" hidden></div>
+    </li>`).join("");
+  const paintT4 = () => document.querySelectorAll("#t4 .tfng").forEach(g => {
+    const i = g.dataset.q, v = (st.t4 || {})[i];
+    g.querySelectorAll("button").forEach(b => { b.classList.toggle("sel", b.dataset.v === v); b.classList.remove("ok", "bad"); });
+    g.parentElement.querySelector(".fix").hidden = v !== "F";
+  });
+  $("t4").addEventListener("click", e => {
+    const b = e.target.closest(".tfng button"); if (!b) return;
+    const i = b.parentElement.dataset.q; st.t4 = st.t4 || {}; st.t4[i] = b.dataset.v; save(); paintT4();
+    $("t4ans-" + i).hidden = true;
+  });
+
+  // ---------- Task 5 ----------
+  const T5 = [
+    ["According to the author, what are the two options you have in a grey, rainy winter?", "Be miserable, or make the most of it as the Dutch do."],
+    ["Name three things Dutch people do to stay warm at home without turning up the heating.", "Any three: wool socks indoors, layering clothes, keeping hot water ready / hot drinks, blankets, a warm base layer."],
+    ["What did the author enjoy seeing when she cycled home after dark?", "Homes with open curtains and candles/lamps on the windowsills."],
+    ["Why does the author think winters in Portland felt worse than in Amsterdam?", "Culture: in the Netherlands people keep socialising and even sit outside at cafés, so life doesn't stop."],
+    ["List four evening activities the author recommends.", "Any four: after-work drinks, puzzles, ice skating, going out for hot chocolate, cooking soup, card games, crafts, playing pool, visiting a Christmas market."],
+    ["What does gezelligheid describe, and how can it help in winter?", "Warmth, cosiness, togetherness and belonging (places, people, evenings); it helps fight the loneliness/isolation of winter."],
+  ];
+  $("t5").innerHTML = T5.map(([q], i) => `<li>${esc(q)}<textarea data-save="t5-${i}" placeholder="Your answer…"></textarea><div class="answer" id="t5ans-${i}" hidden>${esc(T5[i][1])}</div></li>`).join("");
+  $("keyT5").innerHTML = T5.map((x, i) => `${i + 1}. ${esc(x[1])}`).join("<br>");
+
+  // ---------- Task 6 ----------
+  const T6 = [
+    ["make the most of it", "complain about it", "get as much benefit as possible from a situation", "b"],
+    ["worth every penny", "expensive but definitely worth buying", "too expensive to buy", "a"],
+    ["come to a halt", "slow down a little", "stop completely", "b"],
+    ["keep on keeping on", "continue as normal despite difficulties", "keep repeating the same mistake", "a"],
+    ["invigorating", "making you feel tired", "making you feel energetic and fresh", "b"],
+    ["linger / lingering", "stay somewhere longer than necessary because you enjoy it", "leave quickly", "a"],
+    ["synonymous with", "closely connected in people's minds", "the opposite of", "a"],
+    ["pull up a chair", "an invitation to join in", "a request to leave", "a"],
+  ];
+  $("t6").innerHTML = T6.map(([p, a, b], i) => `
+    <li><b>${esc(p)}</b>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="t6-${i}" value="a" data-save="t6-${i}"><span>a) ${esc(a)}</span></label>
+        <label class="choice"><input type="radio" name="t6-${i}" value="b" data-save="t6-${i}"><span>b) ${esc(b)}</span></label>
+      </div></li>`).join("");
+
+  // ---------- Task 8 ----------
+  const T8 = [
+    ["Our old house has almost no ", ["insulation"], ", so we wear wool socks indoors."],
+    ["These boots were expensive, but they were ", ["worth every penny"], " — my feet are always dry."],
+    ["In my town, life doesn't ", ["come to a halt"], " when it snows — people just ", ["keep on keeping on"], "."],
+    ["We ", ["lingered"], " in the café for hours, chatting over hot chocolate."],
+    ["A cold morning swim can feel surprisingly ", ["invigorating"], "."],
+    ["For many people, December is ", ["synonymous with"], " family dinners and candles."],
+    ["Winter is long here, so you might as well ", ["make the most of it"], "."],
+  ];
+  let gap = 0;
+  $("t8").innerHTML = T8.map(parts => "<li>" + parts.map(p => Array.isArray(p)
+    ? `<input type="text" data-save="t8-${gap}" data-ans="${esc(p.join("|"))}" id="t8-${gap++}" style="width:190px;display:inline-block;padding:4px 8px" autocomplete="off" autocapitalize="off">`
+    : esc(p)).join("") + "</li>").join("");
+
+  // ---------- Task 10: guide ----------
+  $("t10").innerHTML = Array.from({ length: 5 }, (_, i) => `
+    <div class="guide-tip"><input type="text" data-save="t10h-${i}" placeholder="Tip ${i + 1}: a catchy heading">
+      <textarea data-save="t10t-${i}" placeholder="Two sentences…" style="min-height:58px"></textarea></div>`).join("");
+  const LESSON_VOCAB = ["insulation", "embrace", "sparingly", "ambiance", "belonging", "humbling", "make the most of", "worth every penny", "come to a halt", "keep on keeping on", "invigorating", "linger", "synonymous with", "pull up a chair", "gezellig"];
+  const vocabStem = { embrace: "embrac", linger: "linger", gezellig: "gezellig", humbling: "humbl", "make the most of": "make the most of", "come to a halt": "to a halt" };
+  $("chips").innerHTML = LESSON_VOCAB.map(w => `<span class="chip" data-w="${w}">${w}</span>`).join("");
+  const countVocab = () => {
+    const txt = norm(Array.from(document.querySelectorAll("#t10 input, #t10 textarea")).map(x => x.value).join(" "));
+    let n = 0;
+    document.querySelectorAll("#chips .chip").forEach(c => { const used = txt.includes(norm(vocabStem[c.dataset.w] || c.dataset.w)); c.classList.toggle("used", used); n += used; });
+    $("vocabCount").textContent = `${n} of today’s words used${n >= 4 ? " ✓" : " (aim for 4+)"}`;
+  };
+  const countHw = () => {
+    const words = ($("hw").value.match(/\S+/g) || []).length;
+    $("hwCount").textContent = `${words} words${words >= 150 && words <= 180 ? " ✓" : " (150–180)"}`;
+  };
+
+  // ---------- save / restore all inputs ----------
+  st.f = st.f || {};
+  document.querySelectorAll("[data-save]").forEach(el => {
+    const k = el.dataset.save, v = st.f[k];
+    if (el.type === "radio") el.checked = v === el.value; else if (v != null) el.value = v;
+    el.addEventListener(el.tagName === "SELECT" || el.type === "radio" ? "change" : "input", () => {
+      st.f[k] = el.value; save();
+      el.classList.remove("ok", "bad");
+      if (el.type === "radio") el.closest(".choices").querySelectorAll(".choice").forEach(c => c.classList.remove("ok", "bad"));
+      if (el.closest("#t10")) countVocab();
+      if (el.id === "hw") countHw();
+    });
+  });
+  paintT4(); paintNav(); countVocab(); countHw();
+
+  // ---------- checking ----------
+  const setScore = (id, n, of) => { $(id + "score").textContent = `${n} / ${of} correct`; };
+  const checks = {
+    t1() {
+      let n = 0;
+      T1.key.forEach((k, i) => { const s = $("t1-" + i); const ok = s.value === k; n += ok; s.classList.toggle("ok", ok); s.classList.toggle("bad", !ok && s.value !== ""); });
+      setScore("t1", n, 6); markStage("s2");
+    },
+    t3b() {
+      const sel = document.querySelector('input[name="t3b"]:checked');
+      document.querySelectorAll("#t3b .choice").forEach(c => { const v = c.querySelector("input").value; c.classList.toggle("ok", v === "B" && !!sel); c.classList.toggle("bad", sel && sel.value === v && v !== "B"); });
+      $("t3bscore").textContent = sel ? (sel.value === "B" ? "Correct!" : "Not quite. Look again.") : "Choose a summary first.";
+      markStage("s3"); markStage("s4");
+    },
+    t4() {
+      let n = 0;
+      T4.forEach(([, a, fix], i) => {
+        const v = (st.t4 || {})[i];
+        const btn = document.querySelector(`#t4 .tfng[data-q="${i}"] button[data-v="${v}"]`);
+        if (btn) { btn.classList.add(v === a ? "ok" : "bad"); }
+        n += v === a;
+        const ans = $("t4ans-" + i);
+        if (v && (v !== a || fix)) { ans.textContent = (v === a ? "" : `Answer: ${a === "T" ? "True" : a === "F" ? "False" : "Not given"}. `) + (fix || ""); ans.hidden = false; } else ans.hidden = true;
+      });
+      setScore("t4", n, T4.length); markStage("s5");
+    },
+    t6() {
+      let n = 0;
+      T6.forEach((q, i) => {
+        const sel = document.querySelector(`input[name="t6-${i}"]:checked`);
+        document.querySelectorAll(`input[name="t6-${i}"]`).forEach(inp => { const c = inp.closest(".choice"); c.classList.toggle("ok", !!sel && inp.value === q[3]); c.classList.toggle("bad", !!sel && sel === inp && inp.value !== q[3]); });
+        n += !!sel && sel.value === q[3];
+      });
+      setScore("t6", n, T6.length); markStage("s6");
+    },
+    t8() {
+      let n = 0, all = 0;
+      document.querySelectorAll("#t8 input").forEach(inp => {
+        all++;
+        const ok = inp.dataset.ans.split("|").some(a => norm(a) === norm(inp.value));
+        n += ok; inp.classList.toggle("ok", ok); inp.classList.toggle("bad", !ok && inp.value.trim() !== "");
+        inp.title = ok ? "" : "Answer: " + inp.dataset.ans.split("|")[0];
+      });
+      setScore("t8", n, all); markStage("s7");
+    },
+  };
+  document.querySelectorAll("[data-check]").forEach(b => b.addEventListener("click", () => checks[b.dataset.check]()));
+  document.querySelectorAll("[data-reveal]").forEach(b => b.addEventListener("click", () => {
+    const id = b.dataset.reveal;
+    const els = id === "t5" ? T5.map((_, i) => $("t5ans-" + i)) : [$(id + "ans")];
+    const show = els[0].hidden; els.forEach(e => e.hidden = !show);
+    b.textContent = show ? "Hide answers" : (id === "t5" ? "Show model answers" : "Show model answer");
+    markStage(id === "t5" ? "s5" : "s6");
+  }));
+
+  // stages without a checker count as done once you scroll past them
+  const io = "IntersectionObserver" in window && new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const s = e.target.closest("section.stage"); if (["s1", "s8", "s9"].includes(s.id)) markStage(s.id);
+  }), { threshold: 1 });
+  if (io) ["s1", "s8", "s9"].forEach(id => io.observe($(id).querySelector(".stage-head")));
+
+  // ---------- timers ----------
+  document.querySelectorAll(".timer").forEach(t => {
+    const total = +t.dataset.secs, out = t.querySelector("span"), btn = t.querySelector("button");
+    let left = total, h = null;
+    const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    btn.addEventListener("click", () => {
+      if (h) { clearInterval(h); h = null; left = total; out.textContent = fmt(left); btn.textContent = "Start"; return; }
+      btn.textContent = "Reset";
+      h = setInterval(() => { left--; out.textContent = fmt(Math.max(left, 0)); if (left <= 0) { clearInterval(h); h = null; out.textContent = "Time!"; btn.textContent = "Again"; left = total; } }, 1000);
+    });
+  });
+
+  // ---------- clear ----------
+  $("clearAll").addEventListener("click", () => {
+    if (!confirm("Clear all your answers for this lesson on this device?")) return;
+    const teacher = st.teacher; st = { teacher }; save(); location.reload();
+  });
+})();
+</script>
+</body>
+</html>
