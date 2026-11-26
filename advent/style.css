@@ -13,7 +13,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: "Josefin Sans", system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -27,24 +27,27 @@ body {
 .head { text-align: center; margin-bottom: 36px; }
 .head h1 {
   margin: 0;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-weight: 500;
-  font-size: clamp(44px, 10vw, 76px);
-  letter-spacing: .06em;
+  font-family: "Instrument Serif", Georgia, serif; font-style: italic;
+  font-weight: 400;
+  font-size: clamp(56px, 14vw, 96px);
+  letter-spacing: -.01em;
   line-height: 1;
   color: var(--red);
 }
 .sub {
   margin: 6px 0 0;
-  font-weight: 300;
-  font-size: clamp(20px, 4.4vw, 32px);
-  letter-spacing: .14em;
+  font-weight: 800;
+  font-size: clamp(22px, 5vw, 36px);
+  letter-spacing: -.035em;
+  line-height: 1;
   color: var(--ink);
 }
 .progress {
   margin: 14px 0 0;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 700;
   letter-spacing: .08em;
+  text-transform: uppercase;
   color: var(--soft);
   min-height: 1em;
 }
@@ -78,8 +81,8 @@ body {
 .cell .small-num {
   position: absolute;
   top: 8px; left: 10px;
-  font-weight: 400;
-  font-size: clamp(11px, 2.2vw, 15px);
+  font-weight: 700;
+  font-size: clamp(11px, 2.2vw, 14px);
   color: var(--ink);
 }
 .cell svg {
@@ -174,12 +177,12 @@ body {
 .card-art svg { height: 100%; width: auto; max-width: 70%; }
 .card-art .big-num { font-size: 120px; }
 .card-day {
-  margin: 0; font-size: 14px; letter-spacing: .2em; text-transform: uppercase; color: var(--soft);
+  margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--soft);
 }
 .card h2 {
   margin: 6px 0 16px;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-weight: 600;
+  font-family: "Instrument Serif", Georgia, serif; font-style: italic;
+  font-weight: 400;
   font-size: clamp(28px, 6vw, 38px);
   color: var(--red);
   line-height: 1.15;
