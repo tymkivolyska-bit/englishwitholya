@@ -15,6 +15,12 @@ Edit `tasks.json` and fill in the day you want:
 - `link` (optional): a URL shown as an "Open the task" button. Add `"linkLabel": "Watch the video"` to change the button text.
 - `image` (optional): a picture URL shown under the text (a file in this folder works too, e.g. `"img/day5.png"`).
 
+## Lesson pages
+
+A day can open a full lesson page. Put it in its own folder (day 1 is in `day1/`) and set that day's `link` to the folder, e.g. `"link": "day1/"`, `"linkLabel": "Start the lesson"`. Links inside the site open in the same tab; outside links open a new tab.
+
+`day1/`: *Romanticizing Winter*, a CELTA reading lesson (B2–C1). It links to and embeds Maya Top's original Substack post rather than copying it. Tick "Teacher notes" at the top to show aims, timings, CCQs and staging notes. Students' answers are saved on their device.
+
 ## Settings
 
 - `settings.unlockByDate`: `false` (default) lets every day open any time. `true` opens day N only from December N of `settings.year`.

@@ -72,7 +72,7 @@
     const img = $("dayImg");
     if (t.image) { img.src = t.image; img.hidden = false; } else { img.hidden = true; img.removeAttribute("src"); }
     const link = $("dayLink");
-    if (t.link) { link.href = t.link; link.textContent = t.linkLabel || "Open the task"; link.hidden = false; } else { link.hidden = true; }
+    if (t.link) { link.href = t.link; link.textContent = t.linkLabel || "Open the task"; link.target = /^https?:/i.test(t.link) ? "_blank" : "_self"; link.hidden = false; } else { link.hidden = true; }
 
     const btn = $("doneBtn");
     btn.hidden = !t.title;
