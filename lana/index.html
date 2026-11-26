@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#fbe1ea">
+<title>Lana's English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* IDEA soft pink and white, satin bows and a watercolour ribbon (Lana's two pictures),
+   cut-out pink stickers. COLOUR white paper, blush #fbe1ea, rose #e8769b, deep rose #c9497a.
+   TYPE Fredoka (rounded, like the Miro board) for headings, Nunito for text. */
+:root{
+  color-scheme:light;
+  --ink:#4a3540;--mute:#8c7480;--line:#f3d3de;
+  --blush:#fbe1ea;--blush2:#fdf0f4;--rose:#e8769b;--rose-d:#c9497a;--rose-l:#f8c6d6;
+  --ok:#3f8a5a;--ok-l:#dff1e4;--bad:#c2475a;--bad-l:#fbe0e4;
+  --head:"Fredoka",system-ui,sans-serif;--text:"Nunito",system-ui,sans-serif;
+  --r:22px;--shadow:0 6px 22px rgba(201,73,122,.10),0 1px 3px rgba(201,73,122,.10);
+}
+*{box-sizing:border-box;min-width:0}
+html{background:#fff}
+body{
+  margin:0;color:var(--ink);font:17px/1.5 var(--text);min-height:100vh;overflow-x:clip;
+  background:#fff;
+  background-image:radial-gradient(circle at 1px 1px,#f7d5e0 1.2px,transparent 1.6px);
+  background-size:22px 22px;
+}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--rose-d)}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px 120px;position:relative}
+
+/* ---- header with the ribbon ---- */
+header{position:relative;padding:26px 0 8px 70px;min-height:150px}
+.ribbon{position:absolute;left:-18px;top:-6px;width:96px;height:218px;pointer-events:none;z-index:0}
+main,nav.tabs,footer{position:relative;z-index:2}
+@media (min-width:700px){.ribbon{left:-60px;width:190px;height:420px}header{padding-left:110px}}
+.brand{position:relative;z-index:1;padding-right:64px}
+.brand small{display:block;font:600 14px var(--head);letter-spacing:.14em;color:var(--rose);text-transform:uppercase}
+.brand h1{margin:2px 0 0;font:700 clamp(34px,8vw,52px)/1 var(--head);color:var(--rose-d)}
+.brand p{margin:6px 0 0;color:var(--mute)}
+.hdr-stk{position:absolute;right:0;top:18px;width:62px;height:62px;transform:rotate(10deg);z-index:1}
+.hdr-stk2{position:absolute;right:8px;top:86px;width:40px;height:40px;transform:rotate(-14deg);z-index:1}
+@media (min-width:700px){.brand{padding-right:140px}.hdr-stk{width:84px;height:84px}.hdr-stk2{right:90px;top:70px;width:50px;height:50px}}
+
+/* ---- tabs ---- */
+nav.tabs{position:sticky;top:0;z-index:20;display:flex;gap:6px;padding:10px 0;margin:6px 0 18px;
+  background:linear-gradient(#fff 70%,rgba(255,255,255,0));overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:0 0 auto;text-decoration:none;padding:8px 12px;border-radius:999px;font:600 15px var(--head);
+  color:var(--rose-d);background:var(--blush2);border:1.5px solid var(--line)}
+nav.tabs a.on{background:var(--rose);color:#fff;border-color:var(--rose)}
+
+/* ---- stickers ---- */
+.stk{display:block;overflow:visible;
+  filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 4px 5px rgba(201,73,122,.22))}
+
+/* ---- cards ---- */
+.card{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pill{display:inline-block;background:var(--rose);color:#fff;border-radius:999px;padding:6px 18px;font:600 20px var(--head)}
+.pill.dark{background:var(--ink)}
+.pill.sm{font-size:14px;padding:4px 12px;letter-spacing:.06em}
+h2{font:700 26px/1.15 var(--head);color:var(--rose-d);margin:0 0 6px}
+h3{font:600 20px/1.2 var(--head);margin:0 0 6px}
+.mute{color:var(--mute)}
+
+.hero{background:linear-gradient(135deg,#fff 0%,var(--blush) 100%);overflow:hidden}
+.hero .unit{font:600 14px var(--head);letter-spacing:.12em;background:var(--ink);color:#fff;border-radius:999px;padding:4px 14px;display:inline-block}
+.hero h2{font-size:clamp(34px,8vw,48px);margin:10px 0 4px}
+.hero .stk{position:absolute;right:14px;top:12px;width:72px;height:72px;transform:rotate(-8deg)}
+.hero h2,.hero>p{padding-right:70px}
+
+.inunit{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:14px 0 0;align-items:center;font-size:15px}
+.inunit b{font:600 12px var(--head);letter-spacing:.08em;text-transform:uppercase;background:var(--rose-l);color:var(--rose-d);border-radius:999px;padding:3px 10px;text-align:center}
+
+.sections{display:grid;gap:14px}
+@media (min-width:640px){.sections{grid-template-columns:1fr 1fr}}
+a.sec{display:block;text-decoration:none;color:inherit;transition:transform .15s}
+a.sec:hover{transform:translateY(-2px)}
+.sec .num{font:700 34px var(--head);color:var(--rose)}
+.sec .stk{position:absolute;right:14px;top:12px;width:58px;height:58px}
+.bar{height:12px;border-radius:999px;background:var(--blush);overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rose-l),var(--rose));border-radius:999px;transition:width .4s}
+.barlbl{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);margin-top:4px}
+
+/* exercise list */
+.exlist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.exlist a{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:10px 14px}
+.exlist a:hover{border-color:var(--rose-l);background:var(--blush2)}
+.dot{flex:0 0 40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font:600 18px var(--head)}
+.exlist .t{flex:1}
+.exlist .t small{display:block;color:var(--mute);font-size:13px;line-height:1.3}
+.badge{font:600 13px var(--head);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.badge.done{background:var(--ok-l);color:var(--ok)}
+.badge.part{background:var(--blush);color:var(--rose-d)}
+.badge.todo{background:#f4f1f2;color:var(--mute)}
+.exlist .stk{width:34px;height:34px;flex:0 0 34px}
+
+/* exercise page */
+.crumbs{font-size:15px;margin-bottom:10px}
+.crumbs a{background:#fff;border-radius:999px;padding:4px 10px;border:1.5px solid var(--line)}
+.crumbs a{text-decoration:none}
+.exhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.intro{font-size:18px;margin:0 0 14px}
+.example{display:inline-block;background:var(--rose-l);border-radius:20px 20px 20px 4px;padding:10px 16px;margin:0 0 14px}
+.video{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:var(--blush);margin:0 0 16px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.audio{border:2.5px dashed var(--rose);background:var(--blush2);color:var(--rose-d);border-radius:18px;padding:14px;text-align:center;font:600 17px var(--head);margin:0 0 16px}
+.text{background:var(--blush2);border-radius:18px;padding:14px 18px;margin:0 0 16px}
+.text .who{font:600 18px var(--head);color:var(--rose-d);margin:6px 0 2px}
+.text p{margin:0 0 8px}
+.rules{background:var(--blush2);border-radius:18px;padding:14px 18px;margin:0 0 16px}
+.rules p{margin:0 0 6px}
+.strategy{background:var(--ink);color:#fff;border-radius:18px;padding:14px 18px;margin:0 0 16px}
+.tips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.tips span{background:var(--ink);color:#fff;border-radius:999px;padding:5px 14px;font:500 15px var(--head)}
+.note{font-size:15px;color:var(--mute);margin:12px 0 0}
+.booster{display:inline-block;margin-top:12px}
+
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.bank span{background:var(--ink);color:#fff;border-radius:999px;padding:4px 14px;font:500 16px var(--head)}
+.bank span.used{opacity:.35;text-decoration:line-through}
+
+ol.items{margin:0;padding:0;list-style:none;counter-reset:it}
+ol.items>li{counter-increment:it;position:relative;padding:12px 12px 12px 46px;border-radius:16px;margin-bottom:8px;background:#fff;border:1.5px solid var(--line)}
+ol.items>li::before{content:counter(it);position:absolute;left:12px;top:12px;width:24px;height:24px;border-radius:50%;background:var(--rose-l);color:var(--rose-d);font:700 14px/24px var(--head);text-align:center}
+ol.items>li.ok{border-color:#9fd3ae;background:var(--ok-l)}
+ol.items>li.bad{border-color:#efa9b4;background:var(--bad-l)}
+.fix{display:block;font-size:14px;color:var(--bad);margin-top:4px}
+.fix b{color:var(--ok)}
+
+input.gap{border:0;border-bottom:2.5px solid var(--rose);background:var(--blush2);border-radius:8px 8px 0 0;padding:2px 8px;width:9.5em;max-width:100%;font-weight:700;color:var(--rose-d);outline:none}
+input.gap:focus{background:#fff;box-shadow:0 0 0 3px var(--rose-l)}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opt{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 16px;font-weight:700}
+.opt.sel{background:var(--rose);border-color:var(--rose);color:#fff}
+.opt.right{background:var(--ok);border-color:var(--ok);color:#fff}
+select.match{border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;background:#fff;width:100%;margin-top:8px;font-weight:700;color:var(--rose-d)}
+.sortrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.sortrow .w{font:600 18px var(--head);min-width:110px}
+textarea{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--blush2);resize:vertical;outline:none}
+textarea:focus{border-color:var(--rose);background:#fff}
+.flabel{display:block;font-weight:700;margin:12px 0 6px}
+.speak{list-style:none;padding:0;margin:0 0 6px;display:grid;gap:8px}
+.speak li{background:var(--rose-l);border-radius:20px 20px 20px 4px;padding:10px 16px;justify-self:start}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px}
+.btn{border:0;border-radius:999px;padding:12px 24px;font:600 18px var(--head);background:var(--rose);color:#fff;box-shadow:0 4px 0 var(--rose-d)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--rose-d)}
+.btn.ghost{background:#fff;color:var(--rose-d);border:1.5px solid var(--line);box-shadow:none}
+.btn.sm{padding:8px 16px;font-size:15px}
+.result{margin-top:14px;padding:14px 18px;border-radius:18px;background:var(--blush);display:flex;align-items:center;gap:14px}
+.result .stk{width:56px;height:56px;flex:0 0 56px}
+.result b{font:700 22px var(--head);color:var(--rose-d)}
+.saved{font-size:14px;color:var(--mute)}
+
+/* flashcards */
+.decks{display:grid;gap:14px}
+@media (min-width:640px){.decks{grid-template-columns:1fr 1fr}}
+a.deck{display:block;text-decoration:none;color:inherit}
+.deck .stk{position:absolute;right:14px;top:12px;width:54px;height:54px}
+.flip{perspective:1200px;margin:8px auto 0;max-width:520px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.flip .in{position:relative;height:300px;transition:transform .5s;transform-style:preserve-3d}
+.flip.back .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;border:1.5px solid var(--line);box-shadow:var(--shadow)}
+.face.f{background:linear-gradient(160deg,#fff,var(--blush))}
+.face.b{background:linear-gradient(160deg,var(--rose-l),#fff);transform:rotateY(180deg)}
+.face .word{font:700 clamp(28px,7vw,40px)/1.15 var(--head);color:var(--rose-d)}
+.face .mean{font:600 22px/1.3 var(--head)}
+.face .ex{margin-top:12px;font-style:italic;color:var(--mute)}
+.face .hint{position:absolute;bottom:14px;font-size:13px;color:var(--mute)}
+.face .stk{position:absolute;top:14px;right:16px;width:44px;height:44px;transform:rotate(12deg)}
+.face .known{position:absolute;top:16px;left:18px;font:600 13px var(--head);background:var(--ok-l);color:var(--ok);border-radius:999px;padding:2px 10px}
+.cardnav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+.counter{text-align:center;color:var(--mute);margin-top:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font-size:14px;font-weight:700}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* progress */
+.ring{width:150px;height:150px;position:relative;margin:0 auto}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .lbl{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font:700 34px/1 var(--head);color:var(--rose-d)}
+.ring .lbl small{display:block;font:600 13px var(--head);color:var(--mute)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;text-align:center}
+.stats div{background:var(--blush2);border-radius:16px;padding:10px 6px}
+.stats b{display:block;font:700 26px var(--head);color:var(--rose-d)}
+.stats span{font-size:13px;color:var(--mute)}
+table.res{width:100%;border-collapse:collapse;font-size:15px}
+table.res td{padding:7px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+table.res td:last-child{text-align:right;white-space:nowrap}
+.hist{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.hist span{background:var(--blush2);border-radius:12px;padding:4px 10px;font-size:14px}
+
+/* stickers page */
+.album{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:14px}
+.slot{aspect-ratio:1;border-radius:20px;background:var(--blush2);border:2px dashed var(--line);display:grid;place-items:center;position:relative}
+.slot .stk{width:72%;height:72%}
+.slot.got{background:#fff;border:1.5px solid var(--line)}
+.slot.got .stk{animation:pop .5s}
+.slot small{position:absolute;bottom:4px;font-size:11px;color:var(--mute)}
+.slot.locked{color:var(--rose-l);font:700 26px var(--head);filter:grayscale(1);opacity:.55}
+
+/* toast */
+.toast{visibility:hidden;position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);background:#fff;border:1.5px solid var(--line);box-shadow:var(--shadow);border-radius:24px;padding:12px 20px 12px 12px;display:flex;align-items:center;gap:12px;z-index:50;transition:transform .35s;max-width:calc(100% - 32px)}
+.toast.show{visibility:visible;transform:translate(-50%,0)}
+.toast .stk{width:56px;height:56px;flex:0 0 56px;animation:pop .6s}
+.toast b{font:700 18px var(--head);color:var(--rose-d)}
+@keyframes pop{0%{transform:scale(.2) rotate(-30deg)}70%{transform:scale(1.15) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
+
+.floaty{position:absolute;pointer-events:none;width:54px;height:54px;opacity:.95}
+footer{text-align:center;color:var(--mute);font-size:14px;margin-top:40px}
+footer button{background:none;border:0;color:var(--mute);text-decoration:underline;font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" id="sticker-defs" aria-hidden="true">
+  <defs>
+    <linearGradient id="sPink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbd0de"/><stop offset="1" stop-color="#f19ab7"/></linearGradient>
+    <linearGradient id="sPinkD" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6b4c9"/><stop offset="1" stop-color="#e57ea1"/></linearGradient>
+    <radialGradient id="sHeart" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fde2ea"/><stop offset=".6" stop-color="#f7b3c8"/><stop offset="1" stop-color="#ee90ae"/></radialGradient>
+    <radialGradient id="sPearl" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset=".7" stop-color="#f3ece6"/><stop offset="1" stop-color="#d8cfc6"/></radialGradient>
+    <radialGradient id="sRose" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#fde3ec"/><stop offset="1" stop-color="#f2a5bf"/></radialGradient>
+    <linearGradient id="rib" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7c1d1"/><stop offset=".5" stop-color="#ec93b0"/><stop offset="1" stop-color="#f6bacd"/></linearGradient>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <svg class="ribbon" viewBox="0 0 150 340" aria-hidden="true">
+      <!-- watercolour ribbon bow tied in the corner, its tail curling down the page -->
+      <g fill="none" stroke-linecap="round">
+        <path d="M60 52C70 140 18 150 40 210S120 250 70 330" stroke="#fff" stroke-width="18"/>
+        <path d="M60 52C70 140 18 150 40 210S120 250 70 330" stroke="url(#rib)" stroke-width="12" opacity=".9"/>
+        <path d="M60 52C70 140 18 150 40 210S120 250 70 330" stroke="#fff" stroke-width="3" opacity=".45" transform="translate(-3 0)"/>
+        <path d="M64 50C90 60 120 58 146 46" stroke="#fff" stroke-width="16"/>
+        <path d="M64 50C90 60 120 58 146 46" stroke="url(#rib)" stroke-width="10"/>
+      </g>
+      <path d="M60 48C40 18 6 14 6 34c0 18 30 22 54 14z" fill="url(#rib)" stroke="#fff" stroke-width="4"/>
+      <path d="M62 48C80 14 120 10 122 30c2 18-34 26-60 18z" fill="url(#rib)" stroke="#fff" stroke-width="4"/>
+      <path d="M16 30c10-10 28-6 40 10M108 26c-12-8-30-2-42 14" stroke="#fff" stroke-width="3" opacity=".5" fill="none"/>
+      <ellipse cx="61" cy="49" rx="9" ry="10" fill="#e886a7" stroke="#fff" stroke-width="3"/>
+    </svg>
+    <div class="brand">
+      <small>English with Olya</small>
+      <h1>Lana's English</h1>
+      <p>Lessons, flashcards and your progress</p>
+    </div>
+    <span id="hdrStk"></span>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <a href="#lessons" data-t="lessons">🎀 Lessons</a>
+    <a href="#cards" data-t="cards">💗 Flashcards</a>
+    <a href="#progress" data-t="progress">📈 Progress</a>
+    <a href="#stickers" data-t="stickers">✨ Stickers</a>
+  </nav>
+
+  <main id="app"></main>
+
+  <footer>
+    Made with love for Lana 🎀 Your results are saved on this device.<br>
+    <button id="reset">start again (clear all results)</button>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="stickers.js?v=1"></script>
+<script src="lessons.js?v=1"></script>
+<script>
+(function(){
+"use strict";
+const KEY = "lana-english-v1";
+const U = window.UNIT, DECKS = window.DECKS, QUIZ = window.QUIZ, S = window.sticker, ORDER = window.STICKER_ORDER;
+
+/* ---------- saved state ---------- */
+let store = {};
+try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { store = {}; }
+store.ex = store.ex || {}; store.cards = store.cards || {}; store.quiz = store.quiz || [];
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => String(s || "").toLowerCase().replace(/[’`]/g, "'").replace(/[.!?,;:]+$/g, "").replace(/\s+/g, " ").trim();
+const $ = (sel, el) => (el || document).querySelector(sel);
+const $$ = (sel, el) => Array.from((el || document).querySelectorAll(sel));
+
+/* flat exercise list, each with a fixed sticker */
+const ALL = [];
+U.sections.forEach(sec => sec.exercises.forEach(ex => {
+  ex.key = sec.id + "-" + ex.n; ex.sec = sec; ex.stk = ORDER[ALL.length % ORDER.length]; ALL.push(ex);
+}));
+const exState = ex => store.ex[ex.key] || null;
+const isDone = ex => !!(exState(ex) && exState(ex).done);
+
+function isScored(ex){
+  const t = ex.task;
+  if (t.type === "choose" || t.type === "tf") return t.items.some(i => i.answer !== null && i.answer !== undefined);
+  if (t.type === "fill") return t.check !== false;
+  return t.type === "match" || t.type === "sort";
+}
+function secProgress(sec){
+  const d = sec.exercises.filter(isDone).length;
+  return { done: d, total: sec.exercises.length, pct: Math.round(100 * d / sec.exercises.length) };
+}
+function scoreTotals(list){
+  let s = 0, t = 0;
+  list.forEach(ex => { const st = exState(ex); if (st && st.total) { s += st.best; t += st.total; } });
+  return { s, t, pct: t ? Math.round(100 * s / t) : null };
+}
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(stk, title, msg){
+  const el = $("#toast");
+  el.innerHTML = S(stk) + `<div><b>${esc(title)}</b><div>${esc(msg)}</div></div>`;
+  el.classList.add("show"); clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove("show"), 3200);
+}
+
+/* ---------- routing ---------- */
+function route(){
+  const h = decodeURIComponent(location.hash.slice(1)) || "lessons";
+  const [page, a, b] = h.split("/");
+  $$("#tabs a").forEach(x => x.classList.toggle("on", x.dataset.t === (page === "s" || page === "ex" ? "lessons" : page === "deck" || page === "quiz" ? (page === "deck" ? "cards" : "progress") : page)));
+  const app = $("#app");
+  if (page === "s") app.innerHTML = viewSection(a);
+  else if (page === "ex") { app.innerHTML = viewExercise(a, b); bindExercise(a, b); }
+  else if (page === "cards") app.innerHTML = viewDecks();
+  else if (page === "deck") { app.innerHTML = viewDeck(a); bindDeck(a); }
+  else if (page === "progress") app.innerHTML = viewProgress();
+  else if (page === "quiz") { startQuiz(); }
+  else if (page === "stickers") app.innerHTML = viewStickers();
+  else app.innerHTML = viewHome();
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+
+/* ---------- home ---------- */
+function viewHome(){
+  const all = ALL.filter(isDone).length;
+  return `
+  <section class="card hero">
+    <span class="unit">${esc(U.label)}</span>
+    <h2>${esc(U.title)}</h2>
+    <p class="mute">${esc(U.sub)}</p>
+    <div class="inunit">${U.inThisUnit.map(r => `<b>${esc(r[0])}</b><span>${esc(r[1])}</span>`).join("")}</div>
+    <div class="bar"><i style="width:${Math.round(100*all/ALL.length)}%"></i></div>
+    <div class="barlbl"><span>${all} of ${ALL.length} exercises done</span><span>${Math.round(100*all/ALL.length)}%</span></div>
+    ${S("pearlbow")}
+  </section>
+  <div class="sections">
+    ${U.sections.map(sec => { const p = secProgress(sec); return `
+    <a class="card sec" href="#s/${sec.id}">
+      ${S(sec.sticker)}
+      <div class="num">${sec.id}</div>
+      <h3>${esc(sec.name)}</h3>
+      <div class="mute">${esc(sec.goal)}</div>
+      <div class="bar"><i style="width:${p.pct}%"></i></div>
+      <div class="barlbl"><span>${p.done} / ${p.total} done</span><span>${p.pct === 100 ? "🎀 complete" : p.pct + "%"}</span></div>
+    </a>`; }).join("")}
+  </div>`;
+}
+
+/* ---------- section ---------- */
+function viewSection(id){
+  const sec = U.sections.find(s => s.id === id);
+  if (!sec) return viewHome();
+  const p = secProgress(sec), sc = scoreTotals(sec.exercises);
+  return `
+  <div class="crumbs"><a href="#lessons">← all sections</a></div>
+  <section class="card">
+    <span class="pill">${sec.id} ${esc(sec.name)}</span>
+    <p class="intro" style="margin-top:10px">${esc(sec.goal)}</p>
+    <div class="bar"><i style="width:${p.pct}%"></i></div>
+    <div class="barlbl"><span>${p.done} / ${p.total} done</span><span>${sc.pct === null ? "" : "score " + sc.pct + "%"}</span></div>
+  </section>
+  <ol class="exlist">
+    ${sec.exercises.map(ex => { const st = exState(ex); let b;
+      if (st && st.done) b = st.total ? `<span class="badge done">✓ ${st.best}/${st.total}</span>` : `<span class="badge done">✓ done</span>`;
+      else if (st) b = `<span class="badge part">started</span>`; else b = `<span class="badge todo">to do</span>`;
+      return `<li><a href="#ex/${sec.id}/${ex.n}">
+        <span class="dot">${ex.n}</span>
+        <span class="t"><b>${esc(ex.title)}</b><small>${esc(ex.intro)}</small></span>
+        ${st && st.done ? S(ex.stk) : ""}${b}</a></li>`; }).join("")}
+  </ol>`;
+}
+
+/* ---------- exercise ---------- */
+function gapsHTML(q, ii, vals){
+  let g = 0;
+  return q.replace(/\{\}/g, () => { const v = vals && vals[g] != null ? vals[g] : ""; const s = `<input class="gap" data-i="${ii}" data-g="${g}" value="${esc(v)}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="gap">`; g++; return s; });
+}
+function viewExercise(sid, n){
+  const sec = U.sections.find(s => s.id === sid); if (!sec) return viewHome();
+  const ex = sec.exercises.find(e => String(e.n) === String(n)); if (!ex) return viewSection(sid);
+  const st = exState(ex) || {}, a = st.answers, t = ex.task;
+  let body = "";
+  if (t.type === "choose" || t.type === "tf") {
+    body = `<ol class="items">${t.items.map((it, i) => {
+      const opts = t.type === "tf" ? ["True", "False"] : it.options;
+      return `<li data-i="${i}">${it.q}<div class="opts">${opts.map((o, k) => `<button type="button" class="opt${a && a[i] === k ? " sel" : ""}" data-i="${i}" data-k="${k}">${esc(o)}</button>`).join("")}</div></li>`;
+    }).join("")}</ol>`;
+  } else if (t.type === "fill") {
+    body = (t.bank ? `<div class="bank">${t.bank.map(w => `<span>${esc(w)}</span>`).join("")}</div>` : "") +
+      `<ol class="items">${t.items.map((it, i) => `<li data-i="${i}">${gapsHTML(it.q, i, a && a[i])}</li>`).join("")}</ol>`;
+  } else if (t.type === "match") {
+    body = `<ol class="items">${t.left.map((l, i) => `<li data-i="${i}">${l}<select class="match" data-i="${i}"><option value="">choose the meaning…</option>${t.right.map((r, k) => `<option value="${k}"${a && String(a[i]) === String(k) ? " selected" : ""}>${String.fromCharCode(65 + k)}  ${esc(r)}</option>`).join("")}</select></li>`).join("")}</ol>`;
+  } else if (t.type === "sort") {
+    body = `<ol class="items">${t.words.map((w, i) => `<li data-i="${i}"><div class="sortrow"><span class="w">${esc(w)}</span>${t.groups.map((g, k) => `<button type="button" class="opt${a && a[i] === k ? " sel" : ""}" data-i="${i}" data-k="${k}">${esc(g.split("  ")[0])}</button>`).join("")}</div></li>`).join("")}</ol>
+      <p class="note">${t.groups.map(g => esc(g.replace("  ", " · "))).join(" &nbsp;|&nbsp; ")}</p>`;
+  } else if (t.type === "write") {
+    body = t.fields.map((f, i) => `<label class="flabel" for="w${i}">${esc(f)}</label><textarea id="w${i}" data-i="${i}" rows="${t.rows || 2}">${esc(a && a[i])}</textarea>`).join("");
+  } else if (t.type === "speak") {
+    body = `<ul class="speak">${t.lines.map(l => `<li>${esc(l)}</li>`).join("")}</ul><p class="mute">Practise with your partner or with Olya, then tap Done.</p>`;
+  }
+  const scored = isScored(ex);
+  const btn = t.type === "speak" ? "I did it! ✓" : t.type === "write" ? "Save my answers" : scored ? "Check ✓" : "Save my answers";
+  const idx = sec.exercises.indexOf(ex), next = sec.exercises[idx + 1];
+  const nextSec = U.sections[U.sections.indexOf(sec) + 1];
+  const nextHref = next ? `#ex/${sec.id}/${next.n}` : nextSec ? `#s/${nextSec.id}` : "#progress";
+  return `
+  <div class="crumbs"><a href="#s/${sec.id}">← ${sec.id} ${esc(sec.name)}</a></div>
+  <section class="card" id="ex">
+    <div class="exhead"><span class="dot">${ex.n}</span><span class="pill">${esc(ex.title)}</span></div>
+    <p class="intro">${esc(ex.intro)}</p>
+    ${ex.video ? `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${ex.video}?rel=0" title="Audio track" allow="encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ""}
+    ${ex.audio ? `<div class="audio">🎧 ${esc(ex.audio)}</div>` : ""}
+    ${ex.strategy ? `<div class="strategy">${ex.strategy}</div>` : ""}
+    ${ex.rules ? `<div class="rules">${ex.rules.map(r => `<p>${r}</p>`).join("")}</div>` : ""}
+    ${ex.text ? `<div class="text">${ex.text}</div>` : ""}
+    ${ex.textTitle ? `<h3 style="color:var(--rose-d)">${esc(ex.textTitle)}</h3>` : ""}
+    ${ex.tips ? `<div class="tips">${ex.tips.map(x => `<span>${esc(x)}</span>`).join("")}</div>` : ""}
+    ${ex.example ? `<div class="example">💬 ${esc(ex.example)}</div>` : ""}
+    <div id="task">${body}</div>
+    ${ex.note ? `<p class="note">${ex.note}</p>` : ""}
+    ${ex.booster ? `<span class="pill sm booster">${esc(ex.booster)}</span>` : ""}
+    <div class="actions">
+      <button class="btn" id="check">${btn}</button>
+      ${scored ? `<button class="btn ghost sm" id="retry">Try again</button>` : ""}
+      <a class="btn ghost sm" href="${nextHref}" style="text-decoration:none">Next →</a>
+      <span class="saved" id="savedMsg">${st.at ? "Saved " + new Date(st.at).toLocaleDateString() : ""}</span>
+    </div>
+    <div id="result"></div>
+  </section>`;
+}
+
+function collect(ex){
+  const t = ex.task, root = $("#task");
+  if (t.type === "fill") return t.items.map((it, i) => $$(`input.gap[data-i="${i}"]`, root).map(x => x.value));
+  if (t.type === "match") return t.left.map((_, i) => { const v = $(`select[data-i="${i}"]`, root).value; return v === "" ? null : +v; });
+  if (t.type === "write") return t.fields.map((_, i) => $(`textarea[data-i="${i}"]`, root).value);
+  if (t.type === "choose" || t.type === "tf") { const n = t.items.length; const r = Array(n).fill(null); $$(".opt.sel", root).forEach(b => r[+b.dataset.i] = +b.dataset.k); return r; }
+  if (t.type === "sort") { const r = Array(t.words.length).fill(null); $$(".opt.sel", root).forEach(b => r[+b.dataset.i] = +b.dataset.k); return r; }
+  return null;
+}
+function grade(ex, ans){
+  const t = ex.task, marks = [];
+  let s = 0, tot = 0;
+  const okGap = (v, key) => key.split("|").some(k => norm(k) === norm(v));
+  if (t.type === "fill") t.items.forEach((it, i) => { const good = it.answer.every((k, g) => okGap(ans[i][g], k)); marks.push({ good, fix: it.answer.map(k => k.split("|")[0]).join(" · ") }); tot++; if (good) s++; });
+  if (t.type === "choose" || t.type === "tf") t.items.forEach((it, i) => { if (it.answer === null || it.answer === undefined) { marks.push(null); return; } const k = t.type === "tf" ? (it.answer ? 0 : 1) : it.answer; const good = ans[i] === k; marks.push({ good, fix: t.type === "tf" ? (it.answer ? "True" : "False") : it.options[k] }); tot++; if (good) s++; });
+  if (t.type === "match") t.left.forEach((_, i) => { const good = ans[i] === t.answer[i]; marks.push({ good, fix: String.fromCharCode(65 + t.answer[i]) + "  " + t.right[t.answer[i]] }); tot++; if (good) s++; });
+  if (t.type === "sort") t.words.forEach((w, i) => { const k = t.answer[w]; const good = ans[i] === k; marks.push({ good, fix: t.groups[k].split("  ")[0] }); tot++; if (good) s++; });
+  return { s, tot, marks };
+}
+
+function bindExercise(sid, n){
+  const sec = U.sections.find(s => s.id === sid), ex = sec && sec.exercises.find(e => String(e.n) === String(n));
+  if (!ex) return;
+  const t = ex.task, root = $("#task");
+  const draft = () => { const st = store.ex[ex.key] || (store.ex[ex.key] = {}); st.answers = collect(ex); st.at = Date.now(); save(); $("#savedMsg").textContent = "Saved ✓"; updateBank(); };
+  function updateBank(){
+    if (!t.bank) return;
+    const used = $$("input.gap", root).map(x => norm(x.value));
+    $$(".bank span").forEach(sp => sp.classList.toggle("used", used.includes(norm(sp.textContent))));
+  }
+  updateBank();
+  root.addEventListener("click", e => {
+    const b = e.target.closest(".opt"); if (!b) return;
+    $$(`.opt[data-i="${b.dataset.i}"]`, root).forEach(x => x.classList.remove("sel", "right"));
+    b.classList.add("sel"); draft();
+  });
+  root.addEventListener("input", draft);
+  root.addEventListener("change", draft);
+
+  const retry = $("#retry");
+  if (retry) retry.onclick = () => {
+    $$("li", root).forEach(li => { li.classList.remove("ok", "bad"); const f = $(".fix", li); if (f) f.remove(); });
+    $$("input.gap", root).forEach(x => x.value = ""); $$("select", root).forEach(x => x.value = ""); $$(".opt", root).forEach(x => x.classList.remove("sel", "right"));
+    $("#result").innerHTML = ""; draft();
+  };
+
+  $("#check").onclick = () => {
+    const ans = collect(ex), st = store.ex[ex.key] || (store.ex[ex.key] = {});
+    const was = !!st.done;
+    st.answers = ans; st.at = Date.now();
+    let html;
+    if (isScored(ex)) {
+      const missing = ans.some(v => v === null || (Array.isArray(v) && v.some(x => !String(x).trim())));
+      const g = grade(ex, ans);
+      $$("ol.items>li", root).forEach((li, i) => {
+        li.classList.remove("ok", "bad"); const old = $(".fix", li); if (old) old.remove();
+        const m = g.marks[i]; if (!m) return;
+        li.classList.add(m.good ? "ok" : "bad");
+        if (!m.good) li.insertAdjacentHTML("beforeend", `<span class="fix">Answer: <b>${esc(m.fix)}</b></span>`);
+      });
+      st.score = g.s; st.total = g.tot; st.best = Math.max(st.best || 0, g.s);
+      st.tries = (st.tries || 0) + 1; st.done = true;
+      const pct = Math.round(100 * g.s / g.tot);
+      const word = pct === 100 ? "Perfect! 🎀" : pct >= 80 ? "Great job! 💗" : pct >= 50 ? "Good try! ✨" : "Let's practise more 🌸";
+      html = `<div class="result">${S(ex.stk)}<div><b>${g.s} / ${g.tot}</b> · ${word}<div class="mute">${missing ? "Some gaps were empty. " : ""}Best score: ${st.best}/${g.tot}. Wrong answers show the right one. Tap “Try again” to do it again.</div></div></div>`;
+      // self-check items inside a mostly scored exercise
+    } else {
+      st.done = true;
+      const empty = Array.isArray(ans) && ans.every(v => v === null || !String(v).trim());
+      html = `<div class="result">${S(ex.stk)}<div><b>${t.type === "speak" ? "Well done! 🎀" : "Saved! 💗"}</b><div class="mute">${t.type === "speak" ? "Great speaking practice." : empty ? "Your answers are empty, but it's marked as done. You can write more any time." : "Olya will check your answers in the lesson."}</div></div></div>`;
+    }
+    save();
+    $("#result").innerHTML = html; $("#savedMsg").textContent = "Saved ✓";
+    if (!was) {
+      toast(ex.stk, "New sticker! ✨", `You finished ${sec.id} Ex ${ex.n}. See it in Stickers.`);
+      const p = secProgress(sec);
+      if (p.done === p.total) setTimeout(() => toast("pearlbow", `${sec.id} ${sec.name} complete! 🎀`, "You got the section bow."), 3400);
+    }
+  };
+}
+
+/* ---------- flashcards ---------- */
+const cardKey = (d, i) => d.id + ":" + i;
+function deckStats(d){ const k = d.cards.filter((_, i) => store.cards[cardKey(d, i)] === "known").length; return { known: k, total: d.cards.length }; }
+function viewDecks(){
+  const totK = DECKS.reduce((a, d) => a + deckStats(d).known, 0), tot = DECKS.reduce((a, d) => a + d.cards.length, 0);
+  return `
+  <section class="card hero">
+    <h2>Flashcards</h2>
+    <p class="mute">Tap a card to turn it over. Then tell it if you know the word. Cards you know get a green tick.</p>
+    <div class="bar"><i style="width:${Math.round(100*totK/tot)}%"></i></div>
+    <div class="barlbl"><span>${totK} of ${tot} words known</span><span>${Math.round(100*totK/tot)}%</span></div>
+    ${S("heart")}
+  </section>
+  <div class="decks">
+    ${DECKS.map(d => { const s = deckStats(d); return `
+    <a class="card deck" href="#deck/${d.id}">
+      ${S(d.sticker)}
+      <span class="pill sm">${d.section}</span>
+      <h3 style="margin-top:8px">${esc(d.name)}</h3>
+      <div class="mute">${d.cards.length} cards</div>
+      <div class="bar"><i style="width:${Math.round(100*s.known/s.total)}%"></i></div>
+      <div class="barlbl"><span>${s.known} known</span><span>${s.total - s.known} still learning</span></div>
+    </a>`; }).join("")}
+  </div>`;
+}
+let deckOrder = [], deckPos = 0, deckFilter = "all";
+function viewDeck(id){
+  const d = DECKS.find(x => x.id === id); if (!d) return viewDecks();
+  return `
+  <div class="crumbs"><a href="#cards">← all flashcards</a></div>
+  <section class="card">
+    <span class="pill">${esc(d.name)}</span>
+    <div class="chips" id="filt">
+      <button class="chip" data-f="all">All cards</button>
+      <button class="chip" data-f="learning">Still learning</button>
+      <button class="chip" data-f="shuffle">🔀 Shuffle</button>
+    </div>
+    <div id="fc"></div>
+  </section>`;
+}
+function bindDeck(id){
+  const d = DECKS.find(x => x.id === id); if (!d) return;
+  deckFilter = "all"; deckPos = 0;
+  const build = shuffle => {
+    deckOrder = d.cards.map((_, i) => i).filter(i => deckFilter === "all" || store.cards[cardKey(d, i)] !== "known");
+    if (shuffle) for (let i = deckOrder.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deckOrder[i], deckOrder[j]] = [deckOrder[j], deckOrder[i]]; }
+    deckPos = 0; draw();
+  };
+  const draw = () => {
+    $$("#filt .chip").forEach(c => c.classList.toggle("on", c.dataset.f === deckFilter));
+    const fc = $("#fc");
+    if (!deckOrder.length) { fc.innerHTML = `<div class="result" style="justify-content:center">${S("pearlbow")}<div><b>You know all the words! 🎀</b><div class="mute">Tap “All cards” to practise again.</div></div></div>`; return; }
+    const i = deckOrder[deckPos], c = d.cards[i], known = store.cards[cardKey(d, i)] === "known";
+    fc.innerHTML = `
+      <div class="flip" id="flip" role="button" tabindex="0" aria-label="Turn the card">
+        <div class="in">
+          <div class="face f">${known ? `<span class="known">✓ known</span>` : ""}${S(d.sticker)}<div class="word">${esc(c[0])}</div><div class="hint">tap to turn over</div></div>
+          <div class="face b">${S("bow")}<div class="mean">${esc(c[1])}</div><div class="ex">“${esc(c[2])}”</div><div class="hint">tap to turn back</div></div>
+        </div>
+      </div>
+      <div class="counter">${deckPos + 1} / ${deckOrder.length}</div>
+      <div class="cardnav">
+        <button class="btn ghost sm" id="prev">← Back</button>
+        <button class="btn ghost sm" id="learn">🌸 Still learning</button>
+        <button class="btn sm" id="know">I know it ✓</button>
+      </div>`;
+    const flip = $("#flip");
+    const turn = () => flip.classList.toggle("back");
+    flip.onclick = turn; flip.onkeydown = e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); turn(); } };
+    const go = step => { deckPos = (deckPos + step + deckOrder.length) % deckOrder.length; draw(); };
+    $("#prev").onclick = () => go(-1);
+    $("#learn").onclick = () => { store.cards[cardKey(d, i)] = "learning"; save(); go(1); };
+    $("#know").onclick = () => {
+      const first = store.cards[cardKey(d, i)] !== "known";
+      store.cards[cardKey(d, i)] = "known"; save();
+      const s = deckStats(d);
+      if (first && s.known === s.total) toast(d.sticker, "Deck complete! 🎀", `You know all the ${d.name} words.`);
+      if (deckFilter === "learning") { deckOrder.splice(deckPos, 1); if (deckPos >= deckOrder.length) deckPos = 0; draw(); } else go(1);
+    };
+  };
+  $("#filt").onclick = e => { const c = e.target.closest(".chip"); if (!c) return; if (c.dataset.f === "shuffle") build(true); else { deckFilter = c.dataset.f; build(false); } };
+  build(false);
+}
+
+/* ---------- progress ---------- */
+function ring(pct, label, sub){
+  const r = 60, c = 2 * Math.PI * r;
+  return `<div class="ring"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="${r}" fill="none" stroke="#fbe1ea" stroke-width="16"/><circle cx="75" cy="75" r="${r}" fill="none" stroke="#e8769b" stroke-width="16" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - pct / 100)}"/></svg><div class="lbl"><div>${label}<small>${sub}</small></div></div></div>`;
+}
+function viewProgress(){
+  const done = ALL.filter(isDone).length, pct = Math.round(100 * done / ALL.length);
+  const sc = scoreTotals(ALL);
+  const known = DECKS.reduce((a, d) => a + deckStats(d).known, 0), tot = DECKS.reduce((a, d) => a + d.cards.length, 0);
+  const best = store.quiz.length ? Math.max(...store.quiz.map(q => Math.round(100 * q.score / q.total))) : null;
+  const rows = ALL.filter(ex => exState(ex) && exState(ex).done).map(ex => { const st = exState(ex);
+    return `<tr><td>${ex.sec.id} · Ex ${ex.n} ${esc(ex.title)}</td><td>${st.total ? `<b>${st.best}/${st.total}</b>` : "✓ done"}</td></tr>`; }).join("");
+  return `
+  <section class="card">
+    <h2>My progress</h2>
+    ${ring(pct, pct + "%", "of Unit 1")}
+    <div class="stats">
+      <div><b>${done}/${ALL.length}</b><span>exercises done</span></div>
+      <div><b>${sc.pct === null ? "–" : sc.pct + "%"}</b><span>correct answers</span></div>
+      <div><b>${known}/${tot}</b><span>words known</span></div>
+    </div>
+  </section>
+  <section class="card">
+    <h3>Sections</h3>
+    ${U.sections.map(sec => { const p = secProgress(sec), s = scoreTotals(sec.exercises); return `
+      <div style="margin-top:12px"><b>${sec.id} ${esc(sec.name)}</b>
+      <div class="bar"><i style="width:${p.pct}%"></i></div>
+      <div class="barlbl"><span>${p.done}/${p.total} done</span><span>${s.pct === null ? "" : s.pct + "% correct"}</span></div></div>`; }).join("")}
+  </section>
+  <section class="card hero">
+    <h2>Progress check</h2>
+    <p>A quick test of the whole unit: 10 questions about words, the present simple and at / on / in.</p>
+    <p class="mute">${best === null ? "You haven't done it yet." : "Best result: " + best + "%"}</p>
+    ${store.quiz.length ? `<div class="hist">${store.quiz.slice(-6).reverse().map(q => `<span>${new Date(q.at).toLocaleDateString()} · ${q.score}/${q.total}</span>`).join("")}</div>` : ""}
+    <div class="actions"><a class="btn" href="#quiz" style="text-decoration:none">Start the check ✨</a></div>
+    ${S("planner")}
+  </section>
+  <section class="card">
+    <h3>My results</h3>
+    ${rows ? `<table class="res">${rows}</table>` : `<p class="mute">Finish an exercise and your result appears here.</p>`}
+  </section>`;
+}
+
+/* ---------- progress check quiz ---------- */
+function startQuiz(){
+  const qs = QUIZ.map((q, i) => i).sort(() => Math.random() - .5).slice(0, 10).map(i => QUIZ[i]);
+  let pos = 0, score = 0;
+  const app = $("#app");
+  const draw = () => {
+    if (pos >= qs.length) {
+      store.quiz.push({ at: Date.now(), score, total: qs.length }); save();
+      const pct = Math.round(100 * score / qs.length);
+      app.innerHTML = `<div class="crumbs"><a href="#progress">← my progress</a></div>
+        <section class="card hero" style="text-align:center">
+          <h2>Progress check done!</h2>
+          ${ring(pct, score + "/" + qs.length, pct + "%")}
+          <p style="max-width:none">${pct === 100 ? "Perfect! You know Unit 1 really well 🎀" : pct >= 80 ? "Great job! 💗" : pct >= 50 ? "Good work! Practise the flashcards and try again ✨" : "Let's practise the lessons and flashcards, then try again 🌸"}</p>
+          <div class="actions" style="justify-content:center"><a class="btn" href="#progress" style="text-decoration:none">See my progress</a><button class="btn ghost" id="again">Try again</button></div>
+        </section>`;
+      $("#again").onclick = startQuiz;
+      if (pct >= 80) toast("roses", "Progress check star! 🌹", `You got ${score}/${qs.length}.`);
+      return;
+    }
+    const q = qs[pos];
+    app.innerHTML = `<div class="crumbs"><a href="#progress">← my progress</a></div>
+      <section class="card">
+        <div class="exhead"><span class="pill">Progress check</span><span class="mute">Question ${pos + 1} of ${qs.length}</span></div>
+        <div class="bar"><i style="width:${100 * pos / qs.length}%"></i></div>
+        <h3 style="margin:18px 0 10px;font-size:24px">${esc(q.q)}</h3>
+        <div class="opts" id="qo">${q.options.map((o, k) => `<button class="opt" data-k="${k}" style="font-size:18px;padding:10px 22px">${esc(o)}</button>`).join("")}</div>
+        <div id="qfb" style="min-height:60px"></div>
+      </section>`;
+    $("#qo").onclick = e => {
+      const b = e.target.closest(".opt"); if (!b || $("#qo").dataset.done) return;
+      $("#qo").dataset.done = 1;
+      const k = +b.dataset.k, good = k === q.answer;
+      if (good) score++;
+      $$("#qo .opt").forEach(x => { if (+x.dataset.k === q.answer) x.classList.add("right"); });
+      if (!good) b.classList.add("sel");
+      $("#qfb").innerHTML = `<div class="result">${good ? S("heart") : S("bow")}<div><b>${good ? "Correct! 💗" : "Not quite"}</b><div class="mute">${good ? "" : "The answer is " + esc(q.options[q.answer]) + "."}</div></div></div>
+        <div class="actions"><button class="btn" id="qn">${pos + 1 < qs.length ? "Next →" : "See my result"}</button></div>`;
+      $("#qn").onclick = () => { pos++; draw(); };
+    };
+  };
+  draw();
+}
+
+/* ---------- stickers ---------- */
+function viewStickers(){
+  const got = ALL.filter(isDone).length;
+  const secBows = U.sections.filter(s => secProgress(s).pct === 100).length;
+  return `
+  <section class="card hero">
+    <h2>My sticker album</h2>
+    <p>You get a sticker for every exercise you finish, and a big bow for every section you complete.</p>
+    <div class="barlbl"><span>${got} of ${ALL.length} stickers</span><span>${secBows} of ${U.sections.length} section bows</span></div>
+    ${S("gift")}
+  </section>
+  <section class="card">
+    <h3>Section bows</h3>
+    <div class="album">${U.sections.map(s => secProgress(s).pct === 100
+      ? `<div class="slot got">${S("pearlbow")}<small>${s.id}</small></div>`
+      : `<div class="slot locked">🎀<small>${s.id}</small></div>`).join("")}</div>
+  </section>
+  ${U.sections.map(sec => `
+  <section class="card">
+    <h3>${sec.id} ${esc(sec.name)}</h3>
+    <div class="album">${sec.exercises.map(ex => isDone(ex)
+      ? `<a class="slot got" href="#ex/${sec.id}/${ex.n}" title="${esc(ex.title)}">${S(ex.stk)}<small>Ex ${ex.n}</small></a>`
+      : `<a class="slot locked" href="#ex/${sec.id}/${ex.n}" title="${esc(ex.title)}" style="text-decoration:none">?<small>Ex ${ex.n}</small></a>`).join("")}</div>
+  </section>`).join("")}`;
+}
+
+/* ---------- header decoration + reset ---------- */
+$("#hdrStk").innerHTML = S("latte", "hdr-stk") + S("heart", "hdr-stk2");
+$("#reset").onclick = () => {
+  if (!window.confirm("Clear all Lana's results, flashcards and stickers on this device?")) return;
+  store = { ex: {}, cards: {}, quiz: [] }; save(); location.hash = "#lessons"; route();
+};
+route();
+})();
+</script>
+</body>
+</html>
