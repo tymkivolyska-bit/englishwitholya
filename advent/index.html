@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Christmas Advent Calendar</title>
+<meta name="theme-color" content="#f1eeea">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Fredoka:wght@600;700&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <main class="sheet">
+    <header class="head">
+      <h1>CHRISTMAS</h1>
+      <p class="sub">advent calendar</p>
+      <p class="progress" id="progress" aria-live="polite"></p>
+    </header>
+
+    <section class="grid" id="grid" aria-label="Advent calendar days"></section>
+
+    <footer class="foot">
+      <button type="button" class="link-btn" id="reset">Reset my progress</button>
+    </footer>
+  </main>
+
+  <div class="day-view" id="dayView" hidden role="dialog" aria-modal="true" aria-labelledby="dayTitle">
+    <article class="card">
+      <nav class="card-nav">
+        <button type="button" class="nav-btn" id="back" aria-label="Back to calendar">&larr; Calendar</button>
+        <span class="nav-steps">
+          <button type="button" class="nav-btn" id="prev" aria-label="Previous day">&lsaquo;</button>
+          <button type="button" class="nav-btn" id="next" aria-label="Next day">&rsaquo;</button>
+        </span>
+      </nav>
+      <div class="card-art" id="dayArt"></div>
+      <p class="card-day" id="dayLabel"></p>
+      <h2 id="dayTitle"></h2>
+      <div class="card-text" id="dayText"></div>
+      <img class="card-img" id="dayImg" alt="" hidden>
+      <a class="card-link" id="dayLink" target="_blank" rel="noopener" hidden>Open the task</a>
+      <button type="button" class="done-btn" id="doneBtn"></button>
+    </article>
+  </div>
+
+  <script src="ornaments.js?v=1"></script>
+  <script src="app.js?v=1"></script>
+</body>
+</html>

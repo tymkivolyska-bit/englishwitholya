@@ -1,0 +1,177 @@
+{
+  "_help": "Fill in title and text for each day. Leave title empty to show 'Task coming soon'. Use \\n in text for a new line. link and image are optional URLs.",
+  "settings": {
+    "unlockByDate": false,
+    "year": 2026
+  },
+  "days": [
+    {
+      "day": 1,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 2,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 3,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 4,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 5,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 6,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 7,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 8,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 9,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 10,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 11,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 12,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 13,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 14,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 15,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 16,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 17,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 18,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 19,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 20,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 21,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 22,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 23,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    },
+    {
+      "day": 24,
+      "title": "",
+      "text": "",
+      "link": "",
+      "image": ""
+    }
+  ]
+}
