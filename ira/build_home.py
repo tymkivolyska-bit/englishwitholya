@@ -51,17 +51,24 @@ nexts = "".join(f"<li>{esc(s)}</li>" for s in r["next_steps"])
 nwords = sum(len(x["words"]) for x in r["reviews"])
 ncorr = sum(len(x["corrections"]) for x in r["reviews"])
 
-hw = r.get("homework")
+hws = r.get("homework") or []
+if isinstance(hws, dict):
+    hws = [hws]
+hw = hws[0] if hws else None   # the newest homework comes first
 hw_html = ""
-if hw:
-    def draft(key, rng):
-        tgt = f'{rng[0]}–{rng[1]} words' if rng else ""
-        return (f'<div class="draft"><textarea data-draft="{key}" data-min="{rng[0] if rng else 0}" data-max="{rng[1] if rng else 0}" '
-                f'rows="6" placeholder="Write your draft here. It is saved on this device."></textarea>'
-                f'<div class="drow"><span class="wc" data-wc="{key}">0 words{" · aim: " + tgt if tgt else ""}</span>'
-                f'<button class="btn line sm" type="button" data-copy="{key}">Copy text</button></div></div>')
+
+
+def draft(key, rng):
+    tgt = f'{rng[0]}–{rng[1]} words' if rng else ""
+    return (f'<div class="draft"><textarea data-draft="{key}" data-min="{rng[0] if rng else 0}" data-max="{rng[1] if rng else 0}" '
+            f'rows="6" placeholder="Write your draft here. It is saved on this device."></textarea>'
+            f'<div class="drow"><span class="wc" data-wc="{key}">0 words{" · aim: " + tgt if tgt else ""}</span>'
+            f'<button class="btn line sm" type="button" data-copy="{key}">Copy text</button></div></div>')
+
+
+for k, h in enumerate(hws):
     items = ""
-    for i, t in enumerate(hw["tasks"], 1):
+    for i, t in enumerate(h["tasks"], 1):
         body = f'<p>{esc(t["detail"])}</p>'
         if t.get("options"):
             tabs = "".join(f'<label class="opt"><input type="radio" name="hwopt" value="{o["id"]}"{" checked" if j == 2 else ""}> {esc(o["name"])} <small>{o["words"][0]}–{o["words"][1]} words</small></label>'
@@ -69,16 +76,23 @@ if hw:
             panes = "".join(f'<div class="pane" data-pane="{o["id"]}"{"" if j == 2 else " hidden"}><p class="brief">{esc(o["brief"])}</p>'
                             f'<p class="check"><b>Check:</b> {esc(o["check"])}</p>{draft(t["id"] + o["id"], o["words"])}</div>'
                             for j, o in enumerate(t["options"]))
-            phr = "".join(f"<li>{esc(p)}</li>" for p in hw["phrases"])
+            phr = "".join(f"<li>{esc(p)}</li>" for p in h["phrases"])
             body += (f'<div class="opts" role="radiogroup" aria-label="Choose a task">{tabs}</div>{panes}'
-                     f'<details class="phr"><summary>Stage 4 phrases (use two)</summary><ul>{phr}</ul></details>')
-        elif t.get("words"):
-            body += draft(t["id"], t["words"])
+                     f'<details class="phr"><summary>{esc(h.get("phrasesTitle", "Stage 4 phrases (use two)"))}</summary><ul>{phr}</ul></details>')
+        else:
+            if t.get("check"):
+                body += f'<p class="check"><b>Check:</b> {esc(t["check"])}</p>'
+            if t.get("phrases") and h.get("phrases"):
+                phr = "".join(f"<li>{esc(p)}</li>" for p in h["phrases"])
+                body += f'<details class="phr"><summary>{esc(h.get("phrasesTitle", "Useful phrases"))}</summary><ul>{phr}</ul></details>'
+            if t.get("words") or t.get("draft"):
+                body += draft(t["id"], t.get("words"))
         items += (f'<li class="hw"><label class="done"><input type="checkbox" data-done="{t["id"]}"><span class="n">{i}</span></label>'
                   f'<div><h3>{esc(t["title"])}{" <small>" + str(t["words"][0]) + "–" + str(t["words"][1]) + " words</small>" if t.get("words") else ""}</h3>{body}</div></li>')
-    hw_html = (f'<section id="homework"><h2>Homework for {esc(hw["dueLabel"])}</h2>'
-               f'<p class="sub">{esc(hw["lesson"])}. Tick each task when it is done. Your drafts stay on this device; copy them and send them to your teacher.</p>'
-               f'<ol class="hwlist">{items}</ol></section>')
+    title = f'Homework for {esc(h["dueLabel"])}' if k == 0 else f'Still to finish: homework for {esc(h["dueLabel"])}'
+    hw_html += (f'<section id="{"homework" if k == 0 else "homework-" + str(k + 1)}"><h2>{title}</h2>'
+                f'<p class="sub">{esc(h["lesson"])}. {esc(h.get("note", "Tick each task when it is done. Your drafts stay on this device; copy them and send them to your teacher."))}</p>'
+                f'<ol class="hwlist">{items}</ol></section>')
 
 sheet_btn = (f'<a class="btn line" href="{esc(r["sheet"])}" target="_blank" rel="noopener">Progress sheet</a>'
              if r.get("sheet") else "")

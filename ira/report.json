@@ -383,78 +383,127 @@
     "Write one Instagram caption in English for your salon each week and bring it to the lesson.",
     "Write one short formal email a week (to a supplier, a landlord or a client) and check it against the formal writing rules from Lesson 2."
   ],
-  "homework": {
-    "due": "2026-11-26",
-    "dueLabel": "Thursday, 26 November",
-    "lesson": "Lesson 4 · A Year in Writing",
-    "phrases": [
-      "This year has been + adjective",
-      "I spent most of my time + verb-ing",
-      "I (finally) managed + to + verb",
-      "So far, I have + past participle",
-      "I haven't + past participle … yet",
-      "I didn't manage + to + verb",
-      "It's still in progress.",
-      "It didn't go to plan, but …",
-      "I'm planning + to + verb",
-      "I hope + to + verb",
-      "My goal for next year is + to + verb",
-      "By my next birthday, I'd like + to + verb"
-    ],
-    "tasks": [
-      {
-        "id": "hw1",
-        "title": "Finish the Writing studio task you didn't do in class",
-        "detail": "Choose the task you didn't finish in class (A, B or C) and use two phrases from stage 4 (below).",
-        "words": null,
-        "options": [
-          {
-            "id": "A",
-            "name": "Task A · Text message",
-            "words": [
-              30,
-              50
-            ],
-            "brief": "Your friend Kate writes: “hbd!!! what r u doing to celebrate? how's life? miss u”. Reply to Kate. Say how you celebrated, tell her one thing about your year and suggest meeting up. Abbreviations are fine.",
-            "check": "Friendly tone · short sentences · answer all her questions · a question back"
-          },
-          {
-            "id": "B",
-            "name": "Task B · Formal email",
-            "words": [
-              80,
-              120
-            ],
-            "brief": "Think of one goal for next year. Write to a school or academy about a course that can help you reach it. Say why you are writing, explain your goal briefly and ask about dates, price and a certificate.",
-            "check": "Dear … · I am writing to … · polite questions · no abbreviations · Yours faithfully / sincerely"
-          },
-          {
-            "id": "C",
-            "name": "Task C · Instagram caption",
-            "words": [
-              60,
-              100
-            ],
-            "brief": "Write a birthday post for your page, like Sofia's. Start with a hook. Tell a short story of your year: what you did, what you achieved, what is not done yet. Finish with your next goal and a question for your followers.",
-            "check": "Hook in line one · past and future · two phrases from stage 4 · call to action"
-          }
-        ]
-      },
-      {
-        "id": "hw2",
-        "title": "A letter to yourself",
-        "detail": "Write a letter to yourself to open on your next birthday. What did you do this year? What do you hope to achieve by then?",
-        "words": [
-          120,
-          150
-        ]
-      },
-      {
-        "id": "hw3",
-        "title": "Feeling brave? (optional)",
-        "detail": "Post your birthday caption in English. Next lesson, tell me how people reacted.",
-        "words": null
-      }
-    ]
-  }
+  "homework": [
+    {
+      "due": "2026-11-30",
+      "dueLabel": "Monday, 30 November",
+      "lesson": "Lesson 5 · And the Award Goes To",
+      "note": "Do these before Monday's lesson and send your recording to your teacher. Tick each task when it is done. Your drafts stay on this device.",
+      "phrasesTitle": "Speech steps and phrases from the lesson",
+      "phrases": [
+        "1 · Thank the organisers: I'd like to thank …",
+        "2 · Say how you feel: I'm deeply honoured. / I'm over the moon. / It hasn't sunk in yet.",
+        "3 · Thank your team and clients: I couldn't have done it without … / A big thank you to …",
+        "4 · One sentence about the future: I can't wait for … / I'm hoping to …",
+        "Words: award-winning · grateful · recognition · achievement · signature style · attention to detail · behind the scenes"
+      ],
+      "tasks": [
+        {
+          "id": "l5hw1",
+          "title": "Write your real thank-you speech",
+          "detail": "Write your real one-minute thank-you speech for Best Wedding Hairstylist of the Year. Use the four steps from stage 8 of the lesson.",
+          "words": [
+            100,
+            120
+          ],
+          "phrases": true,
+          "check": "Four steps · three words from the flashcards · short sentences · end with a thank-you"
+        },
+        {
+          "id": "l5hw2",
+          "title": "Mark it and practise it",
+          "detail": "In your speech, mark the pauses (/ short, // long) and write the stressed words in CAPITALS. Then read it out loud three times: slowly, with pauses, and with your voice going down at the end of each sentence.",
+          "words": null
+        },
+        {
+          "id": "l5hw3",
+          "title": "Record it and send it",
+          "detail": "Record your speech as a voice message and send it to your teacher. Smile while you speak: people can hear it!",
+          "words": null
+        },
+        {
+          "id": "l5hw4",
+          "title": "Find an award winner's interview",
+          "detail": "Find a short interview with an award winner online. Write down three phrases you like and the link.",
+          "words": null,
+          "draft": true
+        }
+      ]
+    },
+    {
+      "due": "2026-11-26",
+      "dueLabel": "Thursday, 26 November",
+      "lesson": "Lesson 4 · A Year in Writing",
+      "phrases": [
+        "This year has been + adjective",
+        "I spent most of my time + verb-ing",
+        "I (finally) managed + to + verb",
+        "So far, I have + past participle",
+        "I haven't + past participle … yet",
+        "I didn't manage + to + verb",
+        "It's still in progress.",
+        "It didn't go to plan, but …",
+        "I'm planning + to + verb",
+        "I hope + to + verb",
+        "My goal for next year is + to + verb",
+        "By my next birthday, I'd like + to + verb"
+      ],
+      "tasks": [
+        {
+          "id": "hw1",
+          "title": "Finish the Writing studio task you didn't do in class",
+          "detail": "Choose the task you didn't finish in class (A, B or C) and use two phrases from stage 4 (below).",
+          "words": null,
+          "options": [
+            {
+              "id": "A",
+              "name": "Task A · Text message",
+              "words": [
+                30,
+                50
+              ],
+              "brief": "Your friend Kate writes: “hbd!!! what r u doing to celebrate? how's life? miss u”. Reply to Kate. Say how you celebrated, tell her one thing about your year and suggest meeting up. Abbreviations are fine.",
+              "check": "Friendly tone · short sentences · answer all her questions · a question back"
+            },
+            {
+              "id": "B",
+              "name": "Task B · Formal email",
+              "words": [
+                80,
+                120
+              ],
+              "brief": "Think of one goal for next year. Write to a school or academy about a course that can help you reach it. Say why you are writing, explain your goal briefly and ask about dates, price and a certificate.",
+              "check": "Dear … · I am writing to … · polite questions · no abbreviations · Yours faithfully / sincerely"
+            },
+            {
+              "id": "C",
+              "name": "Task C · Instagram caption",
+              "words": [
+                60,
+                100
+              ],
+              "brief": "Write a birthday post for your page, like Sofia's. Start with a hook. Tell a short story of your year: what you did, what you achieved, what is not done yet. Finish with your next goal and a question for your followers.",
+              "check": "Hook in line one · past and future · two phrases from stage 4 · call to action"
+            }
+          ]
+        },
+        {
+          "id": "hw2",
+          "title": "A letter to yourself",
+          "detail": "Write a letter to yourself to open on your next birthday. What did you do this year? What do you hope to achieve by then?",
+          "words": [
+            120,
+            150
+          ]
+        },
+        {
+          "id": "hw3",
+          "title": "Feeling brave? (optional)",
+          "detail": "Post your birthday caption in English. Next lesson, tell me how people reacted.",
+          "words": null
+        }
+      ],
+      "note": "Not finished yet, so it stays here. Tick each task when it is done. Your drafts stay on this device; copy them and send them to your teacher."
+    }
+  ]
 }
