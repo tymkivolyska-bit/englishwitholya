@@ -17,3 +17,7 @@ Lessons:
 3. "Snowy CVC words" from the Winter CVC Words Activity Booklet (pictures cropped from it into `img/w/`). Task types added: `spy` (read a word, tap it in the picture; `box` is [left, top, right, bottom] in % of the picture), `join` (pick one letter per column), `colour` (pick a colour from the key, tap matching words on the scarf). In `cvc` words, write digraphs with dashes (`s-o-ck`), and options can be picture paths.
 
 Pictures in tasks: `img` can be one path or a list (shows them side by side); `no:true` draws a red "no" sign over the picture.
+
+## Voice (girl's voice on every device)
+Everything the page says is pre-recorded in `audio/` (female voice "af_heart" from the free Kokoro TTS), so it sounds the same on every phone. `audio/index.js` maps each phrase to its mp3.
+After adding or changing lessons, record the new phrases: `node tools/phrases.js > phrases.json`, then `python tools/make_audio.py phrases.json audio` (see the top of that file), and bump the `?v=` on the `audio/index.js` script line. Anything not recorded falls back to the device's own voice.

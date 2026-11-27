@@ -313,7 +313,8 @@ section.task{margin-top:34px;padding-top:24px;border-top:2px dashed var(--line)}
   </main>
 </div>
 
-<script src="lessons.js?v=20261127b"></script>
+<script src="lessons.js?v=20261127d"></script>
+<script src="audio/index.js?v=20261127d"></script>
 <script>
 (function(){
 "use strict";
@@ -346,13 +347,17 @@ function lessonStats(les){
 var speakIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
 var SOUNDS = {ck:"kuh",ss:"sss",ff:"fff",ll:"lll",sh:"shh",ch:"chuh",a:"ah",b:"buh",c:"kuh",d:"duh",e:"eh",f:"fff",g:"guh",h:"huh",i:"ih",j:"juh",k:"kuh",l:"lll",m:"mmm",n:"nnn",o:"aw",p:"puh",q:"kwuh",r:"rrr",s:"sss",t:"tuh",u:"uh",v:"vvv",w:"wuh",x:"ks",y:"yuh",z:"zzz"};
 /* a girl's voice: prefer known female English voices, then any voice named "female" */
-var FEMALE = /female|samantha|karen|serena|kate|martha|moira|tessa|fiona|victoria|allison|ava|susan|zira|hazel|libby|sonia|maisie|mia|aria|jenny|emma|amy|olivia|natasha|catherine|nicky|flo|shelley|sandy|grandma/i;
+var FEMALE = /female|samantha|karen|serena|kate|martha|moira|tessa|fiona|victoria|allison|ava|susan|zira|hazel|libby|sonia|maisie|mia|aria|jenny|emma|amy|olivia|natasha|catherine|nicky|flo|shelley|sandy|grandma|stephanie|kathy|princess|x-(gba|gbc|gbg|sfg|iob|iog|tpc|tpf)/i;
+var VKEY = "luna-voice";
 var MALE = /\bmale\b|daniel|arthur|george|ryan|oliver|thomas|fred|alex|aaron|guy|david|mark|james|rishi|gordon|eddy|reed|rocko|grandpa/i;
 var voiceCache = null;
+function enVoices(){ return speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); }); }
 function pickVoice(){
   if (voiceCache) return voiceCache;
-  var vs = speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); });
+  var vs = enVoices();
   if (!vs.length) return null;
+  var saved = null; try { saved = localStorage.getItem(VKEY); } catch(e){}
+  if (saved){ var sv = vs.filter(function(v){ return v.name===saved; })[0]; if (sv) return voiceCache = sv; }
   function score(v){ var n = v.name; var sc = 0;
     if (/female/i.test(n)) sc += 6; else if (FEMALE.test(n)) sc += 5;
     if (/\bmale\b/i.test(n) && !/female/i.test(n)) sc -= 8; else if (MALE.test(n)) sc -= 6;
@@ -362,29 +367,46 @@ function pickVoice(){
   vs.sort(function(a,b){ return score(b)-score(a); });
   return voiceCache = vs[0];
 }
-if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = function(){ voiceCache = null; };
+if ("speechSynthesis" in window){
+  var onVoices = function(){ voiceCache = null; if (window.__fillVoices) window.__fillVoices(); };
+  if (speechSynthesis.addEventListener) speechSynthesis.addEventListener("voiceschanged", onVoices); else speechSynthesis.onvoiceschanged = onVoices;
+  // some phones load voices late and never fire the event: ask again a few times
+  [300, 1000, 2500, 5000].forEach(function(ms){ setTimeout(onVoices, ms); });
+}
 function utter(txt, rate){
   var u = new SpeechSynthesisUtterance(txt); u.lang = "en-GB"; u.rate = rate || .85; u.pitch = 1.25;
   var v = pickVoice(); if (v){ u.voice = v; u.lang = v.lang; }
   return u;
 }
+/* Speech: play the recorded girl's voice (audio/), and only use the device voice for anything not recorded */
+var AUD = typeof Audio!=="undefined" ? new Audio() : null, seqId = 0;
+function akey(t){ return String(t).replace(/\(.*?\)/g,"").toLowerCase().replace(/[’‘]/g,"'").replace(/[^a-z0-9' -]/g," ").replace(/\s+/g," ").trim(); }
+function recFor(item){ var A = window.AUDIO || {}; var k = item.snd ? "/"+item.snd : akey(item.t); return A[k] ? "audio/"+A[k] : null; }
 function speakSeq(list, each, done){
-  if (!("speechSynthesis" in window)){ list.forEach(function(_,k){ each && each(k); }); done && done(); return; }
-  speechSynthesis.cancel(); var k = 0;
+  var my = ++seqId, k = 0;
+  if (AUD){ try { AUD.pause(); } catch(e){} }
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
   (function next(){
+    if (my!==seqId) return;
     if (k>=list.length){ done && done(); return; }
-    var item = list[k], u = utter(item.t, item.r); var idx = k++;
+    var item = list[k], idx = k++;
     each && each(idx);
-    var fired = false, go = function(){ if (fired) return; fired = true; setTimeout(next, item.pause||250); };
-    u.onend = go; u.onerror = go; setTimeout(go, 2500);
-    speechSynthesis.speak(u);
+    var fired = false, go = function(){ if (fired || my!==seqId) return; fired = true; setTimeout(next, item.pause||150); };
+    var rec = AUD && recFor(item);
+    if (rec){
+      AUD.onended = go; AUD.onerror = function(){ tts(); };
+      AUD.src = rec; AUD.playbackRate = (item.r && item.r < .7) ? .8 : 1;
+      var pr = AUD.play(); if (pr && pr.catch) pr.catch(function(){ tts(); });
+      setTimeout(go, 30000);
+    } else tts();
+    function tts(){
+      if (!("speechSynthesis" in window)) return go();
+      var u = utter(item.snd ? (SOUNDS[item.snd]||item.snd) : String(item.t).replace(/\(.*?\)/g,""), item.r); u.onend = go; u.onerror = go; setTimeout(go, 3000);
+      speechSynthesis.speak(u);
+    }
   })();
 }
-function speak(txt){
-  if (!("speechSynthesis" in window)) return;
-  var u = utter(txt.replace(/\(.*?\)/g,""), .85);
-  speechSynthesis.cancel(); speechSynthesis.speak(u);
-}
+function speak(txt){ speakSeq([{t:txt, r:.85}]); }
 function starStr(n){ var s=""; for (var i=0;i<3;i++) s += i<n ? "<b>★</b>" : "★"; return s; }
 
 /* ---------- home ---------- */
@@ -684,7 +706,14 @@ function Plate(t, st, body, seed){
     foods.appendChild(b);
   });
   var lb = el('<button class="listen" type="button"><span class="say">'+speakIcon+'</span>Listen</button>');
-  lb.onclick = function(){ speak(sentence().replace(/[^\w\s.,'!?]/g,"")); };
+  lb.onclick = function(){
+    var parts = [];
+    t.foods.forEach(function(f,i){ var n = st.a[i]||0; if (n) parts.push(n===1 ? "there is " + f.one : "there are " + NUMS[n] + " " + f.many); });
+    if (!parts.length) return speakSeq([{t:"My plate is empty! Tap the food to put it on the plate."}]);
+    var seq = [{t:"On my plate today", pause:60}];
+    parts.forEach(function(p,j){ if (j===parts.length-1 && j>0) seq.push({t:"and", pause:40}); seq.push({t:p, pause:120}); });
+    speakSeq(seq);
+  };
   wrap.insertBefore(lb, foods);
   body.appendChild(wrap);
   draw();
@@ -700,14 +729,14 @@ function Cvc(t, st, body, seed){
     var letters = it.w.indexOf("-")>-1 ? it.w.split("-") : it.w.split(""); var word = it.w.replace(/-/g,"");
     letters.forEach(function(ch,k){
       var b = el('<button class="tile'+(/[aeiou]/.test(ch)?' vowel':'')+'" type="button" aria-label="sound '+esc(ch)+'">'+esc(ch)+'</button>');
-      b.onclick = function(){ lightOnly(k); speakSeq([{t:SOUNDS[ch]||ch, r:.7}], null, function(){ lightOnly(-1); }); };
+      b.onclick = function(){ lightOnly(k); speakSeq([{snd:ch, t:SOUNDS[ch]||ch, r:.7}], null, function(){ lightOnly(-1); }); };
       tiles.appendChild(b);
     });
     function lightOnly(k){ tiles.querySelectorAll(".tile").forEach(function(x,j){ x.classList.toggle("lit", j===k); }); }
     function lightUpTo(k){ tiles.querySelectorAll(".tile").forEach(function(x,j){ x.classList.toggle("lit", j<=k); }); }
     var slow = el('<button class="listen" type="button"><span class="say">🐢</span>Sound it out</button>');
     slow.onclick = function(){
-      var seq = letters.map(function(ch){ return {t:SOUNDS[ch]||ch, r:.7, pause:350}; });
+      var seq = letters.map(function(ch){ return {snd:ch, t:SOUNDS[ch]||ch, r:.7, pause:350}; });
       seq.push({t:word, r:.6, pause:300}); seq.push({t:word, r:.9});
       speakSeq(seq, function(k){ if (k<letters.length) lightUpTo(k); else lightUpTo(letters.length); }, function(){ setTimeout(function(){ lightOnly(-1); }, 600); });
     };
@@ -844,7 +873,7 @@ function Join(t, st, body, seed){
       opts.forEach(function(v){
         var b = el('<button class="jl'+(/^[aeiou]$/.test(v)?' vowel':'')+'" type="button">'+esc(v)+'</button>');
         b.dataset.c = c; b.dataset.v = v;
-        b.onclick = function(){ st.a[i][c] = v; save(); draw(); speakSeq([{t:SOUNDS[v]||v, r:.7}]); };
+        b.onclick = function(){ st.a[i][c] = v; save(); draw(); speakSeq([{snd:v, t:SOUNDS[v]||v, r:.7}]); };
         col.appendChild(b);
       });
       cols.appendChild(col);
