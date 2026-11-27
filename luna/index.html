@@ -313,7 +313,7 @@ section.task{margin-top:34px;padding-top:24px;border-top:2px dashed var(--line)}
   </main>
 </div>
 
-<script src="lessons.js?v=20261127a"></script>
+<script src="lessons.js?v=20261127b"></script>
 <script>
 (function(){
 "use strict";
@@ -345,10 +345,28 @@ function lessonStats(les){
 }
 var speakIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>';
 var SOUNDS = {ck:"kuh",ss:"sss",ff:"fff",ll:"lll",sh:"shh",ch:"chuh",a:"ah",b:"buh",c:"kuh",d:"duh",e:"eh",f:"fff",g:"guh",h:"huh",i:"ih",j:"juh",k:"kuh",l:"lll",m:"mmm",n:"nnn",o:"aw",p:"puh",q:"kwuh",r:"rrr",s:"sss",t:"tuh",u:"uh",v:"vvv",w:"wuh",x:"ks",y:"yuh",z:"zzz"};
+/* a girl's voice: prefer known female English voices, then any voice named "female" */
+var FEMALE = /female|samantha|karen|serena|kate|martha|moira|tessa|fiona|victoria|allison|ava|susan|zira|hazel|libby|sonia|maisie|mia|aria|jenny|emma|amy|olivia|natasha|catherine|nicky|flo|shelley|sandy|grandma/i;
+var MALE = /\bmale\b|daniel|arthur|george|ryan|oliver|thomas|fred|alex|aaron|guy|david|mark|james|rishi|gordon|eddy|reed|rocko|grandpa/i;
+var voiceCache = null;
+function pickVoice(){
+  if (voiceCache) return voiceCache;
+  var vs = speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); });
+  if (!vs.length) return null;
+  function score(v){ var n = v.name; var sc = 0;
+    if (/female/i.test(n)) sc += 6; else if (FEMALE.test(n)) sc += 5;
+    if (/\bmale\b/i.test(n) && !/female/i.test(n)) sc -= 8; else if (MALE.test(n)) sc -= 6;
+    if (/^en[-_]GB/i.test(v.lang)) sc += 2; else if (/^en[-_](US|AU|IE)/i.test(v.lang)) sc += 1;
+    if (/google|natural|enhanced|premium/i.test(n)) sc += 1;
+    return sc; }
+  vs.sort(function(a,b){ return score(b)-score(a); });
+  return voiceCache = vs[0];
+}
+if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = function(){ voiceCache = null; };
 function utter(txt, rate){
-  var u = new SpeechSynthesisUtterance(txt); u.lang = "en-GB"; u.rate = rate || .85;
-  var v = speechSynthesis.getVoices().filter(function(v){ return /^en[-_]GB/i.test(v.lang); })[0] || speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); })[0];
-  if (v) u.voice = v; return u;
+  var u = new SpeechSynthesisUtterance(txt); u.lang = "en-GB"; u.rate = rate || .85; u.pitch = 1.25;
+  var v = pickVoice(); if (v){ u.voice = v; u.lang = v.lang; }
+  return u;
 }
 function speakSeq(list, each, done){
   if (!("speechSynthesis" in window)){ list.forEach(function(_,k){ each && each(k); }); done && done(); return; }
@@ -364,9 +382,7 @@ function speakSeq(list, each, done){
 }
 function speak(txt){
   if (!("speechSynthesis" in window)) return;
-  var u = new SpeechSynthesisUtterance(txt.replace(/\(.*?\)/g,"")); u.lang = "en-GB"; u.rate = .85;
-  var v = speechSynthesis.getVoices().filter(function(v){ return /^en[-_]GB/i.test(v.lang); })[0] || speechSynthesis.getVoices().filter(function(v){ return /^en/i.test(v.lang); })[0];
-  if (v) u.voice = v;
+  var u = utter(txt.replace(/\(.*?\)/g,""), .85);
   speechSynthesis.cancel(); speechSynthesis.speak(u);
 }
 function starStr(n){ var s=""; for (var i=0;i<3;i++) s += i<n ? "<b>★</b>" : "★"; return s; }
