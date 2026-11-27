@@ -32,6 +32,13 @@
       "topic": "Revision: one story, three styles",
       "studied": "Writing about your birthday, your year and your goals as a text, an email and a caption; present perfect for \"this year\" vs past simple for finished time; spend time + -ing; manage / hope / plan + to; making sentences sound B2.",
       "language": "So far, I have… · I haven't… yet · I finally managed to… · I hope to… · Although… / However…"
+    },
+    {
+      "n": 5,
+      "title": "And the Award Goes To",
+      "topic": "Speaking: giving an interview and an award speech",
+      "studied": "Reading a winner's magazine interview; an interview toolkit (buy time, be honest, give an example, say thank you, show feelings); A + R + E answers; award vocabulary with word stress; stress patterns; pauses, stress and falling intonation in a short speech; answering interview questions in one minute.",
+      "language": "That's a good question. · I'd say… · It hasn't sunk in yet. · I'm over the moon. · I'm deeply honoured. · I couldn't have done it without…"
     }
   ],
   "reviews": [
@@ -229,6 +236,112 @@
           "одночасно, водночас",
           "together, in one moment",
           "I can't cook and talk at the same time."
+        ]
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "label": "26 November",
+      "corrections": [
+        {
+          "said": "I was success",
+          "better": "It was successful",
+          "why": "Use the adjective: it was successful. \"I was a success\" means you as a person were a success."
+        },
+        {
+          "said": "faster (for fasten)",
+          "better": "fasten /ˈfɑːsn/",
+          "why": "Fasten = застібати: \"Fasten your helmet.\" The t is silent."
+        },
+        {
+          "said": "recognition (stress)",
+          "better": "rec-og-NI-tion /ˌrekəɡˈnɪʃn/",
+          "why": "Stress on NI."
+        },
+        {
+          "said": "sure (pronunciation)",
+          "better": "/ʃɔː/ in British English",
+          "why": "It sounds like \"shore\"."
+        }
+      ],
+      "words": [
+        [
+          "dilemma /dɪˈlemə/",
+          "дилема",
+          "a difficult choice between two options",
+          "I faced a real dilemma: stay or move?"
+        ],
+        [
+          "at the crossroads",
+          "на роздоріжжі",
+          "at a moment when you must make a big decision",
+          "I'm at the crossroads in my career."
+        ],
+        [
+          "life-saving",
+          "рятівний, що рятує життя",
+          "something that saves a life",
+          "A helmet can be life-saving."
+        ],
+        [
+          "in shards /ʃɑːdz/",
+          "на друзки, на уламки",
+          "broken into sharp pieces",
+          "The mirror lay in shards on the floor."
+        ],
+        [
+          "look up to → admire /ədˈmaɪə/",
+          "рівнятися на → захоплюватися",
+          "respect someone and want to be like them",
+          "I really admire my first boss."
+        ],
+        [
+          "remorse /rɪˈmɔːs/",
+          "каяття, докори сумління",
+          "feeling very sorry for something wrong you did",
+          "He felt deep remorse for what he did."
+        ],
+        [
+          "helmet /ˈhelmɪt/",
+          "шолом",
+          "a hard hat that protects your head",
+          "Always wear a helmet on a bike."
+        ],
+        [
+          "courageous /kəˈreɪdʒəs/",
+          "сміливий, відважний",
+          "very brave",
+          "It was a courageous decision."
+        ],
+        [
+          "idol /ˈaɪdl/",
+          "кумир",
+          "a famous person you admire very much",
+          "My idol is Audrey Hepburn."
+        ],
+        [
+          "fifth /fɪfθ/",
+          "п'ятий",
+          "say f, then th",
+          "This is my fifth lesson."
+        ],
+        [
+          "I would say…",
+          "Я б сказала…",
+          "a soft way to give your opinion",
+          "I would say attention to detail is my strength."
+        ],
+        [
+          "mere /mɪə/",
+          "лише, усього лише",
+          "only, just",
+          "It took a mere five minutes."
+        ],
+        [
+          "maternity / motherhood",
+          "декретний, пологовий / материнство",
+          "maternity leave, maternity hospital / being a mother",
+          "Motherhood changed my life."
         ]
       ]
     }

@@ -235,7 +235,7 @@ h2{font-family:var(--font-display);font-weight:600;font-size:26px;margin:0 0 4px
 </div>
 
 <script>
-/* ---------------- CONTENT (from the Miro board, Lessons 1–4) ---------------- */
+/* ---------------- CONTENT (from the Miro board, Lessons 1–5) ---------------- */
 const RAW = String.raw`
 # text
 LOL | laugh out loud | сміюся вголос | OK got 1 more!! Central Station 7:30, don't be late lol
@@ -454,6 +454,39 @@ I'm tired of… | Я втомилася від… | I'm tired of waiting. | ✗ 
 I'm stressed | Я у стресі | I'm so stressed this week. | ✗ I'm in stress ✓ I'm stressed (15 October)
 a person who doesn't… | людина, яка не… | I'm a person who doesn't like surprises. | ✗ who don't ✓ who doesn't (2 November)
 its / it's | його/її · це є | It's cold today. The salon changed its prices. | its = його/її, it's = it is (26 October)
+# award
+award-winning | відзначений нагородою | She is an award-winning hairstylist. | a-WARD-win-ning · has won a prize (Lesson 5)
+nominee | номінант(ка) | I was one of five nominees. | nom-i-NEE · a person chosen for an award (Lesson 5)
+shortlisted | у фіналі, у короткому списку | I was shortlisted in May. | SHORT-list-ed · chosen for the final list (Lesson 5)
+honoured | для мене честь | I'm deeply honoured. | ON-oured (silent h!) · proud and thankful (Lesson 5)
+grateful | вдячна | I'm so grateful to my clients. | GRATE-ful · thankful (Lesson 5)
+recognition | визнання | This award is recognition for my team. | rec-og-NI-tion · when people see and praise your work (Lesson 5)
+achievement | досягнення | It's my biggest achievement. | a-CHIEVE-ment · something you did with hard work (Lesson 5)
+It hasn't sunk in yet | я ще не усвідомила | I won? It hasn't sunk in yet! | it HASn't SUNK in YET · I still can't believe it (Lesson 5)
+over the moon | на сьомому небі | I was over the moon. | O-ver the MOON · extremely happy (Lesson 5)
+signature style | фірмовий стиль | Soft waves are my signature style. | SIG-na-ture STYLE · the style people know you for (Lesson 5)
+bridal | весільний | I did a bridal hair trial today. | BRI-dal · for a bride: a bridal updo (Lesson 5)
+attention to detail | увага до деталей | I'm known for my attention to detail. | a-TEN-tion to DE-tail · you notice every small thing (Lesson 5)
+look up to someone | рівнятися на когось | I look up to my first boss. | LOOK UP to · admire and want to be like them (Lesson 5)
+behind the scenes | за лаштунками | Behind the scenes, we start at 6 am. | be-HIND the SCENES · the work people don't see (Lesson 5)
+# lessons
+dilemma | дилема | I faced a real dilemma: stay or move? | /dɪˈlemə/ · a difficult choice between two options (26 November)
+at the crossroads | на роздоріжжі | I'm at the crossroads in my career. | at a moment when you must make a big decision (26 November)
+life-saving | рятівний, що рятує життя | A helmet can be life-saving. | /ˈlaɪf ˌseɪvɪŋ/ · something that saves a life (26 November)
+in shards | на друзки, на уламки | The mirror lay in shards on the floor. | /ʃɑːdz/ · broken into sharp pieces (26 November)
+admire | захоплюватися | I really admire my first boss. | /ədˈmaɪə/ · = look up to someone (26 November)
+remorse | каяття, докори сумління | He felt deep remorse for what he did. | /rɪˈmɔːs/ · feeling very sorry for something wrong you did (26 November)
+helmet | шолом | Always wear a helmet on a bike. | /ˈhelmɪt/ · a hard hat that protects your head (26 November)
+courageous | сміливий, відважний | It was a courageous decision. | /kəˈreɪdʒəs/ · very brave (26 November)
+idol | кумир | My idol is Audrey Hepburn. | /ˈaɪdl/ · a famous person you admire very much (26 November)
+fifth | п'ятий | This is my fifth lesson. | /fɪfθ/ · say f, then th (26 November)
+mere | лише, усього лише | It took a mere five minutes. | /mɪə/ · only, just (it is small or not important) (26 November)
+maternity | материнство, декретний, пологовий | She is on maternity leave. | /məˈtɜːnəti/ · about having a baby: maternity leave, maternity hospital (26 November)
+motherhood | материнство | Motherhood changed my life. | /ˈmʌðəhʊd/ · being a mother (26 November)
+sure | звісно, впевнена | Sure, I can do that. | /ʃɔː/ in British English, like "shore" (26 November)
+I would say… | Я б сказала… | I would say attention to detail is my strength. | a soft way to give your opinion (26 November)
+It was successful | Це було успішно | The wedding was really successful. | ✗ I was success ✓ It was successful (26 November)
+fasten | застібати, пристібати | Fasten your helmet before you ride. | ✗ faster ✓ fasten /ˈfɑːsn/ (silent t) (26 November)
 `;
 const DECKS = [
   {id:"text",   name:"Text-speak",        lesson:"Lesson 1 · Text Me Back"},
@@ -461,7 +494,8 @@ const DECKS = [
   {id:"formal", name:"Formal emails",     lesson:"Lesson 2 · Sincerely Yours"},
   {id:"caption",name:"Captions & hair",   lesson:"Lesson 3 · Caption This"},
   {id:"grammar",name:"Grammar for your year", lesson:"Lesson 4 · A Year in Writing"},
-  {id:"lessons",name:"From our lessons", lesson:"Lesson reviews · 15 Oct – 2 Nov"},
+  {id:"award",  name:"Words for the big night", lesson:"Lesson 5 · And the Award Goes To"},
+  {id:"lessons",name:"From our lessons", lesson:"Lesson reviews · 15 Oct – 26 Nov"},
 ];
 const CARDS = [];
 (function parse(){
@@ -477,7 +511,7 @@ const CARDS = [];
     CARDS.push(c);
   });
   DECKS.forEach(d=>d.cards=CARDS.filter(c=>c.deck===d.id));
-  DECKS.unshift({id:"all",name:"All words",lesson:"Lessons 1–4",cards:CARDS});
+  DECKS.unshift({id:"all",name:"All words",lesson:"Lessons 1–5",cards:CARDS});
 })();
 const deckById = id => DECKS.find(d=>d.id===id)||DECKS[1];
 
@@ -618,7 +652,7 @@ function Home(){
   view.append(
     el("div",{class:"overall"},ring,el("div",null,
       el("b",{text:pct===0?"Ready when you are, Ira!":pct>=100?"Unit 1 complete. Brilliant!":"Your Unit 1 progress"}),
-      el("p",{class:"muted",text:finished+" of "+(decks.length*4)+" tasks done. "+CARDS.length+" words and phrases from Lessons 1–4 and our lesson reviews: text-speak, chat replies, formal emails, Instagram captions, grammar for your year and the words from our lessons."}),
+      el("p",{class:"muted",text:finished+" of "+(decks.length*4)+" tasks done. "+CARDS.length+" words and phrases from Lessons 1–5 and our lesson reviews: text-speak, chat replies, formal emails, Instagram captions, grammar for your year, the words from our lessons and words for the big night."}),
       saveOk?null:el("p",{class:"small",text:"This browser is not saving progress (private mode?)."})
     )),
     el("h2",{text:"Your word sets"}),
