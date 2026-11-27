@@ -325,5 +325,119 @@ window.LESSONS = [
         ]
       }
     ]
+  },
+  {
+    id: "winter",
+    title: "Snowy CVC words",
+    ua: "Зимові слова: читаємо звук за звуком ❄️",
+    words: [["hat", "шапка"], ["log", "колода"], ["mug", "горнятко"], ["sock", "шкарпетка"], ["dig", "копати"], ["fun", "весело"], ["dog", "собака"], ["mop", "швабра"], ["hen", "курка"],
+            ["van", "фургон"], ["net", "сачок, сітка"], ["box", "коробка"], ["sun", "сонце"], ["bed", "ліжко"], ["tin", "бляшанка"], ["web", "павутина"], ["map", "мапа"], ["mud", "багнюка"]],
+    ruleTitle: "How to read a CVC word",
+    rule: [
+      ["c - a - t", "1) say each sound"],
+      ["c-a-t → cat!", "2) say them fast together"],
+      ["a, e, i, o, u", "vowels (голосні) are pink"],
+      ["s-o-ck, d-u-ck", "ck = one sound /k/"]
+    ],
+    tasks: [
+      {
+        type: "spy", title: "Warm-up: I spy in the snow!", ua: "Розминка: прочитай слово і знайди це на картинці",
+        intro: '<p class="speech">Brrr! It\'s snowy! I spy with my little eye… can you find everything? ❄️🔎</p>',
+        img: "img/w/spy.webp", alt: "A snowy park with people, a cat, a van, a bag, a hat, a log, a web and a bun.",
+        items: [
+          { w: "cat", box: [22, 56, 34, 74] },
+          { w: "van", box: [37, 55, 51, 68] },
+          { w: "man", box: [2, 28, 22, 96] },
+          { w: "hat", box: [34, 80, 48, 97] },
+          { w: "bag", box: [72, 56, 81, 69] },
+          { w: "kid", box: [29, 40, 39, 71] },
+          { w: "web", box: [0, 0, 17, 21] },
+          { w: "log", box: [76, 84, 100, 100] },
+          { w: "bun", box: [93, 56, 100, 68] }
+        ]
+      },
+      {
+        type: "join", title: "Say it, join it", ua: "Скажи слово і склади його з літер",
+        items: [
+          { img: "img/w/hat.webp", w: "hat", cols: [["h", "j"], ["c", "a"], ["t", "v"]] },
+          { img: "img/w/log.webp", w: "log", cols: [["p", "l"], ["o", "x"], ["g", "t"]] },
+          { img: "img/w/mug.webp", w: "mug", cols: [["m", "s"], ["u", "a"], ["p", "g"]] },
+          { img: "img/w/sock.webp", w: "sock", cols: [["s", "w"], ["a", "o"], ["ck", "ff"]] },
+          { img: "img/w/dig.webp", w: "dig", cols: [["d", "k"], ["i", "e"], ["g", "ss"]] },
+          { img: "img/w/fun.webp", w: "fun", cols: [["g", "f"], ["u", "a"], ["t", "n"]] }
+        ]
+      },
+      {
+        type: "fill", title: "Write it", ua: "Напиши слово сама 🖊",
+        items: [
+          { img: "img/w/hat.webp", q: "___", answer: "hat" },
+          { img: "img/w/log.webp", q: "___", answer: "log" },
+          { img: "img/w/mug.webp", q: "___", answer: "mug" },
+          { img: "img/w/sock.webp", q: "___", answer: "sock" },
+          { img: "img/w/sun.webp", q: "___", answer: "sun" },
+          { img: "img/w/bed.webp", q: "___", answer: "bed" }
+        ]
+      },
+      {
+        type: "match", title: "Help the winter elf!", ua: "Допоможи зимовому ельфу: з'єднай слово з картинкою",
+        pairs: [["img/w/dog.webp", "dog"], ["img/w/mop.webp", "mop"], ["img/w/hen.webp", "hen"], ["img/w/van.webp", "van"], ["img/w/net.webp", "net"], ["img/w/box.webp", "box"]]
+      },
+      {
+        type: "colour", title: "Read and colour the scarf", ua: "Прочитай слова і розфарбуй шарф",
+        key: [
+          { w: "sun", img: "img/w/sun.webp", c: "#f6c915" },
+          { w: "bed", img: "img/w/bed.webp", c: "#4cb562" },
+          { w: "log", img: "img/w/log.webp", c: "#4a90d9" },
+          { w: "tin", img: "img/w/tin.webp", c: "#e5484d" },
+          { w: "cat", img: "img/w/cat.webp", c: "#9b59c4" },
+          { w: "bus", img: "img/w/bus.webp", c: "#f39232" }
+        ],
+        words: ["bed", "bus", "sun", "log", "sun", "bed", "tin", "cat", "bus", "tin", "cat", "log", "cat", "log", "bus", "bed", "sun", "tin", "bed", "tin", "cat", "log", "bus", "sun"]
+      },
+      {
+        type: "choose", title: "Rhyming snowmen ☃️", ua: "Римуємо: обери слово, яке римується (звучить схоже в кінці)",
+        items: [
+          { q: "hat rhymes with…", options: ["bat", "bed", "bug"], answer: "bat" },
+          { q: "hat rhymes with…", options: ["dog", "cat", "pen"], answer: "cat" },
+          { q: "bug rhymes with…", options: ["rug", "hen", "box"], answer: "rug" },
+          { q: "bug rhymes with…", options: ["mug", "map", "log"], answer: "mug" },
+          { q: "cog rhymes with…", options: ["dog", "bed", "hat"], answer: "dog" },
+          { q: "cog rhymes with…", options: ["sun", "log", "net"], answer: "log" },
+          { q: "pen rhymes with…", options: ["hen", "pig", "mud"], answer: "hen" },
+          { q: "pen rhymes with…", options: ["tin", "cup", "ten"], answer: "ten" }
+        ]
+      },
+      {
+        type: "cvc", title: "Help the snowman through the maze", ua: "Допоможи сніговику пройти лабіринт: прочитай слово, обери картинку",
+        intro: '<p class="speech">I\'m lost in the snow! Read the words and show me the way! ☃️</p>',
+        items: [
+          { w: "hat", pic: "img/w/hat.webp", options: ["img/w/hat.webp", "🕸️", "🗺️"] },
+          { w: "web", pic: "🕸️", options: ["img/w/log.webp", "🕸️", "img/w/sock.webp"] },
+          { w: "log", pic: "img/w/log.webp", options: ["img/w/mug.webp", "🗺️", "img/w/log.webp"] },
+          { w: "mug", pic: "img/w/mug.webp", options: ["img/w/mug.webp", "img/w/hat.webp", "🕸️"] },
+          { w: "s-o-ck", pic: "img/w/sock.webp", options: ["🗺️", "img/w/sock.webp", "img/w/log.webp"] },
+          { w: "map", pic: "🗺️", options: ["img/w/mug.webp", "img/w/sock.webp", "🗺️"] }
+        ]
+      },
+      {
+        type: "order", title: "Unjumble the sentences", ua: "Склади речення",
+        items: [
+          { s: "The mug is hot.", img: "img/w/s-mug.webp" },
+          { s: "I put on the red sock.", img: "img/w/s-sock.webp" },
+          { s: "The dog is in the mud.", img: "img/w/s-mud.webp" },
+          { s: "The man has a hat.", img: "img/w/s-hat.webp" }
+        ]
+      },
+      {
+        type: "speak", title: "Speaking: tell me about the pictures", ua: "Говоріння: розкажи про картинки",
+        items: [
+          { img: "img/w/s-mug.webp", q: "What is hot?", need: ["mug"], hint: "The mug is …", example: "The mug is hot." },
+          { img: "img/w/s-mud.webp", q: "Where is the dog?", need: ["dog"], hint: "The dog is in the …", example: "The dog is in the mud." },
+          { img: "img/w/s-hat.webp", q: "What has he got?", need: ["hat"], hint: "He has a …", example: "He has a blue hat." },
+          { img: "img/w/s-sock.webp", q: "What does he put on?", need: ["sock|socks"], hint: "He puts on a …", example: "He puts on a red sock." },
+          { img: "img/w/spy.webp", q: "What is in the snow? Start with: There is …", need: ["there is|there are"], hint: "There is a … in the snow.", example: "There is a cat in the snow." }
+        ]
+      }
+    ]
   }
 ];
