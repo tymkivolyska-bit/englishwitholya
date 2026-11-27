@@ -289,7 +289,7 @@ details.key dd { margin: 2px 0 0 0; }
   <!-- Stage 8 -->
   <section class="stage" id="s8" data-title="TikToks">
     <div class="stage-head"><h2><span class="kicker">Stage 8</span>Real wishlists</h2><span class="tmeta">8 min · S, S–S</span></div>
-    <div class="tnote"><b>Aim:</b> listening for gist and detail in authentic wishlist videos, and reacting with today’s phrases. Play each video once for gist, then again for the questions. Videos 3 and 4 are the ones from the “If Only…” lesson. Watch all four before class and tweak any question that doesn’t fit.</div>
+    <div class="tnote"><b>Aim:</b> listening for gist and detail in authentic wishlist videos, and reacting with today’s phrases. Play each video once for gist, then again for the questions. These are the wishlist TikToks from the “If Only…” lesson. Watch both before class and tweak any question that doesn’t fit.</div>
     <p class="instr">Watch the videos and answer the questions. Then compare with a partner.</p>
     <div id="t9"></div>
     <h3>React with today’s phrases</h3>
@@ -458,10 +458,8 @@ details.key dd { margin: 2px 0 0 0; }
 
   // ---------- Stage 8: TikToks ----------
   const VIDS = [
-    ["https://vt.tiktok.com/ZSs6WnA8r/", ["Note three things on the list.", "Which item do you think they have their heart set on? How can you tell?", "Which item is a want and which is a need?"]],
-    ["https://vt.tiktok.com/ZSs6Wp2FL/", ["What’s the most surprising thing on the list?", "Which items could the creator really do with, and which are pure wants?", "Anything you wouldn’t say no to yourself?"]],
-    ["https://www.tiktok.com/@marinagudov/video/7709347004391918879", ["Who is the list for: herself, her followers or people buying her gifts?", "Describe her taste in three adjectives.", "Find one phrase that shows she’s talking to an audience, not a friend."]],
-    ["https://www.tiktok.com/@amberreenie/video/7709197392976940310", ["Which item is the most expensive? Does she think it’s worth it?", "What does her list say about her stage of life?", "How is her list different from Video 3 in tone and price range?"]],
+    ["https://www.tiktok.com/@marinagudov/video/7709347004391918879", ["Who is the list for: herself, her followers or people buying her gifts?", "Describe her taste in three adjectives.", "Which item do you think she has her heart set on? How can you tell?", "Find one phrase that shows she’s talking to an audience, not a friend."]],
+    ["https://www.tiktok.com/@amberreenie/video/7709197392976940310", ["Which item is the most expensive? Does she think it’s worth it?", "What does her list say about her stage of life?", "Which items could she really do with, and which are pure wants?", "How is her list different from Video 1 in tone and price range?"]],
   ];
   $("t9").innerHTML = VIDS.map(([url, qs], v) => `
     <h3>Video ${v + 1} · <a class="btn ghost" style="font-size:14px;padding:3px 12px;text-decoration:none" href="${url}" target="_blank" rel="noopener">Watch on TikTok &rarr;</a></h3>
