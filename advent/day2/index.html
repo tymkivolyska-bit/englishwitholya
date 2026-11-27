@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Art of the Wishlist · Day 2</title>
+<meta name="theme-color" content="#f1eeea">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f1eeea; --card: #fbf9f6; --ink: #3d3a38; --soft: #6d6764;
+  --red: #8e1b2c; --line: #9b3446; --green: #2f6b3f; --ok: #2f6b3f; --bad: #b3261e;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Inter", system-ui, sans-serif; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: var(--red); }
+.wrap { max-width: 780px; margin: 0 auto; padding: 20px 16px 60px; }
+
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.back { color: var(--red); text-decoration: none; letter-spacing: .04em; }
+.back:hover { text-decoration: underline; }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: var(--soft); cursor: pointer; user-select: none; }
+.toggle input { accent-color: var(--red); width: 18px; height: 18px; }
+
+header.hero { text-align: center; margin: 28px 0 20px; }
+.daynum { font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 88px; line-height: 1;
+  background: linear-gradient(170deg, #e47784 0%, #b42238 28%, #7c0f22 55%, #a8213a 78%, #d45263 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1px #6a0c1c;
+  filter: drop-shadow(0 4px 4px rgba(80,10,20,.28)); }
+.hero h1 { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; color: var(--red); font-size: clamp(40px, 9vw, 60px); line-height: 1.05; margin: 8px 0 8px; letter-spacing: -.01em; }
+.hero .meta { color: var(--soft); font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+.stages-nav { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 18px 0 30px; }
+.stages-nav a { font-size: 14px; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; color: var(--red); background: var(--card); }
+.stages-nav a.done { background: var(--red); color: #fff; }
+
+section.stage { background: var(--card); border: 1.5px solid var(--line); padding: 22px 22px 26px; margin-bottom: 22px; scroll-margin-top: 12px; }
+.stage-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #e3d5d3; padding-bottom: 10px; margin-bottom: 14px; }
+.stage-head h2 { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; color: var(--red); font-size: 32px; margin: 0; line-height: 1.1; }
+.stage-head .kicker { display: block; font-style: normal; font-family: "Inter", sans-serif; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); font-weight: 700; margin-bottom: 2px; }
+.tmeta { font-size: 14px; color: var(--soft); white-space: nowrap; }
+h3 { font-size: 17px; font-weight: 800; letter-spacing: -.01em; margin: 22px 0 8px; color: var(--ink); }
+h3:first-of-type { margin-top: 4px; }
+.instr { color: var(--soft); margin: 0 0 12px; }
+
+.tnote { background: #f6ece9; border-left: 3px solid var(--red); padding: 10px 14px; margin: 12px 0; font-size: 16px; }
+.tnote b { color: var(--red); font-weight: 700; }
+body:not(.teacher) .tnote, body:not(.teacher) .tmeta { display: none; }
+
+ol.q { padding-left: 24px; margin: 0; }
+ol.q > li { margin: 0 0 14px; padding-left: 4px; }
+
+/* lead-in pictures */
+.pics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 6px 0 16px; }
+.pics figure { margin: 0; }
+.pics img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; border-radius: 4px; }
+.pics figcaption { font-size: 13px; color: var(--soft); text-align: center; margin-top: 4px; }
+
+/* inputs */
+select, input[type=text], textarea {
+  font: inherit; font-size: 17px; color: var(--ink); background: #fff;
+  border: 1px solid #cdbfbd; border-radius: 6px; padding: 8px 10px; max-width: 100%;
+}
+textarea { width: 100%; min-height: 70px; resize: vertical; line-height: 1.45; }
+input[type=text] { width: 100%; }
+select:focus, input:focus, textarea:focus { outline: 2px solid rgba(142,27,44,.35); border-color: var(--red); }
+.ok { border-color: var(--ok) !important; background: #eef6ef !important; }
+.bad { border-color: var(--bad) !important; background: #fbeeed !important; }
+
+.match { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.match-row { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: center; }
+.match-row select { width: 100%; }
+.defs { list-style: none; padding: 0; margin: 0 0 14px; font-size: 16px; }
+.defs li { padding: 3px 0; }
+.defs b { color: var(--red); }
+
+.choices { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.choice { display: flex; gap: 10px; align-items: flex-start; border: 1px solid #ddd0ce; border-radius: 6px; padding: 9px 12px; cursor: pointer; background: #fff; }
+.choice input { margin-top: 5px; accent-color: var(--red); }
+.choice.ok { border-color: var(--ok); background: #eef6ef; }
+.choice.bad { border-color: var(--bad); background: #fbeeed; }
+
+.tfng { display: inline-flex; gap: 6px; margin: 6px 0; }
+.tfng button { font: inherit; font-size: 15px; min-width: 52px; padding: 4px 10px; border: 1px solid var(--line); background: #fff; color: var(--red); border-radius: 999px; cursor: pointer; }
+.tfng button.sel { background: var(--red); color: #fff; }
+.tfng button.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.tfng button.bad { background: var(--bad); border-color: var(--bad); color: #fff; }
+.fix { margin-top: 4px; }
+
+.btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.btn { font: inherit; font-size: 16px; letter-spacing: .04em; padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--red); background: var(--red); color: #fff; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--red); }
+.btn:hover { filter: brightness(1.08); }
+.score { align-self: center; font-size: 16px; color: var(--soft); }
+.answer { margin-top: 6px; font-size: 16px; color: var(--green); background: #eef6ef; border-radius: 6px; padding: 6px 10px; }
+
+.article-card { border: 1.5px solid var(--line); background: #fff; padding: 18px 20px; text-align: center; margin: 4px 0 18px; }
+.article-card .pub { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); }
+.article-card .atitle { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 30px; font-weight: 400; color: var(--ink); line-height: 1.2; margin: 6px 0 4px; }
+.article-card .asub { font-style: italic; color: var(--soft); margin-bottom: 4px; }
+.article-card .by { font-size: 15px; color: var(--soft); margin-bottom: 14px; }
+.article-card .btn { text-decoration: none; display: inline-block; }
+
+.preds { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.preds label { display: flex; gap: 8px; align-items: center; font-size: 15px; color: var(--soft); }
+.headings { padding-left: 22px; margin: 8px 0 0; }
+.headings li { margin: 4px 0; }
+
+.timer { display: inline-flex; gap: 8px; align-items: center; font-family: "Fredoka", sans-serif; font-size: 20px; color: var(--red); margin-left: 6px; }
+.timer button { font: inherit; font-family: "Inter", sans-serif; font-size: 14px; border: 1px solid var(--line); background: #fff; color: var(--red); border-radius: 999px; padding: 2px 10px; cursor: pointer; }
+
+.sayings { margin: 0 0 10px; padding-left: 0; list-style: none; }
+.sayings li { font-family: "Instrument Serif", Georgia, serif; font-size: 24px; font-style: italic; color: var(--red); margin: 4px 0; }
+
+.guide-tip { border: 1px dashed #cdbfbd; border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; background: #fffdfb; }
+.guide-tip input { margin-bottom: 6px; font-weight: 700; }
+.vocab-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.chip { font-size: 14px; border: 1px solid #ddd0ce; border-radius: 999px; padding: 2px 10px; background: #fff; color: var(--soft); }
+.chip.used { background: var(--green); border-color: var(--green); color: #fff; }
+.count { font-size: 15px; color: var(--soft); margin-top: 6px; }
+
+details.key { background: var(--card); border: 1.5px solid var(--line); padding: 14px 22px; margin-bottom: 22px; }
+details.key summary { cursor: pointer; font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 30px; font-weight: 400; color: var(--red); }
+details.key dl { margin: 12px 0 0; font-size: 16px; }
+details.key dt { font-weight: 700; margin-top: 10px; }
+details.key dd { margin: 2px 0 0 0; }
+
+.finish { text-align: center; margin-top: 30px; }
+.embed-wrap { display: flex; justify-content: center; margin: 0 0 18px; }
+.embed-wrap .substack-post-embed { display: none; }
+.embed-wrap iframe { max-width: 100% !important; }
+.small { font-size: 14px; color: var(--soft); }
+.linkbtn { background: none; border: 0; font: inherit; font-size: 14px; color: var(--soft); text-decoration: underline; cursor: pointer; }
+
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  section.stage { padding: 18px 14px 22px; }
+  .match-row { grid-template-columns: 1fr; gap: 4px; }
+  .pics { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .preds { grid-template-columns: 1fr; }
+}
+
+/* day 2 extras */
+.article-body { border: 1.5px solid var(--line); background: #fff; padding: 20px 22px; margin: 4px 0 18px; }
+.article-body .atitle { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 30px; color: var(--ink); line-height: 1.2; margin: 0 0 12px; text-align: center; }
+.article-body p { margin: 0 0 12px; }
+.article-body .pn { display: inline-block; min-width: 22px; font-weight: 800; color: var(--red); }
+.scale { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; }
+.scale span { font-size: 15px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; background: #fff; color: var(--red); }
+.scale span.top { background: var(--red); color: #fff; }
+.scale-ends { display: flex; justify-content: space-between; font-size: 13px; color: var(--soft); letter-spacing: .06em; text-transform: uppercase; font-weight: 700; }
+.lf { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0 4px; }
+.lf div { border: 1px solid #ddd0ce; border-radius: 6px; padding: 10px 12px; background: #fff; font-size: 16px; }
+.lf b.h { display: block; color: var(--red); letter-spacing: .06em; font-size: 13px; text-transform: uppercase; margin-bottom: 4px; }
+.model { background: #fff; border: 1px solid #ddd0ce; border-radius: 6px; padding: 10px 14px; }
+.kwt .orig { display: block; }
+.kwt .kw { font-weight: 800; color: var(--red); letter-spacing: .06em; margin-right: 6px; }
+@media (max-width: 560px) { .lf { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../">&larr; Advent calendar</a>
+    <label class="toggle"><input type="checkbox" id="teacherMode"> Teacher notes</label>
+  </div>
+
+  <header class="hero">
+    <div class="daynum">2</div>
+    <h1>The Art of the Wishlist</h1>
+    <div class="meta">Reading + speaking · C1 · about 60 minutes</div>
+  </header>
+
+  <div class="tnote">
+    <b>Aims.</b> Main: reading for gist, detail and attitude in a short opinion piece about wishlists. Language: phrases for wanting (have your heart set on, have had your eye on, be dying to, could do with, wouldn’t say no to) and for wishing others well (I hope you…, I wish you + noun, May…, Here’s to…). Productive: building and defending a personal four-gift wishlist.<br><br>
+    <b>Anticipated problems.</b> <i>I wish you get the job</i> ✗: Ss transfer from their L1. Contrast <i>I hope you get</i> (real future) with <i>I wish you got</i> (regret, unreal) and <i>I wish you + noun</i> (fixed greeting). <i>could do with</i> = need, not ‘be able to do’. <i>wouldn’t say no to</i> takes a noun or -ing.<br><br>
+    <b>Miro board:</b> the same lesson as an interactive board for online classes: <a href="https://miro.com/app/board/uXjVEJXhV4w=/" target="_blank" rel="noopener">open the board</a>.
+  </div>
+
+  <nav class="stages-nav" id="stagesNav"></nav>
+
+  <!-- Stage 1 -->
+  <section class="stage" id="s1" data-title="Warm-up">
+    <div class="stage-head"><h2><span class="kicker">Stage 1</span>Warm-up</h2><span class="tmeta">3 min · S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to engage Ss with the topic and get them talking. Ss choose one question each; brief open-class feedback.</div>
+    <p class="instr">Choose a question and discuss it with a partner.</p>
+    <ol class="q">
+      <li>Are you a wishlist person or a surprise person? Which is more fun to give, and which is more fun to get?</li>
+      <li>What’s the best present you’ve ever received that wasn’t a thing? Why do you still remember it?</li>
+      <li>What’s something you’ve wanted for years but have never bought for yourself? What’s stopping you?</li>
+    </ol>
+  </section>
+
+  <!-- Stage 2 -->
+  <section class="stage" id="s2" data-title="Lead-in">
+    <div class="stage-head"><h2><span class="kicker">Stage 2</span>Lead-in</h2><span class="tmeta">5 min · S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to activate schemata and create a reason to read. Board Ss’ predictions; they check them in Stage 4.</div>
+    <h3>Talk about it</h3>
+    <ol class="q">
+      <li>Did you write wishlists as a child? Who were they for?</li>
+      <li>Is it rude to send people a list of the presents you want?</li>
+      <li>What’s the difference between a <i>want</i>, a <i>need</i> and a <i>wish</i>?</li>
+    </ol>
+    <h3>Today’s article</h3>
+    <div class="article-card" style="margin-bottom:14px"><div class="atitle">The Art of the Wishlist</div></div>
+    <p class="instr">Will the writer be for or against wishlists? What arguments do you expect?</p>
+    <textarea data-save="t2" placeholder="My prediction…"></textarea>
+    <div class="btns"><button class="btn ghost" data-reveal="t2" type="button">What is the “four-gift rule”?</button></div>
+    <div class="answer" id="t2ans" hidden>A gift-giving rule: give just four presents. Something you want, something you need, something to wear and something to read. People use it to avoid clutter and overspending.</div>
+  </section>
+
+  <!-- Stage 3 -->
+  <section class="stage" id="s3" data-title="Vocabulary">
+    <div class="stage-head"><h2><span class="kicker">Stage 3</span>Key words</h2><span class="tmeta">7 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to pre-teach words Ss need for the text.<br>
+      <b>CCQs:</b> If you have your heart set on a camera, would a different present be OK? (Not really) · If you’ve had your eye on a coat, have you bought it? (No, not yet) · Is wishful thinking realistic? (No)<br>
+      <b>Drill:</b> clutter /ˈklʌtə/, impulse /ˈɪmpʌls/ buy.</div>
+    <h3>Task 1 · Match the words to the definitions</h3>
+    <ul class="defs" id="t1defs"></ul>
+    <div class="match" id="t1"></div>
+    <div class="btns"><button class="btn" data-check="t1">Check</button><span class="score" id="t1score"></span></div>
+  </section>
+
+  <!-- Stage 4 -->
+  <section class="stage" id="s4" data-title="Gist">
+    <div class="stage-head"><h2><span class="kicker">Stage 4</span>Reading for gist</h2><span class="tmeta">5 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to give Ss practice reading quickly for the main idea and the writer’s attitude. Peer-check, then open-class feedback.</div>
+    <h3>Task 2 · Skim the text <span class="timer" data-secs="180"><span>3:00</span><button type="button">Start</button></span></h3>
+    <p class="instr">Read quickly and answer the two questions below.</p>
+    <article class="article-body">
+      <div class="atitle">The Art of the Wishlist</div>
+      <p><span class="pn">1</span> There was a time when writing a wishlist meant a letter to Santa, a crayon and a lot of wishful thinking. Today, wishlists live in apps, shared folders and even spreadsheets, complete with links, sizes and colour options. Some people find this wonderfully efficient; others say it has taken the magic out of giving.</p>
+      <p><span class="pn">2</span> Defenders of the modern wishlist have a point. Nobody wants a drawer full of scented candles and novelty socks. A clear list means less waste, fewer returns and no awkward smiles as you unwrap something you will never use. For families on a budget, it also means money goes on things people actually need, not on impulse buys grabbed in a panic on 23 December.</p>
+      <p><span class="pn">3</span> Critics, however, argue that a gift is meant to show that someone knows you. Ticking an item off a list is a far cry from noticing that your friend has been dropping hints about a book for months, or remembering the café you once said you loved. When everything is pre-approved, they say, there is no room left for surprise.</p>
+      <p><span class="pn">4</span> A popular compromise is the ‘four-gift rule’: something you want, something you need, something to wear and something to read. Parents use it to avoid clutter, but many adults have adopted it too, because it forces them to decide what they really have their heart set on rather than listing everything they have ever had their eye on.</p>
+      <p><span class="pn">5</span> Another growing trend is the ‘experience wishlist’. Instead of objects, people ask for concert tickets, a cooking class or simply an afternoon with someone they rarely see. Research on happiness suggests that experiences tend to bring longer-lasting joy than things, partly because we keep retelling the story long after the day itself.</p>
+      <p style="margin-bottom:0"><span class="pn">6</span> Perhaps the most valuable wishlist is the one we never share. Writing down what we wish for, not only for ourselves but for the people around us, is a quiet way of finding out what really matters. The things on it may be small: more sleep, a call from an old friend, a calmer January. Yet they often reveal more about us than anything we could find in a shop.</p>
+    </article>
+    <ol class="q" id="t3"></ol>
+    <div class="btns"><button class="btn" data-check="t3">Check</button><span class="score" id="t3score"></span></div>
+  </section>
+
+  <!-- Stage 5 -->
+  <section class="stage" id="s5" data-title="Detail">
+    <div class="stage-head"><h2><span class="kicker">Stage 5</span>Reading for detail</h2><span class="tmeta">8 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> to give Ss practice reading for specific information. Ss compare in pairs; in feedback, ask them to quote the words that gave them the answer.</div>
+    <h3>Task 3 · Which paragraph?</h3>
+    <p class="instr">Which paragraph (1–6) mentions each idea? Each paragraph is used once.</p>
+    <div class="match" id="t4"></div>
+    <div class="btns"><button class="btn" data-check="t4">Check</button><span class="score" id="t4score"></span></div>
+    <h3>Discuss</h3>
+    <p class="instr">Does a wishlist take the magic out of giving? Would you try the four-gift rule or an experience wishlist with your family or friends?</p>
+  </section>
+
+  <!-- Stage 6 -->
+  <section class="stage" id="s6" data-title="Language">
+    <div class="stage-head"><h2><span class="kicker">Stage 6</span>Language focus</h2><span class="tmeta">10 min · S, S–S, T–S</span></div>
+    <div class="tnote"><b>Aim:</b> to clarify meaning, form and pronunciation of phrases for wanting and wishing others well.<br>
+      <b>Pronunciation:</b> could do with /kʊd ˈduː wɪð/ (often /kədə wɪð/) · stress: I’m <b>DY</b>ing to · I wouldn’t say <b>NO</b> to · <b>HERE’S</b> to · May all your <b>WISH</b>es come <b>TRUE</b>.</div>
+    <p class="instr">Read the wishlist. Notice the phrases in bold.</p>
+    <div class="model"><b>My wishlist, December edition</b><br><b>I’ve had my eye on</b> a vintage film camera for months, and honestly <b>I’ve got my heart set on</b> it. <b>I could</b> also <b>do with</b> a new winter coat, as mine is falling apart. <b>I wouldn’t say no to</b> a cooking class, and <b>I’m dying to</b> see the Christmas markets in Vienna. As for my friends: <b>I hope you all get</b> some rest, <b>may</b> this winter <b>be</b> kinder than the last, and <b>here’s to</b> a calmer January!</div>
+    <div class="lf">
+      <div><b class="h">1 · Wanting</b>have (got) your heart set on + noun / -ing<br>have had your eye on + noun<br>be dying to + infinitive / for + noun<br>could do with + noun (= need)<br>wouldn’t say no to + noun / -ing (= would like, politely)</div>
+      <div><b class="h">2 · Wishing others well</b>I hope you + present simple: <i>I hope you get the job!</i><br>I wish you + noun: <i>I wish you a happy new year.</i><br>May + subject + infinitive (formal, toasts): <i>May all your wishes come true.</i><br>Here’s to + noun / -ing: <i>Here’s to a calmer January!</i></div>
+    </div>
+    <h3>How much do you want it?</h3>
+    <div class="scale"><span>I wouldn’t say no to</span><span>I could do with</span><span>I’d love</span><span>I’ve had my eye on</span><span>I’m dying to</span><span class="top">I’ve got my heart set on</span></div>
+    <div class="scale-ends"><span>a little</span><span>more than anything</span></div>
+    <h3>Task 4 · Hope or wish?</h3>
+    <p class="instr">Choose the correct option.</p>
+    <ol class="q" id="t5"></ol>
+    <div class="btns"><button class="btn" data-check="t5">Check</button><span class="score" id="t5score"></span></div>
+  </section>
+
+  <!-- Stage 7 -->
+  <section class="stage" id="s7" data-title="Practice">
+    <div class="stage-head"><h2><span class="kicker">Stage 7</span>Controlled practice</h2><span class="tmeta">7 min · S</span></div>
+    <div class="tnote"><b>Aim:</b> to check Ss can use the phrases accurately (Cambridge C1-style key word transformations).</div>
+    <h3>Task 5 · Key word transformations</h3>
+    <p class="instr">Complete the second sentence so it means the same as the first. Use the word in capitals and 3–6 words.</p>
+    <ol class="q kwt" id="t6"></ol>
+    <div class="btns"><button class="btn" data-check="t6">Check</button><span class="score" id="t6score"></span></div>
+  </section>
+
+  <!-- Stage 8 -->
+  <section class="stage" id="s8" data-title="Speaking">
+    <div class="stage-head"><h2><span class="kicker">Stage 8</span>Curate your wishlist</h2><span class="tmeta">12 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> fluency practice using the target language. Ss plan for 5 minutes, then present their list; the partner plays the “practical friend” and questions every item. Monitor and note language for Stage 9. <b>1:1 variant:</b> T and S both make a list and challenge each other.</div>
+    <h3>Task 6 · Plan your list <span class="timer" data-secs="300"><span>5:00</span><button type="button">Start</button></span></h3>
+    <p class="instr">The four-gift rule, plus one experience. Use phrases from today.</p>
+    <div id="t7"></div>
+    <div class="vocab-chips" id="chips"></div>
+    <div class="count" id="vocabCount"></div>
+    <h3>Task 7 · Present and defend it <span class="timer" data-secs="420"><span>7:00</span><button type="button">Start</button></span></h3>
+    <p class="instr"><b>Presenting:</b> I’ve had my eye on… · I’ve got my heart set on… · I could really do with… · I wouldn’t say no to… · I’m dying to…<br>
+      <b>The practical friend:</b> Do you really need it, though? · Couldn’t you borrow one? · Wouldn’t an experience be better? · Be honest, isn’t that wishful thinking?</p>
+    <p class="instr">To finish, write one wish for your partner: <i>I hope you… · May… · Here’s to…</i></p>
+    <input type="text" data-save="t7wish" placeholder="My wish for my partner…">
+  </section>
+
+  <!-- Stage 9 -->
+  <section class="stage" id="s9" data-title="Feedback">
+    <div class="stage-head"><h2><span class="kicker">Stage 9</span>Feedback</h2><span class="tmeta">3 min · T–S</span></div>
+    <div class="tnote"><b>Aim:</b> to praise good language use and correct key errors. Board 3–4 good sentences and 3–4 errors from Stage 8; Ss fix and upgrade them in pairs.</div>
+    <h3>Great language and corrections from today</h3>
+    <textarea data-save="t8" placeholder="Write the sentences from the board here…" style="min-height:110px"></textarea>
+    <h3>Homework (optional)</h3>
+    <p class="instr">Write an opinion article (220–260 words): <b>“Wishlists take the magic out of giving.”</b> Do you agree? Use at least four phrases for wanting from today and end with a wish for your readers (I hope you… / May… / Here’s to…).</p>
+    <textarea data-save="hw" id="hw" placeholder="Wishlists take the magic out of giving…" style="min-height:200px"></textarea>
+    <div class="count" id="hwCount"></div>
+  </section>
+
+  <details class="key" id="key">
+    <summary>Answer key</summary>
+    <dl>
+      <dt>Task 1</dt><dd id="keyT1"></dd>
+      <dt>Task 2</dt><dd>1 b · 2 a (‘a quiet way of finding out what really matters’)</dd>
+      <dt>Task 3</dt><dd>A 4 · B 2 · C 5 · D 1 · E 3 · F 6</dd>
+      <dt>Task 4</dt><dd id="keyT5"></dd>
+      <dt>Task 5</dt><dd id="keyT6"></dd>
+    </dl>
+  </details>
+
+  <div class="finish">
+    <a class="btn" href="../#day-2">Finish and mark day 2 as done</a>
+    <p class="small">Your answers are saved on this device. <button class="linkbtn" id="clearAll" type="button">Clear my answers</button></p>
+  </div>
+</div>
+
+<script>
+(() => {
+  const KEY = "advent-day2-v1";
+  let st = {};
+  try { st = JSON.parse(localStorage.getItem(KEY)) || {}; } catch { st = {}; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch {} };
+  const $ = id => document.getElementById(id);
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const norm = s => (s || "").toLowerCase().replace(/[’']/g, "'").replace(/[^a-z' ]/g, " ").replace(/\s+/g, " ").trim();
+
+  // ---------- teacher mode ----------
+  const tm = $("teacherMode");
+  tm.checked = !!st.teacher;
+  document.body.classList.toggle("teacher", tm.checked);
+  tm.addEventListener("change", () => { st.teacher = tm.checked; document.body.classList.toggle("teacher", tm.checked); save(); });
+
+  // ---------- stage nav ----------
+  const nav = $("stagesNav");
+  document.querySelectorAll("section.stage").forEach((s, i) => {
+    const a = document.createElement("a");
+    a.href = "#" + s.id; a.textContent = `${i + 1} · ${s.dataset.title}`; a.id = "nav-" + s.id;
+    nav.appendChild(a);
+  });
+  const markStage = (sid) => { st.stages = st.stages || {}; st.stages[sid] = true; save(); paintNav(); };
+  const paintNav = () => document.querySelectorAll(".stages-nav a").forEach(a => a.classList.toggle("done", !!(st.stages || {})[a.id.slice(4)]));
+
+  // ---------- Task 1: matching ----------
+  const T1 = {
+    words: ["wishful thinking", "an impulse buy", "a far cry from", "drop hints", "have your heart set on", "have your eye on", "clutter", "long-lasting"],
+    defs: {
+      a: "something you buy suddenly, without planning",
+      b: "to want something very much and nothing else instead",
+      c: "believing something will happen just because you want it to",
+      d: "lots of things in an untidy state, often things you don’t need",
+      e: "very different from (and usually worse than)",
+      f: "continuing for a long time",
+      g: "to suggest something indirectly so others notice",
+      h: "to have noticed something and be thinking about getting it",
+    },
+    key: ["c", "a", "e", "g", "b", "h", "d", "f"],
+  };
+  $("t1defs").innerHTML = Object.entries(T1.defs).map(([k, v]) => `<li><b>${k}.</b> ${esc(v)}</li>`).join("");
+  $("t1").innerHTML = T1.words.map((w, i) => `
+    <div class="match-row"><label for="t1-${i}"><b>${i + 1}.</b> ${w}</label>
+      <select id="t1-${i}" data-save="t1-${i}"><option value="">choose…</option>${Object.entries(T1.defs).map(([k, v]) => `<option value="${k}">${k}. ${esc(v)}</option>`).join("")}</select>
+    </div>`).join("");
+  $("keyT1").textContent = T1.key.map((k, i) => `${i + 1}${k}`).join(" · ");
+
+  // ---------- radio-question helper ----------
+  const radioQs = (el, name, qs) => {
+    $(el).innerHTML = qs.map(([q, opts], i) => `
+      <li>${q}
+        <div class="choices">${opts.map((o, j) => `<label class="choice"><input type="radio" name="${name}-${i}" value="${"abc"[j]}" data-save="${name}-${i}"><span>${"abc"[j]}) ${o}</span></label>`).join("")}</div></li>`).join("");
+  };
+  const checkRadios = (name, qs) => {
+    let n = 0;
+    qs.forEach((q, i) => {
+      const sel = document.querySelector(`input[name="${name}-${i}"]:checked`);
+      document.querySelectorAll(`input[name="${name}-${i}"]`).forEach(inp => { const c = inp.closest(".choice"); c.classList.toggle("ok", !!sel && inp.value === q[2]); c.classList.toggle("bad", !!sel && sel === inp && inp.value !== q[2]); });
+      n += !!sel && sel.value === q[2];
+    });
+    return n;
+  };
+
+  // ---------- Task 2: gist ----------
+  const T3 = [
+    ["<b>What is the writer’s main purpose?</b>", ["to persuade readers to stop writing wishlists", "to explore different views on wishlists and what they reveal about us", "to give tips on choosing cheap presents"], "b"],
+    ["<b>What is the tone of the last paragraph?</b>", ["reflective", "critical", "amused"], "a"],
+  ];
+  radioQs("t3", "t3", T3);
+
+  // ---------- Task 3: which paragraph ----------
+  const T4 = [
+    ["A. limiting presents to a few fixed categories", "4"],
+    ["B. how a list can help people who don’t have much money", "2"],
+    ["C. why memories make some gifts more valuable", "5"],
+    ["D. a contrast between old and new ways of making a list", "1"],
+    ["E. the idea that a gift should prove someone pays attention", "3"],
+    ["F. wishes that have nothing to do with shopping", "6"],
+  ];
+  $("t4").innerHTML = T4.map(([s], i) => `
+    <div class="match-row" style="grid-template-columns:1fr 120px"><label for="t4-${i}">${esc(s)}</label>
+      <select id="t4-${i}" data-save="t4-${i}"><option value="">¶ …</option>${[1, 2, 3, 4, 5, 6].map(n => `<option value="${n}">¶ ${n}</option>`).join("")}</select>
+    </div>`).join("");
+
+  // ---------- Task 4: hope or wish ----------
+  const T5 = [
+    ["Good luck tomorrow! I ___ you get the job.", ["hope", "wish"], "a"],
+    ["We ___ you a merry Christmas and a happy new year.", ["hope", "wish"], "b"],
+    ["I ___ you’d told me earlier. I could have helped.", ["hope", "wish"], "b"],
+    ["___ all your wishes come true!", ["May", "Hope"], "a"],
+    ["Here’s to ___ in the new year!", ["see you more often", "seeing you more often"], "b"],
+    ["I could really do with ___.", ["a long weekend", "to have a long weekend"], "a"],
+    ["I wouldn’t say no to ___ to the theatre.", ["go", "going"], "b"],
+  ];
+  radioQs("t5", "t5", T5);
+  $("keyT5").textContent = T5.map((q, i) => `${i + 1} ${q[1]["abc".indexOf(q[2])]}`).join(" · ");
+
+  // ---------- Task 5: key word transformations ----------
+  const T6 = [
+    ["I really want a new camera and nothing else will do.", "HEART", "I", "a new camera.", ["have my heart set on", "have got my heart set on", "'ve got my heart set on", "'ve my heart set on", "have my heart set on getting", "have got my heart set on getting", "'ve got my heart set on getting"]],
+    ["I badly need a holiday.", "DO", "I", "a holiday.", ["could do with", "could really do with", "could really do with having"]],
+    ["I’d quite like some new headphones if someone offered.", "NO", "I", "some new headphones.", ["wouldn't say no to", "would not say no to"]],
+    ["I’ve been looking at that coat online for weeks.", "EYE", "I", "that coat for weeks.", ["have had my eye on", "'ve had my eye on"]],
+    ["I can’t wait to see the northern lights.", "DYING", "I", "the northern lights.", ["am dying to see", "'m dying to see"]],
+    ["I hope all your wishes come true this year.", "MAY", "", "true this year.", ["may all your wishes come"]],
+    ["She kept giving us little clues about the perfume she wanted.", "HINTS", "She", "the perfume she wanted.", ["kept dropping hints about", "kept dropping us hints about", "kept dropping hints to us about"]],
+  ];
+  $("t6").innerHTML = T6.map(([o, kw, pre, post, ans], i) => `
+    <li><span class="orig">${esc(o)}</span><span class="kw">${kw}</span>${esc(pre)}
+      <input type="text" id="t6-${i}" data-save="t6-${i}" data-pre="${esc(pre)}" data-ans="${esc(ans.join("|"))}" style="width:260px;display:inline-block;padding:4px 8px" autocomplete="off" autocapitalize="off"> ${esc(post)}</li>`).join("");
+  $("keyT6").textContent = T6.map((q, i) => `${i + 1} ${q[4][0]}`).join(" · ");
+
+  // ---------- Task 6: wishlist ----------
+  const SLOTS = ["Something I want", "Something I need", "Something to wear", "Something to read", "An experience, not a thing"];
+  $("t7").innerHTML = SLOTS.map((s, i) => `
+    <div class="guide-tip"><b style="color:var(--red)">${s}</b>
+      <textarea data-save="t7-${i}" placeholder="What is it, and why do you want it?" style="min-height:58px;margin-top:6px"></textarea></div>`).join("");
+  const LESSON_VOCAB = ["heart set on", "eye on", "dying to", "could do with", "wouldn't say no", "wishful thinking", "impulse buy", "clutter", "drop hints", "a far cry from", "long-lasting"];
+  const vocabStem = { "drop hints": "hint", "impulse buy": "impulse", "long-lasting": "lasting", "could do with": "do with" };
+  $("chips").innerHTML = LESSON_VOCAB.map(w => `<span class="chip" data-w="${w}">${w}</span>`).join("");
+  const countVocab = () => {
+    const txt = norm(Array.from(document.querySelectorAll("#t7 textarea")).map(x => x.value).join(" "));
+    let n = 0;
+    document.querySelectorAll("#chips .chip").forEach(c => { const used = txt.includes(norm(vocabStem[c.dataset.w] || c.dataset.w)); c.classList.toggle("used", used); n += used; });
+    $("vocabCount").textContent = `${n} of today’s phrases used${n >= 4 ? " ✓" : " (aim for 4+)"}`;
+  };
+  const countHw = () => {
+    const words = ($("hw").value.match(/\S+/g) || []).length;
+    $("hwCount").textContent = `${words} words${words >= 220 && words <= 260 ? " ✓" : " (220–260)"}`;
+  };
+
+  // ---------- save / restore all inputs ----------
+  st.f = st.f || {};
+  document.querySelectorAll("[data-save]").forEach(el => {
+    const k = el.dataset.save, v = st.f[k];
+    if (el.type === "radio") el.checked = v === el.value; else if (v != null) el.value = v;
+    el.addEventListener(el.tagName === "SELECT" || el.type === "radio" ? "change" : "input", () => {
+      st.f[k] = el.value; save();
+      el.classList.remove("ok", "bad");
+      if (el.type === "radio") el.closest(".choices").querySelectorAll(".choice").forEach(c => c.classList.remove("ok", "bad"));
+      if (el.closest("#t7")) countVocab();
+      if (el.id === "hw") countHw();
+    });
+  });
+  paintNav(); countVocab(); countHw();
+
+  // ---------- checking ----------
+  const setScore = (id, n, of) => { $(id + "score").textContent = `${n} / ${of} correct`; };
+  const checkSelects = (prefix, keys) => {
+    let n = 0;
+    keys.forEach((k, i) => { const s = $(prefix + "-" + i); const ok = s.value === k; n += ok; s.classList.toggle("ok", ok); s.classList.toggle("bad", !ok && s.value !== ""); });
+    return n;
+  };
+  const checks = {
+    t1() { setScore("t1", checkSelects("t1", T1.key), T1.key.length); markStage("s3"); },
+    t3() { setScore("t3", checkRadios("t3", T3), T3.length); markStage("s2"); markStage("s4"); },
+    t4() { setScore("t4", checkSelects("t4", T4.map(x => x[1])), T4.length); markStage("s5"); },
+    t5() { setScore("t5", checkRadios("t5", T5), T5.length); markStage("s6"); },
+    t6() {
+      let n = 0;
+      document.querySelectorAll("#t6 input").forEach(inp => {
+        const v = norm(inp.value), pre = norm(inp.dataset.pre);
+        const ok = inp.dataset.ans.split("|").some(a => norm(a) === v || (pre && norm(pre + " " + a) === v) || norm(a.replace(/^'/, pre + " '").replace(/^i '/, "i'")) === v);
+        n += ok; inp.classList.toggle("ok", ok); inp.classList.toggle("bad", !ok && inp.value.trim() !== "");
+        inp.title = ok ? "" : "Answer: " + inp.dataset.ans.split("|")[0];
+      });
+      setScore("t6", n, T6.length); markStage("s7");
+    },
+  };
+  document.querySelectorAll("[data-check]").forEach(b => b.addEventListener("click", () => checks[b.dataset.check]()));
+  document.querySelectorAll("[data-reveal]").forEach(b => b.addEventListener("click", () => {
+    const a = $(b.dataset.reveal + "ans"); a.hidden = !a.hidden;
+  }));
+
+  // stages without a checker count as done once you scroll past them
+  const io = "IntersectionObserver" in window && new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const s = e.target.closest("section.stage"); if (["s1", "s8", "s9"].includes(s.id)) markStage(s.id);
+  }), { threshold: 1 });
+  if (io) ["s1", "s8", "s9"].forEach(id => io.observe($(id).querySelector(".stage-head")));
+
+  // ---------- timers ----------
+  document.querySelectorAll(".timer").forEach(t => {
+    const total = +t.dataset.secs, out = t.querySelector("span"), btn = t.querySelector("button");
+    let left = total, h = null;
+    const fmt = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    btn.addEventListener("click", () => {
+      if (h) { clearInterval(h); h = null; left = total; out.textContent = fmt(left); btn.textContent = "Start"; return; }
+      btn.textContent = "Reset";
+      h = setInterval(() => { left--; out.textContent = fmt(Math.max(left, 0)); if (left <= 0) { clearInterval(h); h = null; out.textContent = "Time!"; btn.textContent = "Again"; left = total; } }, 1000);
+    });
+  });
+
+  // ---------- clear ----------
+  $("clearAll").addEventListener("click", () => {
+    if (!confirm("Clear all your answers for this lesson on this device?")) return;
+    const teacher = st.teacher; st = { teacher }; save(); location.reload();
+  });
+})();
+</script>
+</body>
+</html>
