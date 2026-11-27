@@ -201,7 +201,7 @@ details.phr ul{{margin:8px 0 0;padding-left:20px;columns:2;column-gap:24px;font-
       </div>
     </div>
     <div class="stats">
-      <div class="stat"><b>4</b><span>writing lessons</span></div>
+      <div class="stat"><b>{len(r["lessons"])}</b><span>lessons</span></div>
       <div class="stat"><b>{len(r["reviews"])}</b><span>lesson reviews</span></div>
       <div class="stat"><b>{nwords}</b><span>new words</span></div>
       <div class="stat"><b>{ncorr}</b><span>corrections</span></div>
@@ -211,7 +211,7 @@ details.phr ul{{margin:8px 0 0;padding-left:20px;columns:2;column-gap:24px;font-
 
     <section id="studied">
       <h2>What we've studied</h2>
-      <p class="sub">Writing Studio, Lessons 1–4, on <a href="{esc(r["miro"])}" target="_blank" rel="noopener">our Miro board</a>.</p>
+      <p class="sub">Writing Studio (Lessons 1–4) and Speaking Studio (Lesson 5), on <a href="{esc(r["miro"])}" target="_blank" rel="noopener">our Miro board</a>.</p>
       <div class="lessons">{lessons}</div>
     </section>
 
@@ -273,7 +273,7 @@ const paper=document.getElementById("paper");
 (function(){{
   let S=null; try{{S=JSON.parse(localStorage.getItem("writingExpertU1.progress.v1")||"null")}}catch(e){{}}
   if(!S||!S.log||!S.log.length) return;
-  const names={{text:"Text-speak",chat:"Chat replies",formal:"Formal emails",caption:"Captions & hair",grammar:"Grammar for your year",lessons:"From our lessons",all:"All words"}};
+  const names={{text:"Text-speak",chat:"Chat replies",formal:"Formal emails",caption:"Captions & hair",grammar:"Grammar for your year",lessons:"From our lessons",award:"Words for the big night",all:"All words"}};
   const box=document.getElementById("live"); box.textContent="";
   const tests=S.tests||{{}}, ids=Object.keys(names).filter(k=>tests[k]&&tests[k].best!=null);
   const p=document.createElement("p"); p.style.margin="0";
