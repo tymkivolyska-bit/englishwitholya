@@ -16,6 +16,8 @@ Lessons:
 
 3. "Snowy CVC words" from the Winter CVC Words Activity Booklet (pictures cropped from it into `img/w/`). Task types added: `spy` (read a word, tap it in the picture; `box` is [left, top, right, bottom] in % of the picture), `join` (pick one letter per column), `colour` (pick a colour from the key, tap matching words on the scarf). In `cvc` words, write digraphs with dashes (`s-o-ck`), and options can be picture paths.
 
+A lesson can show a YouTube cartoon before its tasks: `video: { id: "RbKPdwBOPF8", title, ua }` (id or full link).
+
 Pictures in tasks: `img` can be one path or a list (shows them side by side); `no:true` draws a red "no" sign over the picture.
 
 ## Voice (girl's voice on every device)

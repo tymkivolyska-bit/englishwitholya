@@ -219,6 +219,11 @@ section.task{margin-top:34px;padding-top:24px;border-top:2px dashed var(--line)}
 .pic-opt{font-size:30px;line-height:1;padding:6px 12px}
 .items.letters .line .chip,.items.letters .pool .chip{font-size:22px;min-width:44px}
 .letters .line:empty::before{content:"tap the letters below…"}
+/* cartoon */
+.video{margin-top:26px}
+.vframe{position:relative;margin-top:10px;aspect-ratio:16/9;background:#2b2523;border:5px solid #fff;border-radius:6px;box-shadow:0 4px 12px rgba(90,50,60,.2);overflow:hidden}
+.vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vlink{display:inline-block;margin-top:6px;font-size:.85em;color:var(--rose-d)}
 /* I spy */
 .spywords{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .spyword{font-size:20px;min-height:40px}
@@ -313,7 +318,7 @@ section.task{margin-top:34px;padding-top:24px;border-top:2px dashed var(--line)}
   </main>
 </div>
 
-<script src="lessons.js?v=20261127d"></script>
+<script src="lessons.js?v=20261127e"></script>
 <script src="audio/index.js?v=20261127d"></script>
 <script>
 (function(){
@@ -444,6 +449,12 @@ function lesson(les){
     les.rule.forEach(function(row){ r.querySelector("table").appendChild(el('<table><tr><td>'+esc(row[0])+'</td><td>'+esc(row[1]||"")+'</td></tr></table>').querySelector("tr")); });
     view.appendChild(r);
   }
+  [].concat(les.video||[]).forEach(function(v){
+    var id = String(v.id||v).replace(/^.*(?:youtu\.be\/|v=|embed\/)([\w-]{11}).*$/,"$1");
+    view.appendChild(el('<div class="video"><h3>📺 '+esc(v.title||"Watch the cartoon")+'</h3>'+(v.ua?'<p class="ua" style="margin:.2em 0 0">'+esc(v.ua)+'</p>':'')+
+      '<div class="vframe"><iframe src="https://www.youtube-nocookie.com/embed/'+esc(id)+'?rel=0&playsinline=1" title="'+esc(v.title||"Cartoon")+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>'+
+      '<a class="vlink" href="https://www.youtube.com/watch?v='+esc(id)+'" target="_blank" rel="noopener">Open on YouTube ↗</a></div>'));
+  });
   les.tasks.forEach(function(t,i){ view.appendChild(task(les,t,i)); });
   var fin = el('<div class="finish" id="finish"></div>'); view.appendChild(fin); finish(les);
   document.title = les.title + " · Luna's English";
