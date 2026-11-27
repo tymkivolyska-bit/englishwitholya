@@ -28,17 +28,17 @@
   },
   {
    "Item": "Zoom link",
-   "Value": "",
+   "Value": "https://us04web.zoom.us/j/7873329727?pwd=anU2T3U1VVJaY2txMkF1TXZNekVJZz09",
    "Notes": ""
   },
   {
    "Item": "Zoom meeting ID",
-   "Value": "",
+   "Value": "787 332 9727",
    "Notes": ""
   },
   {
    "Item": "Zoom passcode",
-   "Value": "",
+   "Value": "2VA2RC",
    "Notes": ""
   },
   {
@@ -47,7 +47,20 @@
    "Notes": ""
   }
  ],
- "Timetable": [],
+ "Timetable": [
+  {
+   "Day": "Tuesday",
+   "Time (Kyiv)": "4:30 pm",
+   "Length": "",
+   "Notes": ""
+  },
+  {
+   "Day": "Thursday",
+   "Time (Kyiv)": "4:30 pm",
+   "Length": "",
+   "Notes": ""
+  }
+ ],
  "Homework": [
   {
    "Set on": "2026-11-26",

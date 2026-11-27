@@ -97,6 +97,7 @@ details.older summary{cursor:pointer;font-weight:700;color:var(--navy)}
 .wd:first-of-type{border-top:0}
 .wd .w{font-weight:700;color:var(--navy)}
 .wd .m{color:var(--rose);font-style:italic}
+.wd{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}
 .wd .tip{grid-column:1/-1;font-size:14px;color:var(--soft)}
 .quiz .hide{filter:blur(6px);cursor:pointer;transition:filter .2s;user-select:none}
 .quiz .hide.shown{filter:none}
@@ -126,6 +127,7 @@ footer .small{display:block;font-weight:400;font-style:normal;margin-top:4px}
 </head>
 <body>
 <div class="wrap" id="app"><p class="empty">Loading…</p></div>
+<script src="audio/hub.js?v=1"></script>
 <script>
 const SHEET_ID="1f6GQaFDXwfi6hnsccZ9r-I8jV4xLSGebWluVxOzdovY";
 const TABS={Overview:"A4:C",Timetable:"A4:D",Homework:"A4:F",Errors:"A4:F",Focus:"A4:C",Materials:"A4:D",Flashcards:"A4:E"};
@@ -177,10 +179,12 @@ function hashKey(s){let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))|0;
 /* ---------- pronunciation: British female voice (Google), phone voice as a fallback ---------- */
 let cur=null;
 function speakTTS(t){try{const u=new SpeechSynthesisUtterance(t);u.lang="en-GB";const v=speechSynthesis.getVoices().filter(v=>/en[-_]GB/i.test(v.lang));const f=v.find(v=>/female|serena|kate|stephanie|martha|libby|sonia|hazel|emma|amy/i.test(v.name))||v[0];if(f)u.voice=f;u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+/* Built-in recordings (audio/hub.js, British female voice) play everywhere, also inside Telegram. Anything not recorded yet uses Google's voice, then the phone's. */
+function recording(t){const m=window.HUB_AUDIO||{},k=String(t).trim();if(m[k])return m[k];const l=k.toLowerCase();for(const x in m)if(x.toLowerCase()===l)return m[x];return ""}
 function say(t){
   let done=false,a=null;const fb=()=>{if(done)return;done=true;try{a&&a.pause()}catch(e){}speakTTS(t)};
   try{if(cur)cur.pause();try{speechSynthesis.cancel()}catch(e){}
-    a=new Audio();a.referrerPolicy="no-referrer";a.src="https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-GB&ttsspeed=0.9&q="+encodeURIComponent(String(t).slice(0,190));
+    const rec=recording(t);a=new Audio();a.referrerPolicy="no-referrer";a.src=rec?"audio/"+rec:"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-GB&ttsspeed=0.9&q="+encodeURIComponent(String(t).slice(0,190));
     a.onerror=fb;a.onplaying=()=>{done=true};cur=a;const p=a.play();if(p&&p.catch)p.catch(fb);setTimeout(()=>{if(!done&&a.paused)fb()},4000);
   }catch(e){fb()}
 }
@@ -238,7 +242,7 @@ function render(){
     const body=`
       ${fixes.length?`<div class="grp"><span class="lbl">Fix these</span>${fixes.map(r=>`<div class="fix"><div class="ln"><span class="no">${esc(said(r))}</span><span>→</span><span class="yes hide">${esc(better(r))}</span>${sayBtn(better(r),1)}</div>${why(r)?`<div class="why">${esc(why(r))}</div>`:""}</div>`).join("")}</div>`:""}
       ${prs.length?`<div class="grp"><span class="lbl">Say it right</span>${prs.map(r=>`<div class="pr"><span class="w">${esc(said(r))}</span><span class="ipa">${esc(better(r))}</span>${why(r)?`<span class="st">${esc(why(r))}</span>`:""}${sayBtn(said(r))}</div>`).join("")}</div>`:""}
-      ${words.length?`<div class="grp"><span class="lbl">New words</span>${words.map(r=>`<div class="wd"><span class="w">${esc(said(r))}</span><span class="m hide">${esc(better(r))}</span>${why(r)?`<span class="tip">${esc(why(r))}</span>`:""}</div>`).join("")}</div>`:""}`;
+      ${words.length?`<div class="grp"><span class="lbl">New words</span>${words.map(r=>`<div class="wd"><span class="w">${esc(said(r))}</span><span class="m hide">${esc(better(r))}</span><span class="wl">${sayBtn(said(r),1)}</span>${why(r)?`<span class="tip">${esc(why(r))}</span>`:""}</div>`).join("")}</div>`:""}`;
     const head=`<span class="lbl">${niceDate(date)}</span><h3>${esc(rows[0].Lesson||"Lesson")}</h3>`;
     return gi===0?`<div class="box">${head}${body}</div>`:`<details class="older box"><summary>${niceDate(date)} · ${esc(rows[0].Lesson||"Lesson")}</summary>${body}</details>`;
   }).join(""):`<p class="empty">After each lesson your corrections will appear here.</p>`;

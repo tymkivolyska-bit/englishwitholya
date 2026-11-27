@@ -9,3 +9,6 @@ Published with GitHub Pages: https://tymkivolyska-bit.github.io/englishwitholya/
   - The page reads the sheet live only while the sheet is shared as "Anyone with the link: Viewer". Otherwise it shows `data.json` (a copy of the sheet made on 27 Nov 2026), so update that file too if the sheet is private.
 - `cards.html`: the Lesson 7 flashcards (pronunciation with built-in British voice recordings in `audio/`, flashcards and quizzes, progress sent to the Zapier hook in `config.js`). Old `#join=` and `#teacher` links to `/alyona/` are forwarded here.
 - Homework ticks and flashcard progress are saved in the browser on Alyona's phone.
+
+## Listen buttons on the main page
+Every Listen button plays a built-in recording (British female voice, Kokoro "bf_emma") from `audio/`, listed in `audio/hub.js`. That works on every phone and inside Telegram. When you add new errors or words to the sheet, copy them into `data.json` and run `python tools/make_hub_audio.py data.json audio` in this folder (setup notes at the top of the script). Until then, new words use Google's voice and then the phone's own voice.
