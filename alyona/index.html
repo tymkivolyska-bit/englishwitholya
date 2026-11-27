@@ -79,6 +79,7 @@ label{display:block;font-weight:700;margin:14px 0 6px;color:var(--navy)}
 </head>
 <body>
 <div class="wrap" id="app"></div>
+<script src="config.js"></script>
 <script>
 {
 /* ---------- content: Miro board "B1 and higher. Discipline - your way to freedom" (Lesson 7) ---------- */
@@ -137,7 +138,22 @@ function pickVoice(){try{const v=speechSynthesis.getVoices().filter(x=>/^en/i.te
   voice=fem(gb)||fem(v)||gb.find(x=>!MALE.test(x.name))||v.find(x=>!MALE.test(x.name))||gb[0]||v[0]||null;
   fallbackPitch=voice&&FEMALE.test(voice.name)?1:1.25}catch(e){}}
 try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
-function say(text){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace(/^to /,"to "));if(voice)u.voice=voice;u.lang=voice?voice.lang:"en-GB";u.rate=.9;u.pitch=fallbackPitch;speechSynthesis.speak(u)}catch(e){}}
+function speakTTS(text){try{if(!("speechSynthesis" in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);if(voice)u.voice=voice;u.lang=voice?voice.lang:"en-GB";u.rate=.9;u.pitch=fallbackPitch;speechSynthesis.speak(u)}catch(e){}}
+let curAudio=null;
+function say(text){
+  /* Recorded British female voice from Google; works in Telegram's and Instagram's built-in browsers too.
+     If it can't load (offline, blocked), fall back to the phone's own voice. */
+  let done=false,a=null;const fb=()=>{if(done)return;done=true;try{a&&a.pause()}catch(e){}speakTTS(text)};
+  try{
+    if(curAudio){curAudio.pause();curAudio=null}
+    try{speechSynthesis.cancel()}catch(e){}
+    a=new Audio();a.referrerPolicy="no-referrer";a.preload="auto";
+    a.src="https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en-GB&ttsspeed=0.9&q="+encodeURIComponent(text.slice(0,190));
+    a.onerror=fb;a.onplaying=()=>{done=true};curAudio=a;
+    const p=a.play();if(p&&p.catch)p.catch(fb);
+    setTimeout(()=>{if(!done&&a.paused)fb()},2500);
+  }catch(e){fb()}
+}
 const SPK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
 const sayBtn=t=>`<button class="say" data-say="${esc(t)}">${SPK} Listen</button>`;
 function wireSay(root){root.querySelectorAll("[data-say]").forEach(b=>b.onclick=e=>{e.stopPropagation();say(b.dataset.say)})}
@@ -163,6 +179,10 @@ async function tgSend(text,c=cfg){
   const url="https://api.telegram.org/bot"+c.token+"/sendMessage",body=new URLSearchParams({chat_id:c.chat,text});
   try{const r=await fetch(url,{method:"POST",body});const j=await r.json();return !!j.ok}
   catch(e){try{await fetch(url,{method:"POST",body,mode:"no-cors"});return true}catch(e2){return false}}
+}
+function saveToSheet(row){
+  const url=window.RESULTS_URL;if(!url)return;
+  try{fetch(url,{method:"POST",mode:"no-cors",body:new URLSearchParams(row)}).catch(()=>{})}catch(e){}
 }
 async function notify(text){if(!cfg.token)return;outbox.push(text);save();await flush()}
 async function flush(){while(outbox.length){const ok=await tgSend(outbox[0]);if(!ok)break;outbox.shift();save()}}
@@ -304,6 +324,9 @@ function finish(early){
   const msg=`📚 ${studentName()} finished a session\n${S.deck.title} · ${S.mode==="flip"?"Flashcards":"Quiz"}${early?" (stopped early)":""}\nScore: ${S.right}/${done} (${pct}%)\nTime: ${fmtTime(ms)}\n`+
     (S.miss.length?`\nTo review:\n${S.miss.map(m=>missLine(m,k)).join("\n")}\n`:"\nNo mistakes 🎉\n")+`\nLearned so far: ${learned(ALL)}/${ALL.length} · streak ${streak()} day(s)`;
   notify(msg);
+  saveToSheet({student:studentName(),deck:S.deck.title,mode:S.mode==="flip"?"Flashcards":"Quiz",score:S.right,total:done,percent:pct,seconds:Math.round(ms/1000),
+    stopped_early:early?"yes":"no",mistakes:S.miss.map(m=>missLine(m,k).slice(2)).join("; ")||"none",learned:learned(ALL),total_cards:ALL.length,streak:streak(),
+    at:new Date().toISOString()});
   app.innerHTML=`<div class="result"><div class="small">${esc(S.deck.title)}</div><div class="score">${S.right}/${done}</div>
    <h2 class="disp" style="font-size:24px;margin-top:14px">${pct>=90?"Brilliant!":pct>=70?"Great work!":pct>=50?"Good, keep going!":"Practice makes perfect!"}</h2>
    ${S.miss.length?`<p>To review:</p><ul class="miss">${S.miss.map(m=>`<li>${esc(missLine(m,k).slice(2))}</li>`).join("")}</ul>`:""}
