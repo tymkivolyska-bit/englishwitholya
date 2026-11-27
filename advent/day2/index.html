@@ -172,7 +172,7 @@ details.key dd { margin: 2px 0 0 0; }
   <header class="hero">
     <div class="daynum">2</div>
     <h1>The Art of the Wishlist</h1>
-    <div class="meta">Reading + speaking · C1 · about 60 minutes</div>
+    <div class="meta">Reading, video + speaking · C1 · about 65 minutes</div>
   </header>
 
   <div class="tnote">
@@ -278,7 +278,7 @@ details.key dd { margin: 2px 0 0 0; }
 
   <!-- Stage 7 -->
   <section class="stage" id="s7" data-title="Practice">
-    <div class="stage-head"><h2><span class="kicker">Stage 7</span>Controlled practice</h2><span class="tmeta">7 min · S</span></div>
+    <div class="stage-head"><h2><span class="kicker">Stage 7</span>Controlled practice</h2><span class="tmeta">5 min · S</span></div>
     <div class="tnote"><b>Aim:</b> to check Ss can use the phrases accurately (Cambridge C1-style key word transformations).</div>
     <h3>Task 5 · Key word transformations</h3>
     <p class="instr">Complete the second sentence so it means the same as the first. Use the word in capitals and 3–6 words.</p>
@@ -287,9 +287,21 @@ details.key dd { margin: 2px 0 0 0; }
   </section>
 
   <!-- Stage 8 -->
-  <section class="stage" id="s8" data-title="Speaking">
-    <div class="stage-head"><h2><span class="kicker">Stage 8</span>Curate your wishlist</h2><span class="tmeta">12 min · S, S–S</span></div>
-    <div class="tnote"><b>Aim:</b> fluency practice using the target language. Ss plan for 5 minutes, then present their list; the partner plays the “practical friend” and questions every item. Monitor and note language for Stage 9. <b>1:1 variant:</b> T and S both make a list and challenge each other.</div>
+  <section class="stage" id="s8" data-title="TikToks">
+    <div class="stage-head"><h2><span class="kicker">Stage 8</span>Real wishlists</h2><span class="tmeta">8 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> listening for gist and detail in authentic wishlist videos, and reacting with today’s phrases. Play each video once for gist, then again for the questions. Videos 3 and 4 are the ones from the “If Only…” lesson. Watch all four before class and tweak any question that doesn’t fit.</div>
+    <p class="instr">Watch the videos and answer the questions. Then compare with a partner.</p>
+    <div id="t9"></div>
+    <h3>React with today’s phrases</h3>
+    <p class="instr">She’s clearly got her heart set on… · He could really do with… · I wouldn’t say no to… myself! · I’ve had my eye on something like that too. · Honestly, that’s a bit of wishful thinking.</p>
+    <h3>Discuss</h3>
+    <p class="instr">Wishlist TikToks: harmless fun or a celebration of overconsumption? Would the four-gift rule work for these creators?</p>
+  </section>
+
+  <!-- Stage 8 -->
+  <section class="stage" id="s9" data-title="Speaking">
+    <div class="stage-head"><h2><span class="kicker">Stage 9</span>Curate your wishlist</h2><span class="tmeta">10 min · S, S–S</span></div>
+    <div class="tnote"><b>Aim:</b> fluency practice using the target language. Ss plan for 5 minutes, then present their list; the partner plays the “practical friend” and questions every item. Monitor and note language for Stage 10. <b>1:1 variant:</b> T and S both make a list and challenge each other.</div>
     <h3>Task 6 · Plan your list <span class="timer" data-secs="300"><span>5:00</span><button type="button">Start</button></span></h3>
     <p class="instr">The four-gift rule, plus one experience. Use phrases from today.</p>
     <div id="t7"></div>
@@ -303,9 +315,9 @@ details.key dd { margin: 2px 0 0 0; }
   </section>
 
   <!-- Stage 9 -->
-  <section class="stage" id="s9" data-title="Feedback">
-    <div class="stage-head"><h2><span class="kicker">Stage 9</span>Feedback</h2><span class="tmeta">3 min · T–S</span></div>
-    <div class="tnote"><b>Aim:</b> to praise good language use and correct key errors. Board 3–4 good sentences and 3–4 errors from Stage 8; Ss fix and upgrade them in pairs.</div>
+  <section class="stage" id="s10" data-title="Feedback">
+    <div class="stage-head"><h2><span class="kicker">Stage 10</span>Feedback</h2><span class="tmeta">3 min · T–S</span></div>
+    <div class="tnote"><b>Aim:</b> to praise good language use and correct key errors. Board 3–4 good sentences and 3–4 errors from Stage 9; Ss fix and upgrade them in pairs.</div>
     <h3>Great language and corrections from today</h3>
     <textarea data-save="t8" placeholder="Write the sentences from the board here…" style="min-height:110px"></textarea>
     <h3>Homework (optional)</h3>
@@ -444,6 +456,17 @@ details.key dd { margin: 2px 0 0 0; }
       <input type="text" id="t6-${i}" data-save="t6-${i}" data-pre="${esc(pre)}" data-ans="${esc(ans.join("|"))}" style="width:260px;display:inline-block;padding:4px 8px" autocomplete="off" autocapitalize="off"> ${esc(post)}</li>`).join("");
   $("keyT6").textContent = T6.map((q, i) => `${i + 1} ${q[4][0]}`).join(" · ");
 
+  // ---------- Stage 8: TikToks ----------
+  const VIDS = [
+    ["https://vt.tiktok.com/ZSs6WnA8r/", ["Note three things on the list.", "Which item do you think they have their heart set on? How can you tell?", "Which item is a want and which is a need?"]],
+    ["https://vt.tiktok.com/ZSs6Wp2FL/", ["What’s the most surprising thing on the list?", "Which items could the creator really do with, and which are pure wants?", "Anything you wouldn’t say no to yourself?"]],
+    ["https://www.tiktok.com/@marinagudov/video/7709347004391918879", ["Who is the list for: herself, her followers or people buying her gifts?", "Describe her taste in three adjectives.", "Find one phrase that shows she’s talking to an audience, not a friend."]],
+    ["https://www.tiktok.com/@amberreenie/video/7709197392976940310", ["Which item is the most expensive? Does she think it’s worth it?", "What does her list say about her stage of life?", "How is her list different from Video 3 in tone and price range?"]],
+  ];
+  $("t9").innerHTML = VIDS.map(([url, qs], v) => `
+    <h3>Video ${v + 1} · <a class="btn ghost" style="font-size:14px;padding:3px 12px;text-decoration:none" href="${url}" target="_blank" rel="noopener">Watch on TikTok &rarr;</a></h3>
+    <ol class="q">${qs.map((q, i) => `<li>${esc(q)}<textarea data-save="t9-${v}-${i}" placeholder="Your answer…" style="min-height:48px"></textarea></li>`).join("")}</ol>`).join("");
+
   // ---------- Task 6: wishlist ----------
   const SLOTS = ["Something I want", "Something I need", "Something to wear", "Something to read", "An experience, not a thing"];
   $("t7").innerHTML = SLOTS.map((s, i) => `
@@ -509,9 +532,9 @@ details.key dd { margin: 2px 0 0 0; }
   // stages without a checker count as done once you scroll past them
   const io = "IntersectionObserver" in window && new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return;
-    const s = e.target.closest("section.stage"); if (["s1", "s8", "s9"].includes(s.id)) markStage(s.id);
+    const s = e.target.closest("section.stage"); if (["s1", "s8", "s9", "s10"].includes(s.id)) markStage(s.id);
   }), { threshold: 1 });
-  if (io) ["s1", "s8", "s9"].forEach(id => io.observe($(id).querySelector(".stage-head")));
+  if (io) ["s1", "s8", "s9", "s10"].forEach(id => io.observe($(id).querySelector(".stage-head")));
 
   // ---------- timers ----------
   document.querySelectorAll(".timer").forEach(t => {
