@@ -53,6 +53,11 @@ window.DIANA = {
     { id: "h1", lesson: "l2", done: true, text: "Do the online exercises for Lesson 2 (past simple)." }
   ],
 
+  // Files for Diana (PDFs etc.). Put the file in diana/files/ and add a line here, newest first:
+  // { title: "Lesson 9 worksheet", file: "files/lesson9.pdf", lesson: "l9", note: "" }
+  materials: [
+  ],
+
   // Mistakes from our lessons (shown in the Report as "Remember").
   mistakes: [
     { wrong: "I went to the Paris.", right: "I went to Paris.", note: "No 'the' before cities and most countries (but the UK, the USA)." },

@@ -233,7 +233,7 @@ textarea:focus{outline:2px solid var(--pink);border-color:transparent}
 </main>
 
 <script src="config.js?v=1"></script>
-<script src="data.js?v=2"></script>
+<script src="data.js?v=3"></script>
 <script>
 (function(){
 "use strict";
@@ -381,6 +381,10 @@ render.home = function(){
   var todo = D.homework.filter(function(x){ return !hwDone(x); }), doneN = D.homework.length - todo.length;
   h += frame("<b>Homework</b>" + (todo.length ? " · " + todo.length + " to do" : ""), (todo.length ? hwItems(todo) : '<div class="empty">' + NOHW + '</div>')
     + (doneN ? '<p class="small muted" style="margin:12px 0 0">Done so far: <b>' + doneN + '</b> tasks ✓ · <a href="#homework" data-nav="homework">see all homework</a></p>' : ""), "homeHw");
+  var mats = D.materials || [];
+  if (mats.length) h += frame("<b>Materials</b> · " + mats.length, '<ul class="map">' + mats.map(function(m){
+      return '<li><span class="n">PDF</span><span class="tt"><b>' + esc(m.title) + '</b>' + (m.lesson || m.note ? '<br><span class="small muted">' + esc([lessonNo(m.lesson), m.note].filter(Boolean).join(" · ")) + '</span>' : "") + '</span><a class="btn sm" href="' + esc(m.file) + '" target="_blank" rel="noopener">Open</a></li>';
+    }).join("") + '</ul>');
   h += frame("<b>This week</b>", '<div class="stickies">'
     + '<a class="sticky ' + (left ? "rose" : "green") + '" href="#homework" data-nav="homework"><span class="lbl">Homework to do</span><span class="big">' + left + '</span></a>'
     + '<a class="sticky" href="#cards" data-nav="cards"><span class="lbl">Words I know</span><span class="big">' + kn + '<small style="font-size:24px"> / ' + ALL.length + '</small></span></a>'
