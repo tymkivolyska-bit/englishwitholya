@@ -1,19 +1,19 @@
 {
   "student": "Kseniia",
   "level": "B1",
-  "updated": "2026-11-25T16:40:00.000Z",
+  "updated": "2026-11-28T10:15:00.000Z",
   "todo": [
     {
       "id": "t3",
       "text": "Quizlet: practise the \"Let's get nails done\" flashcards\nhttps://quizlet.com/ua/1165325421/a2-b1-lets-get-nails-done-flash-cards/?i=45ddyf&x=1jqY",
       "due": "2026-11-28",
-      "done": false
+      "done": true
     },
     {
       "id": "t4",
       "text": "Write ten sentences with words from the lesson about nails. Look through the word cloud and practise making sentences using vocabulary from the lesson.",
       "due": "2026-11-28",
-      "done": false
+      "done": true
     },
     {
       "id": "t1",
@@ -219,7 +219,15 @@
       "note": "Nail salon words: manicure, gel polish, nail file, cuticle, colour chart, nail extensions, natural nails, UV lamp, buffer.\nNail shapes: edge, stiletto, squoval / soft square, oval, coffin / ballerina, round, mountain peak, square, almond.\nLesson: https://enghub.pro/lets-get-nails-done/attachments/students_version"
     }
   ],
-  "feedback": [],
+  "feedback": [
+    {
+      "id": "f1",
+      "date": "2026-11-28",
+      "lesson": "Writing homework: My last manicure",
+      "text": "✏️ Your text:\nHi I want to talk about my last manicure 💅 appointment 📅. I was already choosing the Colors they were so beautiful 🤩. She has started by asking me if I want to make nail extensions,I sais no cause I had long natural nails. Then she has toked a nail file cause I had nail that were longer than others .after she has ✂️ my cuticles , then she has puted some nail polish . After that she has puted my nails Ander a UV LAMP . The she has takes a buffer and buffed my nails to make them shiny. And tada 🎉 my nails are ready\n\n✅ Corrected version:\nHi! I want to talk about my last manicure 💅 appointment 📅. I had already chosen the colours, and they were so beautiful 🤩. She started by asking me if I wanted nail extensions. I said no, because I had long natural nails. Then she took a nail file, because I had a nail that was longer than the others. After that, she cut ✂️ my cuticles, and then she put on some nail polish. Next, she put my nails under a UV lamp. Then she took a buffer and buffed my nails to make them shiny. And ta-da 🎉, my nails were ready!\n\n📝 Main points:\n1. Past simple for a finished story (not present perfect): has started → started, has toked → took, has puted → put, has takes → took, has ✂️ → cut. Irregular verbs to remember: take – took, put – put, cut – cut, say – said.\n2. Spelling: sais → said, Ander → under, The → Then, Colors → colours (no capital letter).\n3. Reported question: \"she asked me if I wanted…\" (want → wanted). We say \"get / have nail extensions\", not \"make\".\n4. Punctuation: a capital letter after a full stop (.after → After), a space after a comma, no space before a full stop. In writing, use \"because\", not \"cause\".\n5. A nail → \"a nail that was longer than the others\".\n\nWell done! 💅 You used lots of words from our nails lesson: manicure, nail extensions, natural nails, nail file, cuticles, nail polish, UV lamp, buffer, buff. Your story is clear and in the right order (then, after that).",
+      "next": "Practise past simple irregular verbs (took, put, cut, said) and use the past simple when you tell a story about a finished event."
+    }
+  ],
   "settings": {
     "sheetUrl": ""
   },
@@ -262,9 +270,23 @@
       "score": "",
       "outOf": "",
       "comment": "Words to study: manicure, gel polish, nail file, cuticle, colour chart, nail extensions, natural nails, UV lamp, buffer. Shapes: edge, stiletto, squoval / soft square, oval, coffin / ballerina, round, mountain peak, square, almond.",
-      "next": "By Sat 28.11: Quizlet set + write ten sentences with the nails words",
+      "next": "By Sat 28.11: Quizlet set + write ten sentences with the nails words — done 28.11.2026 ✓",
       "sheetTab": "Vocabulary",
       "sheetRow": 7,
+      "sent": "import"
+    },
+    {
+      "id": "g4",
+      "date": "2026-11-28",
+      "skill": "Writing",
+      "topic": "Let's get nails done",
+      "task": "Homework: short text \"My last manicure\"",
+      "score": "",
+      "outOf": "",
+      "comment": "Good use of nails vocabulary. Main errors: present perfect instead of past simple (has started/has toked/has puted → started/took/put), spelling (sais, Ander, The), capitals and punctuation.",
+      "next": "Practise past simple irregular verbs (took, put, cut, said)",
+      "sheetTab": "Writing",
+      "sheetRow": 5,
       "sent": "import"
     }
   ]
