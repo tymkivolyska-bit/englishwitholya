@@ -8,7 +8,8 @@ Sections (toolbar): **Home** (Miro and Zoom links, this week, lesson map), **Hom
 
 ## Files
 - `index.html`: the page and the app.
-- `data.js`: everything Diana sees: links (Miro, Zoom, meeting ID, passcode), `nextLesson`, lessons, homework, flashcard sets, progress checks and teacher's notes (`feedback`). The comment at the top explains each field. After editing, bump `?v=` on the `data.js` line in `index.html`.
+- `data.js`: everything Diana sees (all 9 lessons from the Miro board, 164 words, 9 progress checks, the board's homework marked done, and mistakes from lessons): links (Miro, Zoom, meeting ID, passcode), `nextLesson`, lessons, homework, flashcard sets, progress checks and teacher's notes (`feedback`). The comment at the top explains each field. After editing, bump `?v=` on the `data.js` line in `index.html`.
+  - New homework: add it at the TOP of `homework` (there is an example line). It shows on Home straight after the Miro and Zoom links. `done: true` marks a task as already done.
   - Keep homework `id`s and card English words the same once Diana has used them (her progress is saved by them).
 - `config.js`: `SHEET_URL`, the Apps Script web app link of the Google Sheet. Empty = progress stays only on her phone (it is queued and sent once the link is added).
 - `apps-script.gs`: the receiver for the sheet, with setup steps at the top.

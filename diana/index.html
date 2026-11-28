@@ -185,6 +185,8 @@ textarea:focus{outline:2px solid var(--pink);border-color:transparent}
 .rtable th,.rtable td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
 .rtable th{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
 .tscroll{overflow-x:auto}
+.rtable td:first-child{min-width:150px}
+@media (max-width:560px){.rtable .topic{display:none}.rtable th,.rtable td{padding:9px 5px;font-size:14px}}
 .days{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;margin-top:8px}
 .days span{aspect-ratio:1;border-radius:4px;background:#EFEFF3}
 .days span.l1{background:#fbd3e1}.days span.l2{background:#f48fb5}.days span.l3{background:var(--pink)}
@@ -231,7 +233,7 @@ textarea:focus{outline:2px solid var(--pink);border-color:transparent}
 </main>
 
 <script src="config.js?v=1"></script>
-<script src="data.js?v=1"></script>
+<script src="data.js?v=2"></script>
 <script>
 (function(){
 "use strict";
@@ -276,7 +278,7 @@ var syncTimer = null;
 function snapshot(){
   return {
     action: "sync", student: D.student,
-    homework: D.homework.map(function(h){ var s = S.hw[h.id] || {}; return { text: h.text, lesson: lessonNo(h.lesson), due: h.due || "", done: !!s.done, doneAt: s.doneAt || "", answer: s.answer || "" }; }),
+    homework: D.homework.map(function(h){ var s = S.hw[h.id] || {}; return { text: h.text, lesson: lessonNo(h.lesson), due: h.due || "", done: hwDone(h), doneAt: s.doneAt || "", answer: s.answer || "" }; }),
     words: ALL.map(function(c){ var w = S.words[c.key] || {}; return { w: c.w, t: c.t, lesson: lessonNo(c.set), seen: w.seen || 0, right: w.right || 0, wrong: w.wrong || 0, status: { new: "New", learning: "Learning", known: "Known" }[status(c.key)], last: w.last || "" }; })
   };
 }
@@ -346,6 +348,7 @@ var views = ["home", "homework", "cards", "check", "report"], current = "home";
 function go(v, keep){
   if (views.indexOf(v) < 0) v = "home";
   current = v;
+  if (v === "check" && chk && chk.done) chk = null;
   views.forEach(function(x){ $("#v-" + x).hidden = x !== v; });
   document.querySelectorAll(".tool").forEach(function(b){ if (b.dataset.go === v) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
   render[v]();
@@ -357,7 +360,8 @@ document.addEventListener("click", function(e){ var a = e.target.closest("[data-
 window.addEventListener("hashchange", function(){ var v = location.hash.slice(1); if (v !== current) go(v); });
 
 function frame(label, inner, extra){ return '<div class="frame"><div class="flabel">' + label + '</div><div class="fbody' + (extra ? " " + extra : "") + '">' + inner + '</div></div>'; }
-function hwLeft(){ return D.homework.filter(function(h){ return !(S.hw[h.id] || {}).done; }).length; }
+function hwDone(h){ var s = S.hw[h.id]; return s && "done" in s ? !!s.done : !!h.done; }
+function hwLeft(){ return D.homework.filter(function(h){ return !hwDone(h); }).length; }
 function bestCheck(id){ var a = S.checks[id] || []; var b = null; a.forEach(function(r){ if (!b || r.score / r.outOf > b.score / b.outOf) b = r; }); return b; }
 function lastCheck(){ var l = null; D.checks.forEach(function(c){ (S.checks[c.id] || []).forEach(function(r){ if (!l || r.at > l.at) l = { at: r.at, score: r.score, outOf: r.outOf, title: c.title }; }); }); return l; }
 function streak(){ var n = 0, d = new Date(); if (!S.days[today(d)]) d.setDate(d.getDate() - 1); while (S.days[today(d)]){ n++; d.setDate(d.getDate() - 1); } return n; }
@@ -374,6 +378,9 @@ render.home = function(){
     + '<a class="sticky" href="' + esc(L.miro) + '" target="_blank" rel="noopener"><div><div class="t">Our Miro board</div><div class="d">Lesson slides, tasks and pictures from our lessons.</div></div><span class="go">Open Miro →</span></a>'
     + '<a class="sticky pink" href="' + esc(L.zoom) + '" target="_blank" rel="noopener"><div><div class="t">Zoom lesson</div><div class="d">' + (D.nextLesson ? "Next lesson: <b>" + esc(D.nextLesson) + "</b><br>" : "") + (L.zoomId ? "Meeting ID " + esc(L.zoomId) : "") + (L.zoomCode ? " · Passcode " + esc(L.zoomCode) : "") + '</div></div><span class="go">Join the lesson →</span></a>'
     + '</div></div></div>';
+  var todo = D.homework.filter(function(x){ return !hwDone(x); }), doneN = D.homework.length - todo.length;
+  h += frame("<b>Homework</b>" + (todo.length ? " · " + todo.length + " to do" : ""), (todo.length ? hwItems(todo) : '<div class="empty">' + NOHW + '</div>')
+    + (doneN ? '<p class="small muted" style="margin:12px 0 0">Done so far: <b>' + doneN + '</b> tasks ✓ · <a href="#homework" data-nav="homework">see all homework</a></p>' : ""), "homeHw");
   h += frame("<b>This week</b>", '<div class="stickies">'
     + '<a class="sticky ' + (left ? "rose" : "green") + '" href="#homework" data-nav="homework"><span class="lbl">Homework to do</span><span class="big">' + left + '</span></a>'
     + '<a class="sticky" href="#cards" data-nav="cards"><span class="lbl">Words I know</span><span class="big">' + kn + '<small style="font-size:24px"> / ' + ALL.length + '</small></span></a>'
@@ -388,41 +395,49 @@ render.home = function(){
         + (b ? '<span class="chip">' + b.score + "/" + b.outOf + '</span>' : "") + '</li>';
     }).join("") + '</ol>');
   $("#v-home").innerHTML = h;
+  hwWire($("#v-home"), render.home);
 };
 
 /* ---------- HOMEWORK ---------- */
-var hwFilter = "todo";
-render.homework = function(){
-  var list = D.homework.filter(function(h){ var d = !!(S.hw[h.id] || {}).done; return hwFilter === "all" || (hwFilter === "todo" ? !d : d); });
-  var done = D.homework.length - hwLeft();
-  var h = '<div class="frame"><div class="flabel"><b>Homework</b> · ' + done + ' of ' + D.homework.length + ' done</div><div class="fbody">'
-    + '<h1 class="hand mid">My homework</h1><div class="bar green" style="margin:12px 0 16px"><i style="width:' + (D.homework.length ? Math.round(done / D.homework.length * 100) : 0) + '%"></i></div>'
-    + '<div class="seg pinkseg" role="group" aria-label="Show">'
-    + [["todo", "To do"], ["done", "Done"], ["all", "All"]].map(function(x){ return '<button data-hwf="' + x[0] + '" aria-pressed="' + (hwFilter === x[0]) + '">' + x[1] + '</button>'; }).join("") + '</div>';
-  if (!list.length) h += '<div class="empty">' + (hwFilter === "todo" ? "All done! Nothing left to do. 🎉" : "Nothing here yet.") + '</div>';
-  else h += '<ol class="hw">' + list.map(function(t){
-    var s = S.hw[t.id] || {};
-    return '<li class="' + (s.done ? "done" : "") + '" data-id="' + t.id + '">'
-      + '<input type="checkbox" class="box" aria-label="Done" ' + (s.done ? "checked" : "") + '>'
+var hwFilter = null;
+function hwItems(list){
+  return '<ol class="hw">' + list.map(function(t){
+    var s = S.hw[t.id] || {}, done = hwDone(t);
+    return '<li class="' + (done ? "done" : "") + '" data-id="' + t.id + '">'
+      + '<input type="checkbox" class="box" aria-label="Done" ' + (done ? "checked" : "") + '>'
       + '<div class="tx">' + esc(t.text) + (t.link ? '<br><a href="' + esc(t.link) + '" target="_blank" rel="noopener">' + esc(t.linkLabel || "Open the task") + '</a>' : "") + '</div>'
-      + '<div class="meta">' + (t.lesson ? '<span class="pill">' + esc(lessonNo(t.lesson)) + '</span>' : "") + (t.due ? '<span class="chip">Due ' + esc(fmtDate(t.due)) + '</span>' : "") + (s.done && s.doneAt ? '<span class="chip ok">Done ' + esc(fmtTime(s.doneAt)) + '</span>' : "") + '</div>'
-      + (t.answer ? '<div class="ans"><textarea placeholder="Write your answer here. It is saved as you type.">' + esc(s.answer || "") + '</textarea><div class="wc">' + wc(s.answer) + '</div></div>' : "")
+      + '<div class="meta">' + (t.lesson ? '<span class="pill">' + esc(lessonNo(t.lesson)) + '</span>' : "") + (t.due && !done ? '<span class="chip">Due ' + esc(fmtDate(t.due)) + '</span>' : "") + (done ? '<span class="chip ok">Done' + (s.doneAt ? " " + esc(fmtTime(s.doneAt)) : "") + '</span>' : "") + '</div>'
+      + (t.answer && !(t.done && !s.answer) ? '<div class="ans"><textarea placeholder="Write your answer here. It is saved as you type.">' + esc(s.answer || "") + '</textarea><div class="wc">' + wc(s.answer) + '</div></div>' : "")
       + '</li>';
   }).join("") + '</ol>';
-  h += '</div></div>';
-  var v = $("#v-homework"); v.innerHTML = h;
-  v.querySelectorAll("[data-hwf]").forEach(function(b){ b.onclick = function(){ hwFilter = b.dataset.hwf; render.homework(); }; });
-  v.querySelectorAll(".hw>li").forEach(function(li){
+}
+function hwWire(root, again){
+  root.querySelectorAll(".hw>li").forEach(function(li){
     var id = li.dataset.id, t = D.homework.filter(function(x){ return x.id === id; })[0];
     li.querySelector(".box").onchange = function(e){
       var s = S.hw[id] || (S.hw[id] = {});
       s.done = e.target.checked; s.doneAt = s.done ? Date.now() : 0;
       record({ type: "Homework", lesson: lessonNo(t.lesson), what: (s.done ? "Done: " : "Not done: ") + t.text.slice(0, 80), details: s.answer || "" });
-      setTimeout(render.homework, s.done ? 450 : 0);
+      setTimeout(again, s.done ? 450 : 0);
     };
     var ta = li.querySelector("textarea");
     if (ta) ta.oninput = function(){ var s = S.hw[id] || (S.hw[id] = {}); s.answer = ta.value; li.querySelector(".wc").textContent = wc(ta.value); touch(); };
   });
+}
+var NOHW = "No new homework right now. Olya will put your next homework here.";
+render.homework = function(){
+  if (!hwFilter) hwFilter = hwLeft() ? "todo" : "all";
+  var list = D.homework.filter(function(h){ var d = hwDone(h); return hwFilter === "all" || (hwFilter === "todo" ? !d : d); });
+  var done = D.homework.length - hwLeft();
+  var h = '<div class="frame"><div class="flabel"><b>Homework</b> · ' + done + ' of ' + D.homework.length + ' done</div><div class="fbody">'
+    + '<h1 class="hand mid">My homework</h1><div class="bar green" style="margin:12px 0 16px"><i style="width:' + (D.homework.length ? Math.round(done / D.homework.length * 100) : 0) + '%"></i></div>'
+    + '<div class="seg pinkseg" role="group" aria-label="Show">'
+    + [["todo", "To do"], ["done", "Done"], ["all", "All"]].map(function(x){ return '<button data-hwf="' + x[0] + '" aria-pressed="' + (hwFilter === x[0]) + '">' + x[1] + '</button>'; }).join("") + '</div>';
+  h += list.length ? hwItems(list) : '<div class="empty">' + (hwFilter === "todo" ? NOHW : "Nothing here yet.") + '</div>';
+  h += '</div></div>';
+  var v = $("#v-homework"); v.innerHTML = h;
+  v.querySelectorAll("[data-hwf]").forEach(function(b){ b.onclick = function(){ hwFilter = b.dataset.hwf; render.homework(); }; });
+  hwWire(v, render.homework);
 };
 function wc(s){ var n = String(s || "").trim().split(/\s+/).filter(Boolean).length; return n + (n === 1 ? " word" : " words"); }
 
@@ -628,6 +643,13 @@ function drawMatch(p){
 }
 
 /* ---------- PROGRESS CHECK ---------- */
+function mixQ(q){
+  if (!q.o || /^(true|up)/i.test(q.o[0])) return q;
+  var idx = shuffle(q.o.map(function(_, i){ return i; }));
+  var n = {}; for (var k in q) n[k] = q[k];
+  n.o = idx.map(function(i){ return q.o[i]; }); n.a = idx.indexOf(q.a);
+  return n;
+}
 var chk = null;
 render.check = function(){
   var v = $("#v-check");
@@ -639,7 +661,7 @@ render.check = function(){
           + (b ? '<span class="chip' + (b.score / b.outOf >= .8 ? " ok" : "") + '">Best ' + b.score + "/" + b.outOf + '</span>' : '<span class="chip soft">Not done yet</span>')
           + '<button class="btn sm" data-start="' + c.id + '">' + (b ? "Try again" : "Start") + '</button></li>';
       }).join("") + '</ol>');
-    v.querySelectorAll("[data-start]").forEach(function(b){ b.onclick = function(){ var c = D.checks.filter(function(x){ return x.id === b.dataset.start; })[0]; chk = { c: c, qs: c.questions.slice(), i: 0, score: 0, wrong: [] }; render.check(); window.scrollTo(0, 0); }; });
+    v.querySelectorAll("[data-start]").forEach(function(b){ b.onclick = function(){ var c = D.checks.filter(function(x){ return x.id === b.dataset.start; })[0]; chk = { c: c, qs: c.questions.map(mixQ), i: 0, score: 0, wrong: [] }; render.check(); window.scrollTo(0, 0); }; });
     return;
   }
   if (chk.done){
@@ -703,11 +725,13 @@ render.report = function(){
     + '<div class="row small muted between" style="margin-top:4px"><span>2 weeks ago</span><span>today</span></div>'
     + '</div></div>';
   h += frame("<b>By lesson</b>", '<div class="tscroll"><table class="rtable"><thead><tr><th>Lesson</th><th>Words known</th><th>Progress check</th><th>Homework</th></tr></thead><tbody>' + D.lessons.map(function(l, i){
-      var set = ALL.filter(function(c){ return c.set === l.id; }), hw = D.homework.filter(function(x){ return x.lesson === l.id; }), hd = hw.filter(function(x){ return (S.hw[x.id] || {}).done; }).length;
+      var set = ALL.filter(function(c){ return c.set === l.id; }), hw = D.homework.filter(function(x){ return x.lesson === l.id; }), hd = hw.filter(hwDone).length;
       var cs = D.checks.filter(function(c){ return c.lesson === l.id; }).map(function(c){ var b = bestCheck(c.id); return b ? '<span class="chip' + (b.score / b.outOf >= .8 ? " ok" : "") + '">' + b.score + "/" + b.outOf + '</span>' : '<span class="chip soft">not yet</span>'; }).join(" ");
-      return '<tr><td><b>' + (i + 1) + '. ' + esc(l.title) + '</b><br><span class="small muted">' + esc(l.topic) + '</span></td><td>' + (set.length ? knownCount(set) + " / " + set.length : "–") + '</td><td>' + (cs || "–") + '</td><td>' + (hw.length ? hd + " / " + hw.length : "–") + '</td></tr>';
+      return '<tr><td><b>' + (i + 1) + '. ' + esc(l.title) + '</b><span class="small muted topic"><br>' + esc(l.topic) + '</span></td><td>' + (set.length ? knownCount(set) + " / " + set.length : "–") + '</td><td>' + (cs || "–") + '</td><td>' + (hw.length ? hd + " / " + hw.length : "–") + '</td></tr>';
     }).join("") + '</tbody></table></div>');
   h += frame("<b>Words to practise</b> · " + learning.length, learning.length ? '<div class="row">' + learning.map(function(c){ return '<span class="pill">' + esc(c.w) + '</span>'; }).join("") + '</div><div class="row" style="margin-top:14px"><button class="btn sm" id="pr">Practise these now</button></div>' : '<div class="empty">No tricky words right now. Words you get wrong will show up here.</div>');
+  var ms = D.mistakes || [];
+  if (ms.length) h += frame("<b>Remember</b> · mistakes from our lessons", '<div class="feed">' + ms.map(function(m){ return '<div class="sticky"><span class="small"><s>' + esc(m.wrong) + '</s></span><b>' + esc(m.right) + '</b>' + (m.note ? '<span class="small">' + esc(m.note) + '</span>' : "") + '</div>'; }).join("") + '</div>');
   var fb = D.feedback || [];
   h += frame("<b>Olya's notes</b>", fb.length ? '<div class="feed">' + fb.map(function(f){ return '<div class="sticky pink"><span class="lbl">' + esc([fmtDate(f.date), lessonNo(f.lesson) ? lessonNo(f.lesson) + ": " + lessonTitle(f.lesson) : ""].filter(Boolean).join(" · ")) + '</span>' + (f.good ? '<div><b>Well done:</b> ' + esc(f.good) + '</div>' : "") + (f.work ? '<div><b>Work on:</b> ' + esc(f.work) + '</div>' : "") + (f.next ? '<div><b>Next:</b> ' + esc(f.next) + '</div>' : "") + '</div>'; }).join("") + '</div>' : '<div class="empty">Olya\'s notes after each lesson will appear here.</div>');
   h += frame("<b>Recent activity</b>", S.log.length ? '<ul class="log">' + S.log.slice(0, 15).map(function(l){ return '<li><time>' + esc(fmtTime(l.at)) + '</time><span><b>' + esc(l.type) + '</b> · ' + esc(l.what) + (l.outOf ? " · " + l.score + "/" + l.outOf : "") + '</span></li>'; }).join("") + '</ul>' : '<div class="empty">Nothing yet. Start with your homework or some flashcards!</div>');
