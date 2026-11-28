@@ -25,7 +25,13 @@ All the tasks are in `tasks.js`. Each day has a `title`, `skill`, `intro`, an op
 { type: "gap", q: "Christmas Day is ___ 25 December.", answer: ["on"] }            // any of these answers counts
 { type: "match", q: "Match the words.", pairs: [["hat", "on your head"], ...] }
 { type: "order", q: "Put the words in order.", answer: "I would like a new book" }
+{ type: "wordsearch", q: "Find the words.", grid: ["ROWOFLETTERS", ...], words: ["WORD", ...] }
+{ type: "write", q: "Open question" }              // saved, not marked
+{ type: "heading", text: "Task 1. ...", bank: ["word bank"] } // starts a new task section
+{ type: "reading", text: "A text between tasks" }
 ```
+
+Day 1 is a full lesson (the Grinch film workbook): it uses headings, a word list fold-out (`glossary`), picture labelling (`match` with `images: true`), a word search and open questions. Answers in progress are saved on the device, so students can stop and come back.
 
 ## Pictures
 
