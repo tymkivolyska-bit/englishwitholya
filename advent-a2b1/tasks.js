@@ -9,6 +9,7 @@
 //   write:  { type:"write", q:"Open question" }   (free answer, saved but not marked)
 //   heading: { type:"heading", text:"Task 1. ...", sub:"optional note", bank:["optional", "word bank"] }
 //   reading: { type:"reading", text:"A text shown between tasks" }
+//   video:  { type:"video", youtube:"VIDEO_ID", title:"..." }   (embedded YouTube clip)
 //   match with images:true uses picture paths on the left.
 // A day may also have "text" (a short reading shown above the questions) and "glossary" (word lists shown in a fold-out).
 
@@ -142,15 +143,47 @@ window.ADVENT = {
         { type: "write", q: "Who scared all of the reindeer away?" }
       ] },
 
-    { day: 2, title: "Gingerbread recipe", skill: "Reading · Imperatives",
-      intro: "Read the recipe and answer the questions.",
-      text: "Mix the flour, sugar, ginger and butter. Add an egg and some honey. Roll out the dough and cut out the shapes. Bake the cookies for 10 minutes. Let them cool, then decorate them with white icing.",
+    { day: 2, title: "Harry meets Ron and Hermione", skill: "Film scene · Listening and shadowing",
+      intro: "Watch the Hogwarts Express scene from Harry Potter and the Philosopher's Stone, then copy how the characters speak. Your answers are saved as you go.",
       items: [
-        { type: "choice", q: "What do you do first?", options: ["Mix the ingredients", "Bake the cookies", "Decorate the cookies"], answer: 0 },
-        { type: "gap", q: "___ the cookies for 10 minutes.", answer: ["bake"] },
-        { type: "choice", q: "How long do the cookies bake?", options: ["10 minutes", "1 hour", "2 minutes"], answer: 0 },
-        { type: "match", q: "Match the words with their meanings.", pairs: [["flour", "white powder for baking"], ["oven", "a hot box for baking"], ["icing", "sweet white decoration"], ["dough", "a soft mix before baking"]] },
-        { type: "order", q: "Put the words in order.", answer: "Let them cool" }
+        { type: "heading", text: "1. Before you watch", sub: "Think about starting somewhere new where you know nobody." },
+        { type: "write", q: "Have you ever started somewhere new where you knew nobody? What happened?" },
+        { type: "write", q: "How do you start a conversation with a stranger on a train? Write two opening lines." },
+
+        { type: "heading", text: "2. Words from the scene" },
+        { type: "match", q: "Match the words with their meanings.", pairs: [["compartment", "a small room in a train"], ["trolley", "a small cart that sells food on a train"], ["sweets", "small sugary things to eat"], ["wand", "a magic stick"], ["spell", "magic words that make something happen"], ["famous", "known by a lot of people"], ["scar", "a mark on your skin from an old injury"], ["toad", "an animal like a big frog"]] },
+        { type: "choice", q: "Is a compartment the whole train or a small room in it?", options: ["a small room in it", "the whole train"], answer: 0 },
+
+        { type: "heading", text: "3. Watch for the main idea", sub: "Watch the whole clip with subtitles off." },
+        { type: "video", youtube: "R9U5qEp_7eE", title: "Harry meets Ron and Hermione on the Hogwarts Express" },
+        { type: "choice", q: "Who does Harry meet first?", options: ["Ron", "Hermione"], answer: 0 },
+        { type: "choice", q: "Where are they?", options: ["on a train", "in a shop", "at school"], answer: 0 },
+        { type: "write", q: "Write one adjective for your first impression of each person (for example: shy, friendly, confident, bossy). Ron is… Hermione is…" },
+
+        { type: "heading", text: "4. Watch for details", sub: "Watch again, then answer. Turn the subtitles on to check." },
+        { type: "choice", q: "Why does Ron sit with Harry?", options: ["Everywhere else is full.", "They are old friends.", "Harry asks him to."], answer: 0 },
+        { type: "choice", q: "What does Harry buy from the trolley?", options: ["lots of sweets, almost everything", "one chocolate frog", "a sandwich"], answer: 0 },
+        { type: "choice", q: "What is Hermione looking for?", options: ["a toad", "a cat", "her wand"], answer: 0 },
+        { type: "choice", q: "What happens when Ron tries his spell on his rat?", options: ["It doesn't work.", "The rat turns yellow.", "The rat disappears."], answer: 0 },
+        { type: "choice", q: "What does Hermione notice about Ron's face?", options: ["He has dirt on his nose.", "He has a scar.", "He is wearing glasses."], answer: 0 },
+
+        { type: "heading", text: "5. Listen to the music of English" },
+        { type: "choice", q: "Yes/no questions (like “Can I sit here?”) usually go ___ at the end.", options: ["up ↗", "down ↘"], answer: 0 },
+        { type: "choice", q: "Wh- questions (like “What's your name?”) usually go ___ at the end.", options: ["down ↘", "up ↗"], answer: 0 },
+        { type: "choice", q: "Which words get the stress in a sentence?", options: ["content words (nouns, verbs, adjectives)", "small words like “to”, “of”, “and”"], answer: 0 },
+        { type: "choice", q: "In fast speech, “to” in “I want to go” usually sounds like…", options: ["/tə/ (short and weak)", "/tuː/ (long and strong)"], answer: 0 },
+        { type: "choice", q: "In “an apple”, the words join together: “a-napple”. This is called…", options: ["linking", "spelling", "stress"], answer: 0 },
+        { type: "choice", q: "Who speaks faster, with very clear consonants?", options: ["Hermione", "Ron"], answer: 0 },
+
+        { type: "heading", text: "6. Shadowing", sub: "Choose 60–90 seconds of the scene and do each step. Turn on the subtitles (or “Show transcript” on YouTube) to read the words." },
+        { type: "reading", text: "1. Silent mouthing: subtitles off, move your lips with the actors, no sound.\n2. Script in hand: read the words aloud quietly at the same time as the actors. Use 0.75 speed if it's too fast.\n3. Pause and repeat: pause after every line and say it straight away, copying the stress and the tune.\n4. Full speed: shadow at normal speed, then try without the words.\n5. Character roles: choose Harry, Ron or Hermione and say only their lines. Then swap.\nRecord your last try on your phone." },
+        { type: "write", q: "Which line feels most natural now? Which line is still hard?" },
+
+        { type: "heading", text: "7. Meeting someone new" },
+        { type: "match", q: "Match what you want to do with a phrase.", pairs: [["ask to sit down", "Do you mind if I sit here?"], ["offer food", "Would you like some?"], ["ask someone's name", "What's your name?"], ["introduce yourself", "I'm Olya, by the way."], ["show surprise", "Really? Wow!"]] },
+        { type: "write", q: "Role-play: it's your first day at a new school or course. You sit with a stranger on the train. Write a short conversation (6–8 lines) using at least three phrases from above." },
+
+        { type: "heading", text: "Homework: 5-day shadowing challenge", sub: "Shadow the same part of the scene for 5 minutes a day. Record yourself on day 1 and day 5 and send both recordings to your teacher. After each recording, check: I linked words smoothly · I stressed the key words · my questions went up or down correctly · I kept up with the speaker." }
       ] },
 
     { day: 3, title: "Sweeter than sugar", skill: "Grammar · Comparatives",

@@ -113,7 +113,7 @@
   // ---------- day view ----------
   let current = 0;
   let work = null; // answers in progress for the open day
-  const INFO = ["heading", "reading"];
+  const INFO = ["heading", "reading", "video"];
   const blank = (d) => d.items.map((it) => (it.type === "order" || it.type === "wordsearch" ? [] : it.type === "match" ? {} : null));
   const saveDraft = () => { if (current) { state.drafts = state.drafts || {}; state.drafts[current] = work; save(); } };
 
@@ -173,6 +173,10 @@
       return `<li class="sec"><h3>${esc(it.text)}</h3>${it.sub ? `<p class="hint">${esc(it.sub)}</p>` : ""}${it.bank ? `<p class="bank">${it.bank.map((w) => `<span>${esc(w)}</span>`).join("")}</p>` : ""}</li>`;
     }
     if (it.type === "reading") return `<li class="sec"><div class="reading">${esc(it.text)}</div></li>`;
+    if (it.type === "video") {
+      const id = encodeURIComponent(it.youtube);
+      return `<li class="sec"><div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="${esc(it.title || "Video")}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="hint"><a href="https://youtu.be/${id}" target="_blank" rel="noopener">Open the video on YouTube</a> (for subtitles, transcript or 0.75 speed)</p></li>`;
+    }
     let body = "";
     if (it.type === "choice") {
       const order = shuffled(it.options.map((_, k) => k), seed);
