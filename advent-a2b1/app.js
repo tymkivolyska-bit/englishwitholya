@@ -7,7 +7,7 @@
   const norm = (s) => String(s).toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?;:“”"]/g, "").replace(/\s+/g, " ").trim();
 
   // ---------- saved progress (this device only) ----------
-  let state = { name: "", days: {}, opened: [], teacher: false, drafts: {} };
+  let state = { name: "", days: {}, opened: [], teacher: false, drafts: {}, levels: {} };
   try { const raw = localStorage.getItem(KEY); if (raw) state = Object.assign(state, JSON.parse(raw)); } catch (e) {}
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
 
@@ -116,23 +116,35 @@
   // ---------- day view ----------
   let current = 0;
   let work = null; // answers in progress for the open day
-  const INFO = ["heading", "reading", "video", "script", "picture"];
+  const INFO = ["heading", "reading", "video", "script", "picture", "notebook", "checklist"];
   const blank = (d) => d.items.map((it) => (it.type === "order" || it.type === "wordsearch" ? [] : it.type === "match" ? {} : null));
-  const saveDraft = () => { if (current) { state.drafts = state.drafts || {}; state.drafts[current] = work; save(); } };
+  // a day with levels shows the chosen level's intro, word lists and tasks; null until a level is chosen
+  function view(n) {
+    const d = A.days[n - 1];
+    if (!d.levels) return d;
+    const L = d.levels.find((l) => l.id === (state.levels || {})[n]);
+    return L ? Object.assign({}, d, { intro: L.intro || d.intro, glossary: L.glossary || d.glossary, items: L.items, level: L }) : Object.assign({}, d, { items: [], level: null });
+  }
+  const cur = () => view(current);
+  const draftKey = (d) => (d.level ? `${d.day}-${d.level.id}` : d.day);
+  const saveDraft = () => { if (current) { state.drafts = state.drafts || {}; state.drafts[draftKey(cur())] = work; save(); } };
+  const nbPage = {}; // notebook spread shown, per item
 
   function openDay(n) {
     current = n;
-    const d = A.days[n - 1];
+    const d = view(n);
     $("dayImg").src = `img/tile${n}.jpg`;
     $("dayLabel").textContent = `Day ${n} · ${n} December`;
     $("dayTitle").textContent = isOpen(n) ? d.title : "Not yet!";
     $("daySkill").textContent = isOpen(n) ? d.skill : "";
+    const src = A.days[n - 1];
+    $("card").classList.toggle("wide", (src.levels ? src.levels.flatMap((l) => l.items) : src.items).some((it) => it.type === "notebook"));
     $("prev").disabled = n === 1;
     $("next").disabled = n === 24;
     if (!isOpen(n)) {
       $("dayBody").innerHTML = `<div class="locked-msg"><p>This door opens on <b>${n} December</b>. Come back then!</p></div>`;
     } else {
-      const dr = state.drafts && state.drafts[n];
+      const dr = state.drafts && state.drafts[draftKey(d)];
       work = dr && dr.length === d.items.length ? dr : blank(d);
       renderTask(d, false);
     }
@@ -178,7 +190,7 @@
     if (it.type === "reading") return `<li class="sec"><div class="reading">${esc(it.text)}</div></li>`;
     if (it.type === "picture") return `<li class="sec"><figure class="pic"><img src="${esc(it.src)}" alt="${esc(it.alt || "")}" loading="lazy">${it.caption ? `<figcaption>${esc(it.caption)}</figcaption>` : ""}</figure></li>`;
     if (it.type === "script") {
-      const who = [...new Set(it.lines.map((l) => l.who))].filter((w) => ["Harry", "Ron", "Hermione"].includes(w));
+      const who = [...new Set(it.lines.map((l) => l.who))].filter((w) => (it.roles || ["Harry", "Ron", "Hermione"]).includes(w));
       const mark = (g) => esc(g).replace(/‿/g, '<i class="lk">‿</i>').replace(/\/\//g, '<i class="ps">//</i>').replace(/(^|[^/<])\/(?![/])/g, '$1<i class="ps">/</i>').replace(/[↗↘]/g, (m) => `<i class="tn">${m}</i>`).replace(/\(([^)]*)\)/g, '<em>($1)</em>');
       return `<li class="sec"><div class="script" data-role="all">
         <div class="script-top"><h4>${esc(it.title || "Script")}</h4>
@@ -187,6 +199,8 @@
         ${it.lines.map((l) => `<div class="sline" data-who="${esc(l.who)}"><p class="stext"><b>${esc(l.who)}:</b> ${esc(l.text)}</p><p class="sguide">${mark(l.guide)}</p></div>`).join("")}
       </div></li>`;
     }
+    if (it.type === "notebook") return `<li class="sec">${notebookHTML(it, i)}</li>`;
+    if (it.type === "checklist") return `<li class="sec"><div class="checklist"><p>${esc(it.title)}</p>${it.items.map((t) => `<label><input type="checkbox"> ${esc(t)}</label>`).join("")}</div></li>`;
     if (it.type === "video") {
       const id = encodeURIComponent(it.youtube);
       return `<li class="sec"><div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="${esc(it.title || "Video")}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="hint"><a href="https://youtu.be/${id}" target="_blank" rel="noopener">Open the video on YouTube</a> (for subtitles, transcript or 0.75 speed)</p></li>`;
@@ -201,7 +215,7 @@
     } else if (it.type === "write") {
       body = `<textarea class="write-input" data-i="${i}" id="write-${day}-${i}" rows="2" aria-label="Your answer">${esc(work[i] || "")}</textarea>`;
     } else if (it.type === "match") {
-      const rights = shuffled(it.pairs.map((p) => p[1]), seed);
+      const rights = shuffled([...new Set(it.pairs.map((p) => p[1]))], seed);
       body = `<div class="${it.images ? "pics" : "pairs"}">${it.pairs.map(([l], k) => {
         const v = work[i][k] || "";
         const mark = checked ? (v === it.pairs[k][1] ? " good" : " bad") : "";
@@ -235,7 +249,35 @@
     }
     const q = esc(it.q).replace("___", "<b>_____</b>");
     const cls = checked && max ? (got === max ? " right" : " wrong") : "";
-    return `<li class="item${cls}" data-i="${i}" data-n="${qNum(A.days[current - 1], i)}"><p class="q">${q}</p>${body}${fix}</li>`;
+    return `<li class="item${cls}" data-i="${i}" data-n="${qNum(cur(), i)}"><p class="q">${q}</p>${body}${fix}</li>`;
+  }
+
+  // story text split into notebook pages by length; wide screens show two pages side by side
+  const nbCache = new Map();
+  function nbPages(it) {
+    if (nbCache.has(it)) return nbCache.get(it);
+    const budget = it.pageChars || 900, pages = [[]];
+    let n = 0;
+    it.paras.forEach((p, k) => {
+      if (n && n + p.length > budget) { pages.push([]); n = 0; }
+      pages[pages.length - 1].push(k); n += p.length;
+    });
+    nbCache.set(it, pages);
+    return pages;
+  }
+  const nbWide = () => matchMedia("(min-width: 860px)").matches;
+  function notebookHTML(it, i) {
+    const pages = nbPages(it), per = nbWide() ? 2 : 1;
+    const spreads = Math.ceil(pages.length / per);
+    const s = Math.min(nbPage[`${current}-${i}`] || 0, spreads - 1);
+    const page = (pi) => pages[pi] ? `<div class="nb-page">${pi === 0 ? `<h4>${esc(it.title)}</h4><p class="nb-by">${esc(it.by || "")}</p>` : ""}${pages[pi].map((k) => `<p>${it.numbered ? `<span class="nb-n">${k + 1}</span>` : ""}${esc(it.paras[k])}</p>`).join("")}<span class="nb-folio">${pi + 1}</span></div>` : `<div class="nb-page nb-end"><p>The end</p></div>`;
+    const shown = Array.from({ length: per }, (_, k) => s * per + k);
+    return `<div class="notebook${per === 2 ? " wide" : ""}" data-i="${i}">
+      <div class="nb-cover">${per === 2 ? `${page(shown[0])}<div class="nb-rings" aria-hidden="true"></div>${page(shown[1])}` : `<div class="nb-rings" aria-hidden="true"></div>${page(shown[0])}`}</div>
+      <div class="nb-nav"><button type="button" class="btn small ghost nb-turn" data-i="${i}" data-step="-1" ${s === 0 ? "disabled" : ""} aria-label="Previous page">‹ Back</button>
+      <span>${per === 2 ? `Pages ${shown[0] + 1}–${Math.min(shown[1] + 1, pages.length)}` : `Page ${s + 1}`} of ${pages.length}</span>
+      <button type="button" class="btn small ghost nb-turn" data-i="${i}" data-step="1" ${s >= spreads - 1 ? "disabled" : ""} aria-label="Next page">Next ›</button></div>
+    </div>`;
   }
 
   // question number inside its task section
@@ -260,7 +302,13 @@
     const saved = state.days[d.day];
     const prior = saved && saved.done && !checked ? `<p class="hint">You already have this sticker (${stars(saved.stars || 0)}). Try again to win more stars!</p>` : "";
     const gloss = d.glossary ? `<details class="gloss"><summary>Word lists for this lesson</summary>${d.glossary.map((g) => `<h4>${esc(g.title)}</h4><dl>${g.rows.map(([en, tr]) => `<div><dt>${esc(en)}</dt><dd>${esc(tr)}</dd></div>`).join("")}</dl>`).join("")}</details>` : "";
-    $("dayBody").innerHTML = `${prior}<p class="intro">${esc(d.intro)}</p>${gloss}
+    const cover = d.cover ? `<img class="cover" src="${esc(d.cover.src)}" alt="${esc(d.cover.alt || "")}" width="600" height="900">` : "";
+    const lv = d.levels ? `<div class="levels" role="group" aria-label="Choose your level">${d.levels.map((l) => `<button type="button" class="level" data-level="${esc(l.id)}" aria-pressed="${d.level === l}"><b>${esc(l.label)}</b><span>${esc(l.tag || "")}</span></button>`).join("")}</div>` : "";
+    if (d.levels && !d.level) {
+      $("dayBody").innerHTML = `<div class="top${cover ? " has-cover" : ""}">${cover}<div><p class="intro">${esc(A.days[d.day - 1].intro)}</p><p class="pick">Choose your level:</p>${lv}</div></div>`;
+      return;
+    }
+    $("dayBody").innerHTML = `${prior}<div class="top${cover ? " has-cover" : ""}">${cover}<div>${lv}<p class="intro">${esc(d.intro)}</p></div></div>${gloss}
       ${d.text ? `<div class="reading">${esc(d.text)}</div>` : ""}
       <ol class="items">${d.items.map((it, i) => itemHTML(it, i, d.day, checked, showAns)).join("")}</ol>
       ${result || ""}
@@ -270,7 +318,7 @@
   }
 
   function check() {
-    const d = A.days[current - 1];
+    const d = cur();
     const missing = d.items.findIndex((it, i) => (it.type === "choice" && work[i] == null) || (it.type === "gap" && !(work[i] || "").trim()) || (it.type === "order" && !work[i].length) || (it.type === "match" && Object.values(work[i]).filter(Boolean).length < it.pairs.length));
     if (missing > -1) {
       const li = document.querySelector(`.item[data-i="${missing}"]`);
@@ -284,7 +332,7 @@
     const prev = state.days[d.day] || {};
     const wasDone = !!prev.done;
     const before = stickerCount();
-    if (st > 0) state.days[d.day] = { done: true, stars: Math.max(st, prev.stars || 0), best: Math.max(pct, prev.best || 0) };
+    if (st > 0) state.days[d.day] = Object.assign({ done: true, stars: Math.max(st, prev.stars || 0), best: Math.max(pct, prev.best || 0) }, d.level ? { level: d.level.id } : {});
     saveDraft();
     const after = stickerCount();
     const newGift = A.presents.find((p) => before < p.at && after >= p.at);
@@ -309,7 +357,7 @@
   }
 
   function rerenderItem(i) {
-    const d = A.days[current - 1];
+    const d = cur();
     const li = document.querySelector(`.item[data-i="${i}"]`);
     const tmp = document.createElement("ol");
     tmp.innerHTML = itemHTML(d.items[i], i, d.day, false, false);
@@ -317,7 +365,7 @@
   }
 
   function wsTap(i, r, c) {
-    const it = A.days[current - 1].items[i];
+    const it = cur().items[i];
     if (!wsStart || wsStart.i !== i) { wsStart = { i, r, c }; return rerenderItem(i); }
     const places = wsPlaces(it);
     const a = `${wsStart.r}-${wsStart.c}`, b = `${r}-${c}`;
@@ -350,9 +398,27 @@
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("dayView").hidden) closeDay(); });
 
   $("dayBody").addEventListener("click", (e) => {
-    const d = A.days[current - 1];
+    const d = cur();
     const b = e.target.closest("button");
     if (!b || b.disabled) return;
+    if (b.classList.contains("level")) {
+      state.levels = state.levels || {};
+      state.levels[current] = b.dataset.level; save();
+      return openDay(current);
+    }
+    if (b.classList.contains("nb-turn")) {
+      const k = `${current}-${b.dataset.i}`;
+      nbPage[k] = Math.max(0, (nbPage[k] || 0) + +b.dataset.step);
+      const nb = b.closest(".notebook");
+      const tmp = document.createElement("div");
+      tmp.innerHTML = notebookHTML(d.items[+b.dataset.i], +b.dataset.i);
+      nb.replaceWith(tmp.firstElementChild);
+      const nn = document.querySelector(`.notebook[data-i="${b.dataset.i}"]`);
+      nn.scrollIntoView({ behavior: "smooth", block: "start" });
+      const nbtn = nn.querySelector(`.nb-turn[data-step="${b.dataset.step}"]`);
+      (nbtn && !nbtn.disabled ? nbtn : nn.querySelector(".nb-turn:not([disabled])"))?.focus({ preventScroll: true });
+      return;
+    }
     if (b.id === "check") return check();
     if (b.id === "retry") { work = blank(d); saveDraft(); renderTask(d, false); $("dayView").scrollTop = 0; return; }
     if (b.id === "showAns") { const res = document.querySelector(".result"); renderTask(d, true, true, res ? res.outerHTML.replace("<img", '<img style="animation:none"') : ""); return; }
@@ -399,7 +465,7 @@
   $("reset").addEventListener("click", () => { $("resetConfirm").hidden = false; });
   $("resetNo").addEventListener("click", () => { $("resetConfirm").hidden = true; });
   $("resetYes").addEventListener("click", () => {
-    state = { name: state.name, days: {}, opened: [], teacher: state.teacher, drafts: {} };
+    state = { name: state.name, days: {}, opened: [], teacher: state.teacher, drafts: {}, levels: {} };
     save(); $("resetConfirm").hidden = true; $("giftOpen").hidden = true; renderAll();
   });
 
@@ -417,6 +483,20 @@
 
   const fromHash = () => { const m = /^#day-(\d{1,2})$/.exec(location.hash); const n = m ? +m[1] : 0; if (n >= 1 && n <= 24) openDay(n); };
   window.addEventListener("hashchange", fromHash);
+
+  let wasWide = nbWide();
+  addEventListener("resize", () => {
+    if (nbWide() === wasWide) return;
+    wasWide = nbWide();
+    const d = current && cur();
+    document.querySelectorAll(".notebook").forEach((nb) => {
+      const i = +nb.dataset.i, k = `${current}-${i}`;
+      nbPage[k] = wasWide ? Math.floor((nbPage[k] || 0) / 2) : (nbPage[k] || 0) * 2;
+      const tmp = document.createElement("div");
+      tmp.innerHTML = notebookHTML(d.items[i], i);
+      nb.replaceWith(tmp.firstElementChild);
+    });
+  });
 
   renderAll();
   fromHash();

@@ -14,6 +14,11 @@
 //   picture: { type:"picture", src:"img/...", alt:"...", caption:"..." }
 //   script: { type:"script", title:"...", legend:[["/","short pause"],...], lines:[{ who:"Ron", text:"...", guide:"sound guide" }, ...] }
 //   match with images:true uses picture paths on the left.
+//   notebook: { type:"notebook", title:"...", by:"...", numbered:true, paras:["...", ...] }  (story on the green notebook, with page turning)
+//   checklist: { type:"checklist", title:"...", items:["...", ...] }  (tick boxes for self-check, not marked)
+//   script may have roles:["Della","Jim"] for the "Practise as" buttons.
+// A day may have "cover": { src, alt } (a book cover next to the intro) and "levels": [{ id, label, tag, intro, glossary, items }]
+//   (students choose a level; each level has its own tasks and saved answers).
 // A day may also have "text" (a short reading shown above the questions) and "glossary" (word lists shown in a fold-out).
 
 window.ADVENT = {
@@ -308,15 +313,148 @@ window.ADVENT = {
         { type: "write", q: "Your answer: if you could travel anywhere for Christmas, where would you go and why?" }
       ] },
 
-    { day: 4, title: "A cup of cocoa", skill: "Grammar · some, any, much, many",
-      intro: "Choose or write the right word.",
-      items: [
-        { type: "choice", q: "Would you like ___ hot chocolate?", options: ["some", "a", "many"], answer: 0 },
-        { type: "choice", q: "There isn't ___ milk in the fridge.", options: ["any", "some", "a"], answer: 0 },
-        { type: "choice", q: "How ___ marshmallows do you want?", options: ["many", "much", "any"], answer: 0 },
-        { type: "choice", q: "How ___ sugar do you put in your cocoa?", options: ["much", "many", "a"], answer: 0 },
-        { type: "gap", q: "I'd like ___ cup of cocoa, please.", answer: ["a"] },
-        { type: "choice", q: "Which word is uncountable?", options: ["cream", "cup", "marshmallow"], answer: 0 }
+    { day: 4, title: "The Gift of the Magi", skill: "Classic Christmas story · Reading and reading aloud",
+      cover: { src: "img/magi/cover.jpg", alt: "Book cover: The Gift of the Magi by O. Henry. A young woman holds a present and a man holds a comb, next to a Christmas tree." },
+      intro: "A famous Christmas story by O. Henry (1905). Choose your level: the easier version is a short adapted story, the harder version is O. Henry's original text. You can change your level at any time.",
+      levels: [
+        { id: "easy", label: "Easier", tag: "A2 · short story, about 430 words",
+          intro: "Read the short version of the story in the notebook, then do the tasks. Turn the pages with the arrows.",
+          glossary: [
+            { title: "Story words", rows: [
+              ["flat /flæt/", "квартира"], ["mirror /ˈmɪrə/", "дзеркало"], ["sell – sold /səʊld/", "продавати – продав"], ["watch /wɒtʃ/", "годинник (наручний, кишеньковий)"],
+              ["chain /tʃeɪn/", "ланцюжок"], ["comb /kəʊm/", "гребінь (для волосся)"], ["package /ˈpækɪdʒ/", "пакунок"], ["grow /ɡrəʊ/", "рости"],
+              ["leather strap", "шкіряний ремінець"], ["curls", "кучері"], ["earn", "заробляти"], ["scream", "кричати"]
+            ] }
+          ],
+          items: [
+            { type: "heading", text: "Task 1. Story words", sub: "Match the words with their meanings." },
+            { type: "match", q: "Match.", pairs: [["flat", "an apartment"], ["mirror", "you look at yourself in it"], ["sell", "give something and get money"], ["watch", "a small clock you wear"], ["chain", "metal rings joined together"], ["comb", "you put it in your hair"], ["package", "a present in paper"], ["grow", "get longer or bigger"]] },
+            { type: "heading", text: "Task 2. Before you read", sub: "Look at the book cover at the top. What is in the man's hand? What is the woman holding?" },
+            { type: "write", q: "What do you think happens in the story? Write one or two sentences." },
+
+            { type: "heading", text: "Read the story", sub: "Read quickly the first time. You don't need every word." },
+            { type: "notebook", title: "The Gift", by: "a story by O. Henry (easy version)", paras: ["Della counted her money three times. She had only one dollar and eighty-seven cents. Tomorrow was Christmas. She wanted to buy a present for her husband, Jim, but she did not have enough money. She sat on the old sofa and cried.", "Della and Jim lived in a small, cheap flat. They were not rich. Jim earned only twenty dollars a week. He needed a new coat, and he had no gloves. But Della and Jim loved each other very much.", "They had two special things. Jim had a beautiful gold watch. It was his father's and his grandfather's watch. Della had beautiful long brown hair. It was very, very long — it came down below her knees.", "Della stood in front of the mirror and looked at her hair. Then she had an idea. She put on her old brown coat and her old brown hat and walked quickly to the shops.", "She stopped at a shop with the sign “Madame Sofronie. Hair of All Kinds.”", "“Will you buy my hair?” Della asked.", "“Take off your hat. Let's look at it,” said Madame. She touched the hair. “Twenty dollars.”", "“Give it to me quickly,” said Della.", "For two hours Della looked in all the shops for a present for Jim. At last she found it: a beautiful chain for his watch. Jim's watch had only an old leather strap. The chain cost twenty-one dollars.", "At home, Della looked in the mirror. Her hair was very short now, with small curls. “Please, God, make him think I am still pretty,” she said quietly.", "At seven o'clock Jim came home. He looked at Della and did not speak. His face was very strange.", "“Jim, darling, don't look at me like that,” said Della. “I sold my hair because I wanted to buy you a present. It will grow again. Say ‘Merry Christmas!’ and let's be happy.”", "Jim took a small package from his coat and put it on the table. “I love you with short hair or long hair, Dell,” he said. “But open the package.”", "Della opened it and screamed with happiness — then she started to cry. Inside were beautiful combs for long hair. She wanted these combs for a long time. But now her long hair was gone.", "She smiled and said, “My hair grows very fast, Jim!” Then she gave Jim his present. “Isn't it beautiful? Give me your watch. I want to see the chain on it.”", "Jim sat down on the sofa and smiled. “Dell,” he said, “let's put our presents away for now. I sold my watch to buy your combs.”", "Their presents were not useful now. But Della and Jim gave the most important present of all: love."] },
+
+            { type: "heading", text: "Task 3. The main idea" },
+            { type: "choice", q: "What did Della sell?", options: ["her hair", "her watch", "her coat"], answer: 0 },
+            { type: "choice", q: "What did Della buy for Jim?", options: ["a chain for his watch", "a new coat", "some gloves"], answer: 0 },
+            { type: "choice", q: "What did Jim sell?", options: ["his watch", "his coat", "his chain"], answer: 0 },
+            { type: "choice", q: "What did Jim buy for Della?", options: ["combs for her hair", "a mirror", "a brown hat"], answer: 0 },
+
+            { type: "heading", text: "Task 4. True or false?", sub: "Read the story again. Then say the false sentences correctly." },
+            { type: "choice", q: "Della had a lot of money.", options: ["True", "False"], answer: 1 },
+            { type: "choice", q: "Jim and Della lived in a big house.", options: ["True", "False"], answer: 1 },
+            { type: "choice", q: "Jim's watch was his grandfather's.", options: ["True", "False"], answer: 0 },
+            { type: "choice", q: "Madame paid twenty dollars for Della's hair.", options: ["True", "False"], answer: 0 },
+            { type: "choice", q: "The chain cost twenty dollars.", options: ["True", "False"], answer: 1 },
+            { type: "choice", q: "Jim was angry about Della's hair.", options: ["True", "False"], answer: 1 },
+            { type: "choice", q: "Della cried when she saw the combs.", options: ["True", "False"], answer: 0 },
+            { type: "choice", q: "Jim sold his watch.", options: ["True", "False"], answer: 0 },
+
+            { type: "heading", text: "Task 5. How do we say -ed?", sub: "/t/ after sounds like k, s, sh, ch · /d/ after most other sounds · /ɪd/ (an extra syllable) only after t or d.", bank: ["/t/ looked", "/d/ lived", "/ɪd/ wanted"] },
+            { type: "match", q: "Choose the sound of -ed for each verb. Say each verb out loud.", pairs: [["walked", "/t/"], ["asked", "/t/"], ["touched", "/t/"], ["cried", "/d/"], ["earned", "/d/"], ["smiled", "/d/"], ["counted", "/ɪd/"], ["needed", "/ɪd/"], ["started", "/ɪd/"]] },
+
+            { type: "heading", text: "Task 6. Tricky words", sub: "Some letters are silent: we write them, but we don't say them." },
+            { type: "choice", q: "comb /kəʊm/ – which letter is silent?", options: ["b", "c", "m"], answer: 0 },
+            { type: "choice", q: "Christmas /ˈkrɪsməs/ – which letter is silent?", options: ["t", "h", "s"], answer: 0 },
+            { type: "choice", q: "knees /niːz/ – which letter is silent?", options: ["k", "n", "s"], answer: 0 },
+            { type: "choice", q: "bought /bɔːt/ – which letters are silent?", options: ["gh", "ou", "b"], answer: 0 },
+            { type: "choice", q: "How many syllables are in beautiful /ˈbjuːtɪfl/?", options: ["3", "2", "4"], answer: 0 },
+            { type: "choice", q: "Where is the stress in happiness?", options: ["HAPpiness", "hapPIness", "happiNESS"], answer: 0 },
+
+            { type: "heading", text: "Task 7. Read aloud like a storyteller", sub: "Listen to your teacher, then read each line. Pause at /, say the CAPITAL words strongly, and let your voice go up ↗ or down ↘." },
+            { type: "script", title: "Read these lines aloud", roles: ["Della", "Jim"],
+              legend: [["/", "pause"], ["CAPITALS", "stress"], ["↗", "voice goes up"], ["↘", "voice goes down"]],
+              lines: [
+                { who: "Narrator", text: "She had only one dollar and eighty-seven cents.", guide: "She had ONly / one DOLLar / and EIGHty-SEVen CENTS. ↘" },
+                { who: "Della", text: "“Will you buy my hair?” Della asked.", guide: "“Will you BUY my HAIR?” ↗ / DELla ASKED." },
+                { who: "Della", text: "“Give it to me quickly,” said Della.", guide: "“GIVE it to me QUICKly,” ↘ / said DELla." },
+                { who: "Della", text: "“My hair grows very fast, Jim!”", guide: "“My HAIR grows VERy FAST, / JIM!” ↘" },
+                { who: "Jim", text: "“I sold my watch to buy your combs.”", guide: "“I SOLD my WATCH / to BUY your COMBS.” ↘" }
+              ] },
+            { type: "checklist", title: "Now read the whole story aloud. Record yourself and listen. Tick what you did well:", items: ["-ed endings are correct (/t/, /d/, /ɪd/)", "I paused in the right places", "I said the important words strongly", "My voice went up ↗ in questions and down ↘ in statements", "Silent letters were silent (comb, Christmas, knees)"] },
+
+            { type: "heading", text: "Task 8. What do you think?" },
+            { type: "write", q: "Would you sell something you love to buy a present for someone? Why or why not?" },
+
+            { type: "heading", text: "Homework", sub: "Watch the video. Then record yourself reading the story and send it to your teacher." },
+            { type: "video", youtube: "CUATJU_CQfE", title: "Homework video" }
+          ] },
+
+        { id: "hard", label: "Harder", tag: "B1+ · O. Henry's original text, about 2,000 words",
+          intro: "Read O. Henry's original story in the notebook. It is difficult, and that's OK: you don't need every word. The numbers in the margin are paragraph numbers. Open the word list if you get stuck.",
+          glossary: [
+            { title: "Key words", rows: [
+              ["flat /flæt/", "an apartment"], ["pier-glass /ˈpɪə ɡlɑːs/", "a tall, narrow mirror on the wall"], ["fob chain /fɒb tʃeɪn/", "a chain for a pocket watch"], ["combs /kəʊmz/", "decorations you put in long hair (silent b)"],
+              ["tortoise shell /ˈtɔːtəs ʃel/", "the hard shell of a tortoise, used for jewellery"], ["to ransack /ˈrænsæk/", "to search a place quickly and completely"], ["to sacrifice /ˈsækrɪfaɪs/", "to give up something important for someone else"], ["the magi /ˈmeɪdʒaɪ/", "the three wise men who brought gifts to baby Jesus"]
+            ] },
+            { title: "Difficult words in the text (no need to learn)", rows: [
+              ["parsimony", "being too careful with money"], ["mendicancy", "begging"], ["vestibule", "entrance hall"], ["depreciate", "make less valuable"], ["meretricious", "cheap-looking"],
+              ["chaste", "simple, pure"], ["prudence", "being careful"], ["truant", "a child who skips school"], ["setter", "a hunting dog"], ["quail", "a small bird"]
+            ] }
+          ],
+          items: [
+            { type: "heading", text: "Task A. Key words", sub: "Match the words with their meanings. Then say each word: check the stress in the word list." },
+            { type: "match", q: "Match.", pairs: [["flat", "an apartment"], ["pier-glass", "a tall, narrow mirror on the wall"], ["fob chain", "a chain for a pocket watch"], ["combs", "decorations you put in long hair"], ["tortoise shell", "a hard shell used for jewellery"], ["to ransack", "to search a place quickly and completely"], ["to sacrifice", "to give up something important for someone else"], ["the magi", "the three wise men who brought gifts to baby Jesus"]] },
+            { type: "heading", text: "Before you read", sub: "Look at the book cover at the top: a gold watch, a comb, a present." },
+            { type: "write", q: "What is the most valuable thing you own? Would you sell it to buy a present for someone you love?" },
+            { type: "write", q: "Predict: what do you think happens in the story?" },
+
+            { type: "heading", text: "Read the story", sub: "First read for the main idea (Task B). Don't stop at every new word." },
+            { type: "notebook", title: "The Gift of the Magi", by: "O. Henry, 1905 (original text)", numbered: true, paras: ["One dollar and eighty-seven cents. That was all. And sixty cents of it was in pennies. Pennies saved one and two at a time by bulldozing the grocer and the vegetable man and the butcher until one's cheeks burned with the silent imputation of parsimony that such close dealing implied. Three times Della counted it. One dollar and eighty-seven cents. And the next day would be Christmas.", "There was clearly nothing to do but flop down on the shabby little couch and howl. So Della did it. Which instigates the moral reflection that life is made up of sobs, sniffles, and smiles, with sniffles predominating.", "While the mistress of the home is gradually subsiding from the first stage to the second, take a look at the home. A furnished flat at $8 per week. It did not exactly beggar description, but it certainly had that word on the lookout for the mendicancy squad.", "In the vestibule below was a letter-box into which no letter would go, and an electric button from which no mortal finger could coax a ring. Also appertaining thereunto was a card bearing the name “Mr. James Dillingham Young.” The “Dillingham” had been flung to the breeze during a former period of prosperity when its possessor was being paid $30 per week. Now, when the income was shrunk to $20, the letters of “Dillingham” looked blurred, as though they were thinking seriously of contracting to a modest and unassuming D. But whenever Mr. James Dillingham Young came home and reached his flat above he was called “Jim” and greatly hugged by Mrs. James Dillingham Young, already introduced to you as Della. Which is all very good.", "Della finished her cry and attended to her cheeks with the powder rag. She stood by the window and looked out dully at a grey cat walking a grey fence in a grey backyard. Tomorrow would be Christmas Day, and she had only $1.87 with which to buy Jim a present. She had been saving every penny she could for months, with this result. Twenty dollars a week doesn't go far. Expenses had been greater than she had calculated. They always are. Only $1.87 to buy a present for Jim. Her Jim. Many a happy hour she had spent planning for something nice for him. Something fine and rare and sterling—something just a little bit near to being worthy of the honor of being owned by Jim.", "There was a pier-glass between the windows of the room. Perhaps you have seen a pier-glass in an $8 flat. A very thin and very agile person may, by observing his reflection in a rapid sequence of longitudinal strips, obtain a fairly accurate conception of his looks. Della, being slender, had mastered the art.", "Suddenly she whirled from the window and stood before the glass. Her eyes were shining brilliantly, but her face had lost its color within twenty seconds. Rapidly she pulled down her hair and let it fall to its full length.", "Now, there were two possessions of the James Dillingham Youngs in which they both took a mighty pride. One was Jim's gold watch that had been his father's and his grandfather's. The other was Della's hair. Had the Queen of Sheba lived in the flat across the airshaft, Della would have let her hair hang out the window some day to dry just to depreciate Her Majesty's jewels and gifts. Had King Solomon been the janitor, with all his treasures piled up in the basement, Jim would have pulled out his watch every time he passed, just to see him pluck at his beard from envy.", "So now Della's beautiful hair fell about her, rippling and shining like a cascade of brown waters. It reached below her knee and made itself almost a garment for her. And then she did it up again nervously and quickly. Once she faltered for a minute and stood still while a tear or two splashed on the worn red carpet.", "On went her old brown jacket; on went her old brown hat. With a whirl of skirts and with the brilliant sparkle still in her eyes, she fluttered out the door and down the stairs to the street.", "Where she stopped the sign read: “Mme. Sofronie. Hair Goods of All Kinds.” One flight up Della ran, and collected herself, panting. Madame, large, too white, chilly, hardly looked the “Sofronie.”", "“Will you buy my hair?” asked Della.", "“I buy hair,” said Madame. “Take yer hat off and let's have a sight at the looks of it.”", "Down rippled the brown cascade. “Twenty dollars,” said Madame, lifting the mass with a practised hand.", "“Give it to me quick,” said Della.", "Oh, and the next two hours tripped by on rosy wings. Forget the hashed metaphor. She was ransacking the stores for Jim's present.", "She found it at last. It surely had been made for Jim and no one else. There was no other like it in any of the stores, and she had turned all of them inside out. It was a platinum fob chain simple and chaste in design, properly proclaiming its value by substance alone and not by meretricious ornamentation—as all good things should do. It was even worthy of The Watch. As soon as she saw it she knew that it must be Jim's. It was like him. Quietness and value—the description applied to both. Twenty-one dollars they took from her for it, and she hurried home with the 87 cents. With that chain on his watch Jim might be properly anxious about the time in any company. Grand as the watch was, he sometimes looked at it on the sly on account of the old leather strap that he used in place of a chain.", "When Della reached home her intoxication gave way a little to prudence and reason. She got out her curling irons and lighted the gas and went to work repairing the ravages made by generosity added to love. Which is always a tremendous task, dear friends—a mammoth task.", "Within forty minutes her head was covered with tiny, close-lying curls that made her look wonderfully like a truant schoolboy. She looked at her reflection in the mirror long, carefully, and critically.", "“If Jim doesn't kill me,” she said to herself, “before he takes a second look at me, he'll say I look like a Coney Island chorus girl. But what could I do—oh! what could I do with a dollar and eighty-seven cents?”", "At 7 o'clock the coffee was made and the frying-pan was on the back of the stove hot and ready to cook the chops.", "Jim was never late. Della doubled the fob chain in her hand and sat on the corner of the table near the door that he always entered. Then she heard his step on the stair away down on the first flight, and she turned white for just a moment. She had a habit for saying little silent prayers about the simplest everyday things, and now she whispered: “Please God, make him think I am still pretty.”", "The door opened and Jim stepped in and closed it. He looked thin and very serious. Poor fellow, he was only twenty-two—and to be burdened with a family! He needed a new overcoat and he was without gloves.", "Jim stopped inside the door, as immovable as a setter at the scent of quail. His eyes were fixed upon Della, and there was an expression in them that she could not read, and it terrified her. It was not anger, nor surprise, nor disapproval, nor horror, nor any of the sentiments that she had been prepared for. He simply stared at her fixedly with that peculiar expression on his face.", "Della wriggled off the table and went for him.", "“Jim, darling,” she cried, “don't look at me that way. I had my hair cut off and sold it because I couldn't have lived through Christmas without giving you a present. It'll grow out again—you won't mind, will you? I just had to do it. My hair grows awfully fast. Say ‘Merry Christmas!’ Jim, and let's be happy. You don't know what a nice—what a beautiful, nice gift I've got for you.”", "“You've cut off your hair?” asked Jim, laboriously, as if he had not arrived at that patent fact yet even after the hardest mental labor.", "“Cut it off and sold it,” said Della. “Don't you like me just as well, anyhow? I'm me without my hair, ain't I?”", "Jim looked about the room curiously.", "“You say your hair is gone?” he said, with an air almost of idiocy.", "“You needn't look for it,” said Della. “It's sold, I tell you—sold and gone, too. It's Christmas Eve, boy. Be good to me, for it went for you. Maybe the hairs of my head were numbered,” she went on with sudden serious sweetness, “but nobody could ever count my love for you. Shall I put the chops on, Jim?”", "Out of his trance Jim seemed quickly to wake. He enfolded his Della. For ten seconds let us regard with discreet scrutiny some inconsequential object in the other direction. Eight dollars a week or a million a year—what is the difference? A mathematician or a wit would give you the wrong answer. The magi brought valuable gifts, but that was not among them. This dark assertion will be illuminated later on.", "Jim drew a package from his overcoat pocket and threw it upon the table.", "“Don't make any mistake, Dell,” he said, “about me. I don't think there's anything in the way of a haircut or a shave or a shampoo that could make me like my girl any less. But if you'll unwrap that package you may see why you had me going a while at first.”", "White fingers and nimble tore at the string and paper. And then an ecstatic scream of joy; and then, alas! a quick feminine change to hysterical tears and wails, necessitating the immediate employment of all the comforting powers of the lord of the flat.", "For there lay The Combs—the set of combs, side and back, that Della had worshipped long in a Broadway window. Beautiful combs, pure tortoise shell, with jewelled rims—just the shade to wear in the beautiful vanished hair. They were expensive combs, she knew, and her heart had simply craved and yearned over them without the least hope of possession. And now, they were hers, but the tresses that should have adorned the coveted adornments were gone.", "But she hugged them to her bosom, and at length she was able to look up with dim eyes and a smile and say: “My hair grows so fast, Jim!”", "And then Della leaped up like a little singed cat and cried, “Oh, oh!”", "Jim had not yet seen his beautiful present. She held it out to him eagerly upon her open palm. The dull precious metal seemed to flash with a reflection of her bright and ardent spirit.", "“Isn't it a dandy, Jim? I hunted all over town to find it. You'll have to look at the time a hundred times a day now. Give me your watch. I want to see how it looks on it.”", "Instead of obeying, Jim tumbled down on the couch and put his hands under the back of his head and smiled.", "“Dell,” said he, “let's put our Christmas presents away and keep ’em a while. They're too nice to use just at present. I sold the watch to get the money to buy your combs. And now suppose you put the chops on.”", "The magi, as you know, were wise men—wonderfully wise men—who brought gifts to the Babe in the manger. They invented the art of giving Christmas presents. Being wise, their gifts were no doubt wise ones, possibly bearing the privilege of exchange in case of duplication. And here I have lamely related to you the uneventful chronicle of two foolish children in a flat who most unwisely sacrificed for each other the greatest treasures of their house. But in a last word to the wise of these days let it be said that of all who give gifts these two were the wisest. Of all who give and receive gifts, such as they are wisest. Everywhere they are wisest. They are the magi."] },
+
+            { type: "heading", text: "Task B. The main idea" },
+            { type: "choice", q: "What did Della sell, and what did she buy?", options: ["Her hair; a platinum fob chain for Jim's watch", "Her hair; a new overcoat for Jim", "Her combs; a gold watch for Jim"], answer: 0 },
+            { type: "choice", q: "What did Jim sell, and what did he buy?", options: ["His gold watch; tortoise-shell combs for Della", "His overcoat; a mirror for Della", "His gold watch; a brown hat for Della"], answer: 0 },
+            { type: "choice", q: "Why are their presents useless now?", options: ["Della has no long hair for the combs, and Jim has no watch for the chain.", "The presents are broken.", "They bought the same present for each other."], answer: 0 },
+
+            { type: "heading", text: "Task C. Details", sub: "Read again. The paragraph number is in brackets." },
+            { type: "choice", q: "How much money did Della have at the start? (para 1)", options: ["$1.87", "$8", "87 cents"], answer: 0 },
+            { type: "choice", q: "How much does Jim earn now? (para 4)", options: ["$20 a week", "$30 a week", "$8 a week"], answer: 0 },
+            { type: "choice", q: "How much did he earn before? (para 4)", options: ["$30 a week", "$20 a week", "$21 a week"], answer: 0 },
+            { type: "choice", q: "What were the couple's two most valuable possessions? (para 8)", options: ["Jim's gold watch and Della's hair", "Jim's overcoat and Della's combs", "Their flat and their couch"], answer: 0 },
+            { type: "choice", q: "How much did Madame Sofronie pay for the hair? (para 14)", options: ["$20", "$21", "$1.87"], answer: 0 },
+            { type: "choice", q: "How much did the chain cost? (para 17)", options: ["$21", "$20", "$87"], answer: 0 },
+            { type: "choice", q: "What did Della do to her hair when she got home? (paras 18–19)", options: ["She curled it with curling irons.", "She coloured it.", "She hid it under a hat."], answer: 0 },
+            { type: "choice", q: "What did Della pray before Jim came in? (para 22)", options: ["“Please God, make him think I am still pretty.”", "“Please God, give us more money.”", "“Please God, make my hair grow fast.”"], answer: 0 },
+            { type: "choice", q: "What does Jim suggest at the end? (para 42)", options: ["To put the presents away for a while and cook the chops", "To sell the combs and buy the watch back", "To go out for dinner"], answer: 0 },
+
+            { type: "heading", text: "Task D. Word stress and tricky sounds", sub: "Choose the stressed syllable. Then say the word out loud." },
+            { type: "choice", q: "tortoise /ˈtɔːtəs/ (not “tor-TOYS”)", options: ["TOR-toise", "tor-TOISE"], answer: 0 },
+            { type: "choice", q: "platinum /ˈplætɪnəm/", options: ["PLAT-i-num", "pla-TI-num", "pla-ti-NUM"], answer: 0 },
+            { type: "choice", q: "possessions /pəˈzeʃənz/", options: ["po-SSESS-ions", "POS-sess-ions", "pos-sess-IONS"], answer: 0 },
+            { type: "choice", q: "ecstatic /ɪkˈstætɪk/", options: ["ec-STAT-ic", "EC-stat-ic", "ec-stat-IC"], answer: 0 },
+            { type: "choice", q: "hysterical /hɪˈsterɪkl/", options: ["hys-TER-i-cal", "HYS-ter-i-cal", "hys-ter-I-cal"], answer: 0 },
+            { type: "choice", q: "laboriously /ləˈbɔːriəsli/", options: ["la-BOR-i-ous-ly", "LA-bor-i-ous-ly", "la-bor-i-OUS-ly"], answer: 0 },
+            { type: "choice", q: "Which letter is silent in Christmas /ˈkrɪsməs/?", options: ["t", "h", "s"], answer: 0 },
+            { type: "choice", q: "How many syllables are in jewelled /ˈdʒuːəld/?", options: ["2", "3", "1"], answer: 0 },
+            { type: "match", q: "How do we say -ed in these verbs from the story?", pairs: [["worshipped", "/t/"], ["looked", "/t/"], ["hugged", "/d/"], ["whispered", "/d/"], ["counted", "/ɪd/"], ["needed", "/ɪd/"]] },
+
+            { type: "heading", text: "Task E. Read aloud: chunks, stress, weak forms, intonation", sub: "Listen to your teacher read first. Then read each line: pause at /, stress the CAPITALS, make small words weak (ə) and link words with ‿." },
+            { type: "script", title: "Extracts to practise", roles: ["Della", "Madame"],
+              legend: [["/", "short pause"], ["//", "long pause"], ["CAPITALS", "stressed syllable"], ["(ə)", "weak form"], ["‿", "link the words"], ["↗", "voice goes up"], ["↘", "voice goes down"]],
+              lines: [
+                { who: "Narrator", text: "One dollar and eighty-seven cents. That was all.", guide: "ONE DOLLar / ən(d) EIGHty-SEVen CENTS. // That w(ə)z ALL. //" },
+                { who: "Narrator", text: "And sixty cents of it was in pennies.", guide: "ən(d) SIXty CENTS‿of it / w(ə)z‿in PENnies. //" },
+                { who: "Narrator", text: "Pennies saved one and two at a time.", guide: "PENnies SAVED / ONE ən(d) TWO‿at ə TIME" },
+                { who: "Narrator", text: "Three times Della counted it. One dollar and eighty-seven cents.", guide: "THREE times / DELla COUNTed‿it. // ONE DOLLar ən(d) EIGHty-SEVen CENTS. //" },
+                { who: "Narrator", text: "And the next day would be Christmas.", guide: "ən(d) the NEXT DAY / w(ə)d be CHRISTmas. ↘ (slow down)" },
+                { who: "Della", text: "“Will you buy my hair?” asked Della.", guide: "“Will you BUY my HAIR?” ↗ asked DELla. (nervous, fast)" },
+                { who: "Madame", text: "“I buy hair,” said Madame. “Take yer hat off and let's have a sight at the looks of it.”", guide: "“I BUY HAIR,” ↘ said MADame. / “Take y(ə)r HAT‿off / ən(d) let's HAVE ə SIGHT / ət the LOOKS‿of it.” (cold, slow)" },
+                { who: "Madame", text: "“Twenty dollars,” said Madame.", guide: "“TWENty DOLLars,” ↘ said MADame." },
+                { who: "Della", text: "“Give it to me quick,” said Della.", guide: "“GIVE‿it t(ə) me QUICK,” ↘ said DELla." }
+              ] },
+            { type: "heading", text: "Challenge: paragraph 26", sub: "Della speaks quickly and emotionally. Read paragraph 26 in the notebook, mark your own pauses on paper, then read it aloud." },
+            { type: "checklist", title: "Record yourself reading paragraphs 23–42 (Narrator, Della and Jim). Listen and tick:", items: ["Pauses in the right places (thought groups)", "Key words stressed, small words weak", "Words linked smoothly", "Questions and statements have the right intonation", "Tricky words pronounced correctly (Christmas, tortoise, combs…)", "My voice shows the character's feelings"] },
+
+            { type: "heading", text: "Task G. Think deeper" },
+            { type: "choice", q: "Why does Jim stare at Della “with that peculiar expression”?", options: ["He has already sold his watch to buy combs she can't use now.", "He is angry that she cut her hair.", "He doesn't recognise her."], answer: 0 },
+            { type: "choice", q: "Why does the narrator call them “foolish children” and then “the wisest”?", options: ["Their gifts are useless, but they show perfect, unselfish love.", "They are young, but they are very good with money.", "They made mistakes, but they got their things back."], answer: 0 },
+            { type: "write", q: "Was their sacrifice wise or foolish? What would you do?" },
+
+            { type: "heading", text: "Homework", sub: "Watch the video. Then record yourself reading paragraphs 5–6, using the same marking, and send it to your teacher." },
+            { type: "video", youtube: "CUATJU_CQfE", title: "Homework video" }
+          ] }
       ] },
 
     { day: 5, title: "When is it?", skill: "Grammar · in, on, at",
