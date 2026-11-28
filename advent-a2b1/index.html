@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Advent English Calendar</title>
+<meta name="theme-color" content="#f6f0e6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<main class="sheet">
+  <header class="head">
+    <h1>Advent Calendar</h1>
+    <p class="sub">A new English task every day in December · A2–B1</p>
+    <div class="tally" aria-live="polite">
+      <span id="tallyStickers"></span>
+      <span id="tallyStars"></span>
+    </div>
+    <p class="teacher-flag" id="teacherFlag" hidden>Teacher preview: every day is open. <button type="button" class="link-btn" id="teacherOff">Turn off</button></p>
+  </header>
+
+  <section class="grid" id="grid" aria-label="Calendar days"></section>
+
+  <section class="panel" aria-labelledby="bookTitle">
+    <h2 id="bookTitle">My sticker book</h2>
+    <p class="hint">Finish a day's task to stick its picture here.</p>
+    <div class="book" id="book"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="giftTitle">
+    <h2 id="giftTitle">Presents</h2>
+    <p class="hint">Collect stickers to unwrap a present.</p>
+    <div class="gifts" id="gifts"></div>
+    <div class="gift-open" id="giftOpen" hidden></div>
+  </section>
+
+  <footer class="foot">
+    <label class="name-row" for="studentName">My name
+      <input id="studentName" type="text" maxlength="40" autocomplete="name" placeholder="Type your name">
+    </label>
+    <p class="hint">Your progress is saved in this browser on this device.</p>
+    <div class="foot-row">
+      <button type="button" class="link-btn" id="reset">Reset my progress</button>
+      <details class="teacher" id="teacherBox">
+        <summary>For teachers</summary>
+        <form id="teacherForm">
+          <label for="pin">PIN to open every day</label>
+          <input id="pin" type="password" inputmode="numeric" autocomplete="off">
+          <button type="submit" class="btn small">Open all</button>
+          <span class="pin-msg" id="pinMsg" role="status"></span>
+        </form>
+      </details>
+    </div>
+    <p class="confirm" id="resetConfirm" hidden>Delete all stickers and stars on this device?
+      <button type="button" class="btn small danger" id="resetYes">Yes, reset</button>
+      <button type="button" class="btn small ghost" id="resetNo">Cancel</button>
+    </p>
+  </footer>
+</main>
+
+<div class="day-view" id="dayView" hidden role="dialog" aria-modal="true" aria-labelledby="dayTitle">
+  <article class="card" id="card">
+    <nav class="card-nav">
+      <button type="button" class="nav-btn" id="back">&larr; Calendar</button>
+      <span>
+        <button type="button" class="nav-btn" id="prev" aria-label="Previous day">&lsaquo;</button>
+        <button type="button" class="nav-btn" id="next" aria-label="Next day">&rsaquo;</button>
+      </span>
+    </nav>
+    <div class="card-head">
+      <img id="dayImg" alt="" width="96" height="96">
+      <div>
+        <p class="card-day" id="dayLabel"></p>
+        <h2 id="dayTitle"></h2>
+        <p class="card-skill" id="daySkill"></p>
+      </div>
+    </div>
+    <div id="dayBody"></div>
+  </article>
+</div>
+
+<div class="burst" id="burst" aria-hidden="true"></div>
+
+<script src="tasks.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>
