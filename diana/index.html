@@ -233,7 +233,7 @@ textarea:focus{outline:2px solid var(--pink);border-color:transparent}
 </main>
 
 <script src="config.js?v=1"></script>
-<script src="data.js?v=3"></script>
+<script src="data.js?v=5"></script>
 <script>
 (function(){
 "use strict";
@@ -409,7 +409,7 @@ function hwItems(list){
     var s = S.hw[t.id] || {}, done = hwDone(t);
     return '<li class="' + (done ? "done" : "") + '" data-id="' + t.id + '">'
       + '<input type="checkbox" class="box" aria-label="Done" ' + (done ? "checked" : "") + '>'
-      + '<div class="tx">' + esc(t.text) + (t.link ? '<br><a href="' + esc(t.link) + '" target="_blank" rel="noopener">' + esc(t.linkLabel || "Open the task") + '</a>' : "") + '</div>'
+      + '<div class="tx">' + esc(t.text) + (t.link ? '<br><a class="btn sm" style="margin-top:8px" href="' + esc(t.link) + '"' + (t.link.charAt(0) === "#" ? ' data-nav="' + esc(t.link.slice(1)) + '"' : ' target="_blank" rel="noopener"') + '>' + esc(t.linkLabel || "Open the task") + '</a>' : "") + '</div>'
       + '<div class="meta">' + (t.lesson ? '<span class="pill">' + esc(lessonNo(t.lesson)) + '</span>' : "") + (t.due && !done ? '<span class="chip">Due ' + esc(fmtDate(t.due)) + '</span>' : "") + (done ? '<span class="chip ok">Done' + (s.doneAt ? " " + esc(fmtTime(s.doneAt)) : "") + '</span>' : "") + '</div>'
       + (t.answer && !(t.done && !s.answer) ? '<div class="ans"><textarea placeholder="Write your answer here. It is saved as you type.">' + esc(s.answer || "") + '</textarea><div class="wc">' + wc(s.answer) + '</div></div>' : "")
       + '</li>';
