@@ -253,15 +253,55 @@ window.ADVENT = {
         { type: "heading", deco: "img/hp/hat.png", text: "Homework: 5-day shadowing challenge", sub: "Shadow the same part of the scene for 5 minutes a day. Record yourself on day 1 and day 5 and send both recordings to your teacher. After each recording, check: I linked words smoothly · I stressed the key words · my questions went up or down correctly · I kept up with the speaker." }
       ] },
 
-    { day: 3, title: "Sweeter than sugar", skill: "Grammar · Comparatives",
-      intro: "Write the comparative form or choose the right answer.",
+    { day: 3, title: "Let's talk about Christmas", skill: "Speaking and writing · Christmas questions",
+      intro: "Nine questions to talk about with your teacher or a friend. For each one, do the short language task, then write your own answer. Then say it out loud!",
       items: [
-        { type: "gap", q: "A candy cane is ___ (sweet) than a lemon.", answer: ["sweeter"] },
-        { type: "gap", q: "December is ___ (cold) than September.", answer: ["colder"] },
-        { type: "gap", q: "This candy cane is ___ (long) than that one.", answer: ["longer"] },
-        { type: "gap", q: "Holidays are ___ (exciting) than school days.", answer: ["more exciting"] },
-        { type: "choice", q: "My cocoa is ___ than yours.", options: ["hotter", "more hot", "hoter"], answer: 0 },
-        { type: "choice", q: "This year's tree is ___ than last year's.", options: ["bigger", "more big", "biger"], answer: 0 }
+        { type: "heading", text: "1. How do you usually celebrate Christmas?", bank: ["We usually…", "We always…", "On Christmas Eve we…", "My family…"] },
+        { type: "choice", q: "Which sentence is correct?", options: ["We usually celebrate with my grandparents.", "We celebrate usually with my grandparents.", "Usually we celebrating with my grandparents."], answer: 0 },
+        { type: "gap", q: "On Christmas Eve we ___ (have) a big dinner together.", answer: ["have"] },
+        { type: "write", q: "Your answer: how do you usually celebrate Christmas?" },
+
+        { type: "heading", text: "2. What is your favourite Christmas memory?", bank: ["I remember when…", "When I was…, I…", "It was the best Christmas because…"] },
+        { type: "gap", q: "When I was seven, I ___ (get) a red bike for Christmas.", answer: ["got"] },
+        { type: "gap", q: "We ___ (go) skating with my cousins.", answer: ["went"] },
+        { type: "gap", q: "It ___ (be) so much fun!", answer: ["was"] },
+        { type: "write", q: "Your answer: what is your favourite Christmas memory?" },
+
+        { type: "heading", text: "3. What does Christmas mean to you?", bank: ["For me, Christmas means…", "It's a time for…", "The most important thing is…"] },
+        { type: "choice", q: "For me, Christmas means ___ time with my family.", options: ["spending", "spend", "to spending"], answer: 0 },
+        { type: "choice", q: "It's a time ___ being kind to other people.", options: ["for", "to", "at"], answer: 0 },
+        { type: "write", q: "Your answer: what does Christmas mean to you?" },
+
+        { type: "heading", text: "4. How do you decorate your home for Christmas?", bank: ["We put up…", "We hang…", "We decorate the tree with…"] },
+        { type: "match", q: "Match the decorations with their descriptions.", pairs: [["fairy lights", "small electric lights"], ["tinsel", "shiny strips of decoration"], ["wreath", "a ring of leaves on the door"], ["baubles", "round balls for the tree"], ["star", "it goes on the top of the tree"]] },
+        { type: "gap", q: "Every year we ___ up the Christmas tree in the living room.", answer: ["put"] },
+        { type: "write", q: "Your answer: how do you decorate your home?" },
+
+        { type: "heading", text: "5. What are some typical Christmas traditions in your country?", bank: ["In Ukraine, people…", "It's traditional to…", "On Christmas Eve, families…"] },
+        { type: "match", q: "Match the Ukrainian traditions with their descriptions.", pairs: [["kutia", "a sweet dish of wheat, honey and poppy seeds"], ["koliadky", "Christmas carols"], ["Sviata Vecheria", "Holy Supper with twelve dishes"], ["didukh", "a decoration made of wheat"]] },
+        { type: "choice", q: "It's traditional ___ carols on Christmas Eve.", options: ["to sing", "singing to", "sing"], answer: 0 },
+        { type: "write", q: "Your answer: what are the Christmas traditions in your country?" },
+
+        { type: "heading", text: "6. What do you know about Christmas traditions in other countries?", bank: ["In the UK, people…", "I know that in… they…", "I find it interesting that…"] },
+        { type: "match", q: "Match the countries with their traditions.", pairs: [["the UK", "pulling Christmas crackers at dinner"], ["Germany", "visiting Christmas markets"], ["Australia", "Christmas lunch on the beach"], ["Mexico", "breaking a piñata"], ["Japan", "eating fried chicken for Christmas dinner"]] },
+        { type: "write", q: "Your answer: which tradition from another country do you like most and why?" },
+
+        { type: "heading", text: "7. What is your opinion about Christmas movies? Do you have a favourite one?", bank: ["In my opinion…", "I think they're…", "My favourite one is… because…"] },
+        { type: "choice", q: "In my opinion, Christmas movies ___ a bit predictable, but I love them.", options: ["are", "is", "be"], answer: 0 },
+        { type: "choice", q: "My favourite Christmas movie is Home Alone ___ it's really funny.", options: ["because", "so", "but"], answer: 0 },
+        { type: "write", q: "Your answer: what do you think about Christmas movies? What's your favourite?" },
+
+        { type: "heading", text: "8. Do you enjoy Christmas shopping, or do you find it stressful? Why?", bank: ["I enjoy… because…", "I find it…", "The worst thing is…"] },
+        { type: "gap", q: "I find Christmas shopping quite ___ (stress).", answer: ["stressful"] },
+        { type: "gap", q: "I really enjoy ___ (choose) presents for my friends.", answer: ["choosing"] },
+        { type: "choice", q: "The shops are always so ___ in December.", options: ["crowded", "crowding", "crowd"], answer: 0 },
+        { type: "write", q: "Your answer: do you enjoy Christmas shopping? Why or why not?" },
+
+        { type: "heading", text: "9. If you could travel anywhere for Christmas, where would you go?", bank: ["If I could…, I would…", "I'd love to…", "because…"] },
+        { type: "gap", q: "If I could travel anywhere, I ___ go to Lapland to meet Santa.", answer: ["would", "'d"] },
+        { type: "gap", q: "If I ___ (have) more money, I would visit New York at Christmas.", answer: ["had"] },
+        { type: "order", q: "Put the words in order.", answer: "I would go to a Christmas market in Vienna" },
+        { type: "write", q: "Your answer: if you could travel anywhere for Christmas, where would you go and why?" }
       ] },
 
     { day: 4, title: "A cup of cocoa", skill: "Grammar · some, any, much, many",

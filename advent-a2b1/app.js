@@ -279,7 +279,7 @@
     }
     let right = 0, total = 0;
     d.items.forEach((it, i) => { const [g, m] = points(it, i); right += g; total += m; });
-    const pct = Math.round((right / total) * 100);
+    const pct = total ? Math.round((right / total) * 100) : 100;
     const st = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= S.passPercent ? 1 : 0;
     const prev = state.days[d.day] || {};
     const wasDone = !!prev.done;
