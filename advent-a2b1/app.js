@@ -7,7 +7,7 @@
   const norm = (s) => String(s).toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?;:“”"]/g, "").replace(/\s+/g, " ").trim();
 
   // ---------- saved progress (this device only) ----------
-  let state = { name: "", days: {}, opened: [], teacher: false };
+  let state = { name: "", days: {}, opened: [], teacher: false, drafts: {} };
   try { const raw = localStorage.getItem(KEY); if (raw) state = Object.assign(state, JSON.parse(raw)); } catch (e) {}
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
 
@@ -113,6 +113,9 @@
   // ---------- day view ----------
   let current = 0;
   let work = null; // answers in progress for the open day
+  const INFO = ["heading", "reading"];
+  const blank = (d) => d.items.map((it) => (it.type === "order" || it.type === "wordsearch" ? [] : it.type === "match" ? {} : null));
+  const saveDraft = () => { if (current) { state.drafts = state.drafts || {}; state.drafts[current] = work; save(); } };
 
   function openDay(n) {
     current = n;
@@ -126,7 +129,8 @@
     if (!isOpen(n)) {
       $("dayBody").innerHTML = `<div class="locked-msg"><p>This door opens on <b>${n} December</b>. Come back then!</p></div>`;
     } else {
-      work = d.items.map((it) => (it.type === "order" ? [] : it.type === "match" ? {} : null));
+      const dr = state.drafts && state.drafts[n];
+      work = dr && dr.length === d.items.length ? dr : blank(d);
       renderTask(d, false);
     }
     $("dayView").hidden = false;
@@ -144,52 +148,101 @@
     if (t) t.focus({ preventScroll: true });
   }
 
+  // word search: where each word sits in the grid
+  const wsCache = new Map();
+  function wsPlaces(it) {
+    if (wsCache.has(it)) return wsCache.get(it);
+    const g = it.grid, R = g.length, C = g[0].length, out = {};
+    for (const w of it.words) {
+      search: for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) for (const [dr, dc] of [[0, 1], [1, 0], [1, 1], [-1, 1], [0, -1], [-1, 0], [-1, -1], [1, -1]]) {
+        let ok = true;
+        for (let k = 0; k < w.length; k++) { const rr = r + dr * k, cc = c + dc * k; if (rr < 0 || cc < 0 || rr >= R || cc >= C || g[rr][cc] !== w[k]) { ok = false; break; } }
+        if (ok) { out[w] = Array.from({ length: w.length }, (_, k) => `${r + dr * k}-${c + dc * k}`); break search; }
+      }
+    }
+    wsCache.set(it, out);
+    return out;
+  }
+  let wsStart = null; // {i, r, c}
+
+  const firstWord = (w, k) => (k === 0 && !/^I('m)?$/.test(w) ? w.toLowerCase() : w);
+
   function itemHTML(it, i, day, checked, showAns) {
     const seed = day * 100 + i + 7;
+    if (it.type === "heading") {
+      return `<li class="sec"><h3>${esc(it.text)}</h3>${it.sub ? `<p class="hint">${esc(it.sub)}</p>` : ""}${it.bank ? `<p class="bank">${it.bank.map((w) => `<span>${esc(w)}</span>`).join("")}</p>` : ""}</li>`;
+    }
+    if (it.type === "reading") return `<li class="sec"><div class="reading">${esc(it.text)}</div></li>`;
     let body = "";
     if (it.type === "choice") {
       const order = shuffled(it.options.map((_, k) => k), seed);
-      const tf = it.options[0] === "True" && it.options[1] === "False";
-      body = `<div class="opts">${(tf ? [0, 1] : order).map((k) => `<button type="button" class="opt" data-i="${i}" data-k="${k}" aria-pressed="${work[i] === k}" ${checked ? "disabled" : ""}>${esc(it.options[k])}</button>`).join("")}</div>`;
+      const fixed = it.options[0] === "True" && it.options[1] === "False";
+      body = `<div class="opts">${(fixed ? it.options.map((_, k) => k) : order).map((k) => `<button type="button" class="opt" data-i="${i}" data-k="${k}" aria-pressed="${work[i] === k}" ${checked ? "disabled" : ""}>${esc(it.options[k])}</button>`).join("")}</div>`;
     } else if (it.type === "gap") {
       body = `<input class="gap-input" data-i="${i}" id="gap-${day}-${i}" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your answer" value="${esc(work[i] || "")}" ${checked ? "disabled" : ""}>`;
+    } else if (it.type === "write") {
+      body = `<textarea class="write-input" data-i="${i}" id="write-${day}-${i}" rows="2" aria-label="Your answer">${esc(work[i] || "")}</textarea>`;
     } else if (it.type === "match") {
       const rights = shuffled(it.pairs.map((p) => p[1]), seed);
-      body = `<div class="pairs">${it.pairs.map(([l], k) => {
+      body = `<div class="${it.images ? "pics" : "pairs"}">${it.pairs.map(([l], k) => {
         const v = work[i][k] || "";
         const mark = checked ? (v === it.pairs[k][1] ? " good" : " bad") : "";
-        return `<label class="pair${mark}"><b>${esc(l)}</b><select data-i="${i}" data-k="${k}" ${checked ? "disabled" : ""}><option value="">Choose…</option>${rights.map((r) => `<option${r === v ? " selected" : ""}>${esc(r)}</option>`).join("")}</select></label>`;
+        const left = it.images ? `<img src="${esc(l)}" alt="Picture ${k + 1}" loading="lazy" width="140" height="140">` : `<b>${esc(l)}</b>`;
+        return `<label class="pair${mark}">${left}<select data-i="${i}" data-k="${k}" ${checked ? "disabled" : ""}><option value="">Choose…</option>${rights.map((r) => `<option${r === v ? " selected" : ""}>${esc(r)}</option>`).join("")}</select></label>`;
       }).join("")}</div>`;
     } else if (it.type === "order") {
       const words = it.answer.split(" ");
       const pool = shuffled(words.map((w, k) => k), seed + 3);
       const used = work[i];
-      body = `<div class="built" aria-label="Your sentence">${used.map((k) => `<button type="button" class="chip" data-i="${i}" data-out="${k}" ${checked ? "disabled" : ""}>${esc(k === 0 && !/^I('m)?$/.test(words[k]) ? words[k].toLowerCase() : words[k])}</button>`).join("")}</div>
-        <div class="opts">${pool.filter((k) => !used.includes(k)).map((k) => `<button type="button" class="chip" data-i="${i}" data-in="${k}" ${checked ? "disabled" : ""}>${esc(k === 0 && !/^I('m)?$/.test(words[k]) ? words[k].toLowerCase() : words[k])}</button>`).join("")}</div>`;
+      body = `<div class="built" aria-label="Your sentence">${used.map((k) => `<button type="button" class="chip" data-i="${i}" data-out="${k}" ${checked ? "disabled" : ""}>${esc(firstWord(words[k], k))}</button>`).join("")}</div>
+        <div class="opts">${pool.filter((k) => !used.includes(k)).map((k) => `<button type="button" class="chip" data-i="${i}" data-in="${k}" ${checked ? "disabled" : ""}>${esc(firstWord(words[k], k))}</button>`).join("")}</div>`;
+    } else if (it.type === "wordsearch") {
+      const places = wsPlaces(it);
+      const found = new Set(work[i]);
+      const lit = new Set([...found].flatMap((w) => places[w] || []));
+      const shown = showAns && checked ? new Set(it.words.filter((w) => !found.has(w)).flatMap((w) => places[w] || [])) : new Set();
+      body = `<div class="ws-wrap"><div class="ws" style="--cols:${it.grid[0].length}" role="grid" aria-label="Word search">${it.grid.map((row, r) => [...row].map((ch, c) => {
+        const id = `${r}-${c}`;
+        const sel = wsStart && wsStart.i === i && wsStart.r === r && wsStart.c === c;
+        return `<button type="button" class="ws-cell${lit.has(id) ? " lit" : ""}${shown.has(id) ? " shown" : ""}${sel ? " sel" : ""}" data-i="${i}" data-r="${r}" data-c="${c}" ${checked ? "disabled" : ""} aria-label="${ch}">${ch}</button>`;
+      }).join("")).join("")}</div></div>
+        <p class="ws-count">Found ${found.size} of ${it.words.length}</p>
+        <p class="ws-words">${it.words.map((w) => `<span class="${found.has(w) ? "got" : ""}">${esc(w.charAt(0) + w.slice(1).toLowerCase())}</span>`).join("")}</p>`;
     }
+    const [got, max] = points(it, i);
     let fix = "";
-    if (showAns && checked && !isRight(it, i)) {
-      const a = it.type === "choice" ? it.options[it.answer] : it.type === "gap" ? it.answer[0] : it.type === "order" ? it.answer + "." : it.pairs.map((p) => `${p[0]} → ${p[1]}`).join(", ");
+    if (showAns && checked && max && got < max && it.type !== "wordsearch") {
+      const a = it.type === "choice" ? it.options[it.answer] : it.type === "gap" ? it.answer[0] : it.type === "order" ? it.answer + "." : it.pairs.filter((p, k) => work[i][k] !== p[1]).map((p) => `${it.images ? "picture " + (it.pairs.indexOf(p) + 1) : p[0]} → ${p[1]}`).join(", ");
       fix = `<p class="fix">Answer: ${esc(a)}</p>`;
     }
     const q = esc(it.q).replace("___", "<b>_____</b>");
-    const cls = checked ? (isRight(it, i) ? " right" : " wrong") : "";
-    return `<li class="item${cls}"><p class="q">${q}</p>${body}${fix}</li>`;
+    const cls = checked && max ? (got === max ? " right" : " wrong") : "";
+    return `<li class="item${cls}" data-i="${i}" data-n="${qNum(A.days[current - 1], i)}"><p class="q">${q}</p>${body}${fix}</li>`;
   }
 
-  function isRight(it, i) {
+  // question number inside its task section
+  function qNum(d, i) {
+    let n = 0;
+    for (let k = 0; k <= i; k++) n = d.items[k].type === "heading" ? 0 : INFO.includes(d.items[k].type) ? n : n + 1;
+    return n;
+  }
+
+  // [points got, points possible]; info and free-writing items are worth nothing
+  function points(it, i) {
     const w = work[i];
-    if (it.type === "choice") return w === it.answer;
-    if (it.type === "gap") return w != null && it.answer.some((a) => norm(a) === norm(w));
-    if (it.type === "match") return it.pairs.every((p, k) => w[k] === p[1]);
-    if (it.type === "order") return norm(w.map((k) => it.answer.split(" ")[k]).join(" ")) === norm(it.answer);
-    return false;
+    if (it.type === "choice") return [w === it.answer ? 1 : 0, 1];
+    if (it.type === "gap") return [w != null && it.answer.some((a) => norm(a) === norm(w)) ? 1 : 0, 1];
+    if (it.type === "match") return [it.pairs.filter((p, k) => w[k] === p[1]).length, it.pairs.length];
+    if (it.type === "order") return [norm(w.map((k) => it.answer.split(" ")[k]).join(" ")) === norm(it.answer) ? 1 : 0, 1];
+    if (it.type === "wordsearch") { const max = Math.min(6, it.words.length); return [Math.round((w.length / it.words.length) * max), max]; }
+    return [0, 0];
   }
 
   function renderTask(d, checked, showAns, result) {
     const saved = state.days[d.day];
     const prior = saved && saved.done && !checked ? `<p class="hint">You already have this sticker (${stars(saved.stars || 0)}). Try again to win more stars!</p>` : "";
-    $("dayBody").innerHTML = `${prior}<p class="intro">${esc(d.intro)}</p>
+    const gloss = d.glossary ? `<details class="gloss"><summary>Word lists for this lesson</summary>${d.glossary.map((g) => `<h4>${esc(g.title)}</h4><dl>${g.rows.map(([en, tr]) => `<div><dt>${esc(en)}</dt><dd>${esc(tr)}</dd></div>`).join("")}</dl>`).join("")}</details>` : "";
+    $("dayBody").innerHTML = `${prior}<p class="intro">${esc(d.intro)}</p>${gloss}
       ${d.text ? `<div class="reading">${esc(d.text)}</div>` : ""}
       <ol class="items">${d.items.map((it, i) => itemHTML(it, i, d.day, checked, showAns)).join("")}</ol>
       ${result || ""}
@@ -202,39 +255,59 @@
     const d = A.days[current - 1];
     const missing = d.items.findIndex((it, i) => (it.type === "choice" && work[i] == null) || (it.type === "gap" && !(work[i] || "").trim()) || (it.type === "order" && !work[i].length) || (it.type === "match" && Object.values(work[i]).filter(Boolean).length < it.pairs.length));
     if (missing > -1) {
-      const li = document.querySelectorAll(".item")[missing];
+      const li = document.querySelector(`.item[data-i="${missing}"]`);
       if (li) { li.scrollIntoView({ behavior: "smooth", block: "center" }); li.animate?.([{ background: "color-mix(in srgb, var(--gold) 25%, transparent)" }, { background: "transparent" }], 1200); }
       return;
     }
-    const right = d.items.filter((it, i) => isRight(it, i)).length;
-    const pct = Math.round((right / d.items.length) * 100);
+    let right = 0, total = 0;
+    d.items.forEach((it, i) => { const [g, m] = points(it, i); right += g; total += m; });
+    const pct = Math.round((right / total) * 100);
     const st = pct >= 90 ? 3 : pct >= 70 ? 2 : pct >= S.passPercent ? 1 : 0;
     const prev = state.days[d.day] || {};
     const wasDone = !!prev.done;
     const before = stickerCount();
-    if (st > 0) {
-      state.days[d.day] = { done: true, stars: Math.max(st, prev.stars || 0), best: Math.max(pct, prev.best || 0) };
-      save();
-    }
+    if (st > 0) state.days[d.day] = { done: true, stars: Math.max(st, prev.stars || 0), best: Math.max(pct, prev.best || 0) };
+    saveDraft();
     const after = stickerCount();
     const newGift = A.presents.find((p) => before < p.at && after >= p.at);
     let html;
     if (st > 0) {
       html = `<div class="result" role="status">
         <p class="big">${st === 3 ? "Excellent!" : st === 2 ? "Well done!" : "Good job!"}</p>
-        <p>${right} of ${d.items.length} correct</p>
+        <p>${right} of ${total} points</p>
         <p class="st">${stars(st)}</p>
         ${wasDone ? "" : `<img src="img/sticker${d.day}.jpg" alt="Your new sticker"><p><b>New sticker for your sticker book!</b></p>`}
         ${newGift ? `<p>🎁 You unlocked a present: <b>${esc(newGift.name)}</b>. Find it under the calendar.</p>` : ""}
       </div>`;
       if (!wasDone || newGift) burst();
     } else {
-      html = `<div class="result" role="status"><p class="big">Nearly there!</p><p>${right} of ${d.items.length} correct. Get ${Math.ceil((S.passPercent / 100) * d.items.length)} right to win the sticker. Try again!</p></div>`;
+      html = `<div class="result" role="status"><p class="big">Nearly there!</p><p>${right} of ${total} points. Get ${Math.ceil((S.passPercent / 100) * total)} to win the sticker. Try again!</p></div>`;
     }
     renderTask(d, true, false, html);
     renderAll(wasDone ? 0 : d.day);
     const r = document.querySelector(".result");
     if (r) r.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  function rerenderItem(i) {
+    const d = A.days[current - 1];
+    const li = document.querySelector(`.item[data-i="${i}"]`);
+    const tmp = document.createElement("ol");
+    tmp.innerHTML = itemHTML(d.items[i], i, d.day, false, false);
+    if (li) li.replaceWith(tmp.firstElementChild);
+  }
+
+  function wsTap(i, r, c) {
+    const it = A.days[current - 1].items[i];
+    if (!wsStart || wsStart.i !== i) { wsStart = { i, r, c }; return rerenderItem(i); }
+    const places = wsPlaces(it);
+    const a = `${wsStart.r}-${wsStart.c}`, b = `${r}-${c}`;
+    wsStart = null;
+    if (a !== b) {
+      const hit = it.words.find((w) => { const p = places[w]; return p && ((p[0] === a && p[p.length - 1] === b) || (p[0] === b && p[p.length - 1] === a)); });
+      if (hit && !work[i].includes(hit)) { work[i].push(hit); saveDraft(); }
+    }
+    rerenderItem(i);
   }
 
   function burst() {
@@ -262,26 +335,25 @@
     const b = e.target.closest("button");
     if (!b || b.disabled) return;
     if (b.id === "check") return check();
-    if (b.id === "retry") { work = d.items.map((it) => (it.type === "order" ? [] : it.type === "match" ? {} : null)); renderTask(d, false); $("dayView").scrollTop = 0; return; }
+    if (b.id === "retry") { work = blank(d); saveDraft(); renderTask(d, false); $("dayView").scrollTop = 0; return; }
     if (b.id === "showAns") { const res = document.querySelector(".result"); renderTask(d, true, true, res ? res.outerHTML.replace("<img", '<img style="animation:none"') : ""); return; }
     if (b.id === "goNext") return openDay(current + 1);
     const i = +b.dataset.i;
-    if (b.classList.contains("opt")) { work[i] = +b.dataset.k; b.parentElement.querySelectorAll(".opt").forEach((o) => o.setAttribute("aria-pressed", o === b)); return; }
+    if (b.classList.contains("ws-cell")) return wsTap(i, +b.dataset.r, +b.dataset.c);
+    if (b.classList.contains("opt")) { work[i] = +b.dataset.k; saveDraft(); b.parentElement.querySelectorAll(".opt").forEach((o) => o.setAttribute("aria-pressed", o === b)); return; }
     if (b.dataset.in != null) { work[i].push(+b.dataset.in); }
     else if (b.dataset.out != null) { work[i] = work[i].filter((k) => k !== +b.dataset.out); }
     else return;
-    const li = b.closest(".item");
-    const tmp = document.createElement("ol");
-    tmp.innerHTML = itemHTML(d.items[i], i, d.day, false, false);
-    li.replaceWith(tmp.firstElementChild);
+    saveDraft();
+    rerenderItem(i);
   });
   $("dayBody").addEventListener("input", (e) => {
     const el = e.target;
-    if (el.classList.contains("gap-input")) work[+el.dataset.i] = el.value;
+    if (el.classList.contains("gap-input") || el.classList.contains("write-input")) { work[+el.dataset.i] = el.value; saveDraft(); }
   });
   $("dayBody").addEventListener("change", (e) => {
     const el = e.target;
-    if (el.tagName === "SELECT") work[+el.dataset.i][+el.dataset.k] = el.value;
+    if (el.tagName === "SELECT") { work[+el.dataset.i][+el.dataset.k] = el.value; saveDraft(); }
   });
   $("dayBody").addEventListener("keydown", (e) => {
     if (e.key === "Enter" && e.target.classList.contains("gap-input")) {
@@ -302,7 +374,7 @@
   $("reset").addEventListener("click", () => { $("resetConfirm").hidden = false; });
   $("resetNo").addEventListener("click", () => { $("resetConfirm").hidden = true; });
   $("resetYes").addEventListener("click", () => {
-    state = { name: state.name, days: {}, opened: [], teacher: state.teacher };
+    state = { name: state.name, days: {}, opened: [], teacher: state.teacher, drafts: {} };
     save(); $("resetConfirm").hidden = true; $("giftOpen").hidden = true; renderAll();
   });
 

@@ -5,7 +5,12 @@
 //   gap:    { type:"gap", q:"Text with ___ gap.", answer:["word", "other accepted word"] }
 //   match:  { type:"match", q:"Instruction", pairs:[["left","right"], ...] }
 //   order:  { type:"order", q:"Instruction", answer:"The sentence in the right order" }
-// A day may also have "text" (a short reading shown above the questions).
+//   wordsearch: { type:"wordsearch", q:"...", grid:["ROW1", ...], words:["WORD", ...] }
+//   write:  { type:"write", q:"Open question" }   (free answer, saved but not marked)
+//   heading: { type:"heading", text:"Task 1. ...", sub:"optional note", bank:["optional", "word bank"] }
+//   reading: { type:"reading", text:"A text shown between tasks" }
+//   match with images:true uses picture paths on the left.
+// A day may also have "text" (a short reading shown above the questions) and "glossary" (word lists shown in a fold-out).
 
 window.ADVENT = {
   settings: {
@@ -23,15 +28,118 @@ window.ADVENT = {
   ],
 
   days: [
-    { day: 1, title: "Talking about presents", skill: "Vocabulary",
-      intro: "Choose or write the right word.",
+    { day: 1, title: "The Grinch", skill: "Film workbook · Vocabulary, reading, grammar",
+      intro: "Watch The Grinch (2018) and do the tasks. Your answers are saved as you go, so you can stop and come back.",
+      glossary: [
+        { title: "Vocabulary", rows: [
+          ["a cave", "печера"], ["a cellar", "підвал, погріб"], ["a feast", "бенкет"], ["a size", "розмір"], ["a sleigh", "сани"],
+          ["a trick", "трюк, фокус, хитрість, жарт"], ["antlers", "оленячі роги"], ["be surprised", "бути здивованим"], ["beast", "звір"],
+          ["bell", "дзвіночок"], ["below", "внизу"], ["bow", "бантик"], ["can't stand / can't bear", "терпіти не можу"], ["care", "турбота"],
+          ["catch, caught, caught", "зловити"], ["chef", "кухар"], ["chimney", "труба, димохід"], ["Christmas Eve", "Святвечір"],
+          ["Christmas season", "Різдвяний сезон"], ["close", "близький"], ["collar", "нашийник"], ["come up with", "придумати"],
+          ["complain", "скаржитися"], ["crowd", "натовп; товпитися"], ["different", "різний"], ["early", "рано"], ["empty", "порожній"],
+          ["fair", "справедливий"], ["fake", "фальшивий"], ["find, found, found", "знаходити"], ["fireplace", "камін"], ["frown", "хмуритися"],
+          ["get stuck (in)", "застрягти"], ["grow, grew, grown", "рости"], ["hang, hung, hung", "вішати"], ["horn", "ріг"],
+          ["How's business?", "Як справи?"], ["I will not put up with it anymore", "Більше не хочу це терпіти"], ["icebox", "холодильник"],
+          ["instead of", "замість"], ["It's rude to stare", "Витріщатися нечемно"], ["lie", "брехати"], ["light", "світло, лампочка"],
+          ["load", "вантажити"], ["look for", "шукати"], ["merry", "веселий"], ["mistletoe", "омела"], ["noise", "шум"], ["Oh my!", "Боже мій!"],
+          ["perhaps", "можливо"], ["pleasant", "приємний"], ["present", "подарунок"], ["puzzle", "спантеличувати"], ["ramshackle", "старий, хиткий"],
+          ["reason", "причина"], ["reindeer", "північний олень"], ["ring, rang, rung", "дзвонити"], ["roast", "смажити"], ["rush", "мчати, поспішати"],
+          ["rush hour", "година пік"], ["same", "однаковий"], ["scarce / rare", "рідкісний"], ["screwdriver", "викрутка"], ["smoke", "дим"],
+          ["snarl", "гарчати"], ["sneer", "насміхатися"], ["snooze", "дрімати"], ["stare (at)", "пильно дивитися, витріщатися"],
+          ["steal", "вкрасти"], ["stocking", "панчоха для подарунків"], ["tag", "етикетка"], ["target", "мішень"], ["thief, thieves", "злодій, злодії"],
+          ["This is a tricky question", "Це складне питання"], ["thread", "нитка"], ["tie", "зав'язувати"], ["tight", "тісний"], ["tinsel", "мішура"],
+          ["together", "разом"], ["toward", "у напрямку до"], ["trimming", "прикраса, оздоблення"], ["unpleasant", "неприємний"], ["unwrap", "розпаковувати"],
+          ["wake up, woke, woken", "прокидатися"], ["whole", "цілий"], ["workshop", "майстерня"], ["wrap", "загортати"], ["wrapping", "упаковка"],
+          ["wreath", "вінок"], ["to be sour", "бути кислим"], ["to chuckle", "хихикати"], ["to grin", "посміхатися"], ["to look around", "озирнутися"],
+          ["to make noise", "шуміти"], ["to put up with sth", "терпіти"], ["to wake sb up", "будити когось"]
+        ] },
+        { title: "Useful phrases", rows: [
+          ["That is known far and wide", "це відомо всім і всюди"], ["Hit its stride", "досягти успіху"], ["I'm venting", "я випускаю пар, виговорююсь"],
+          ["I need to get into character", "я маю ввійти в образ"], ["The task at hand", "завдання, яке треба зробити зараз"], ["mother lode", "золота жила"],
+          ["Brace yourselves!", "Готуйтеся!"], ["make sth up", "вигадувати"], ["make an appointment", "призначити зустріч"], ["don't come with", "не мати нічого спільного"]
+        ] },
+        { title: "Christmas phrasal verbs", rows: [
+          ["look forward to", "чекати з нетерпінням"], ["put up", "поставити щось на видному місці"], ["dress up", "вдягнутися святково"],
+          ["come down", "спускатися"], ["wrap up", "запаковувати"]
+        ] }
+      ],
       items: [
-        { type: "choice", q: "We put the presents under the ___.", options: ["tree", "sky", "fridge"], answer: 0 },
-        { type: "choice", q: "I always ___ my presents in colourful paper.", options: ["wrap", "write", "wear"], answer: 0 },
-        { type: "choice", q: "A small card on a present with a name on it is a ___.", options: ["tag", "ticket", "map"], answer: 0 },
-        { type: "gap", q: "Thank you ___ the lovely present!", answer: ["for"] },
-        { type: "choice", q: "What ___ you like for Christmas?", options: ["would", "do", "are"], answer: 0 },
-        { type: "order", q: "Put the words in order.", answer: "I would like a new book" }
+        { type: "heading", text: "Task 1. Match the synonyms" },
+        { type: "match", q: "Choose a word with the same meaning.", pairs: [["cave", "pothole"], ["icebox", "fridge"], ["beast", "creature"], ["present", "gift"], ["wreath", "garland"], ["snarl", "growl"]] },
+
+        { type: "heading", text: "Task 2. Match the opposites" },
+        { type: "match", q: "Choose the opposite.", pairs: [["early", "late"], ["empty", "full"], ["fair", "unfair"], ["fake", "real"], ["close", "distant"], ["merry", "sad"]] },
+
+        { type: "heading", text: "Task 3. Translate into English" },
+        { type: "match", q: "Choose the English phrase.", pairs: [["Готуйтесь!", "Brace yourselves!"], ["Золота жила", "mother lode"], ["Не мати нічого спільного", "don't come with"], ["Вигадувати", "make something up"], ["Це відомо всім і всюди", "That is known far and wide"], ["Боже мій!", "Oh my!"], ["Як справи?", "How's business?"], ["Це складне питання", "This is a tricky question"], ["Більше не хочу це терпіти!", "I will not put up with it anymore!"], ["Досягти успіху", "hit its stride"]] },
+
+        { type: "heading", text: "Task 4. Fill in the gaps with the missing phrasal verb", bank: ["put up", "dressed up", "looking forward to", "wrapping up", "comes down"] },
+        { type: "gap", q: "When do you usually ___ your Christmas tree?", answer: ["put up"] },
+        { type: "gap", q: "Last Christmas we ___ our baby son in a Buddy the Elf costume.", answer: ["dressed up"] },
+        { type: "gap", q: "Are you ___ the holiday season or are you feeling a little grinch-like?", answer: ["looking forward to"] },
+        { type: "gap", q: "Many people love ___ Christmas presents in a pretty way.", answer: ["wrapping up"] },
+        { type: "gap", q: "Father Christmas doesn't go through the door, he ___ the chimney on Christmas Eve.", answer: ["comes down"] },
+
+        { type: "heading", text: "Task 5. Storyline: read the text" },
+        { type: "reading", text: "Whoville is a wondrous little town where the residents, the human-like Whos, celebrate and keep the joy of Christmas close to their hearts all year round. But at Christmas time, the Whos pronounce their joy for the season loud and proud. However, not far from Whoville lives a creature who despises everything about Christmas. The creature, known as the Grinch, is a green-furred outcast whose only company in his lonely cave is his loyal dog Max. The Grinch wishes he could stop Christmas from coming, but he has not quite found a way how." },
+
+        { type: "heading", text: "Task 6. True or false?" },
+        { type: "choice", q: "Whoville is a large village.", options: ["True", "False"], answer: 1 },
+        { type: "choice", q: "The Whos never celebrate Christmas.", options: ["True", "False"], answer: 1 },
+        { type: "choice", q: "The Grinch's favourite holiday is Christmas.", options: ["True", "False"], answer: 1 },
+        { type: "choice", q: "The Whos like to decorate their houses with lights.", options: ["True", "False"], answer: 0 },
+        { type: "choice", q: "The Grinch has green fur.", options: ["True", "False"], answer: 0 },
+        { type: "choice", q: "The Grinch lives in a big house.", options: ["True", "False"], answer: 1 },
+        { type: "choice", q: "Max is a cat.", options: ["True", "False"], answer: 1 },
+        { type: "choice", q: "The Grinch wishes he could stop Christmas from coming.", options: ["True", "False"], answer: 0 },
+
+        { type: "heading", text: "Task 7. Label the pictures" },
+        { type: "match", images: true, q: "Choose the word for each picture.", pairs: [["img/grinch/pic1.jpg", "present"], ["img/grinch/pic2.jpg", "sleigh"], ["img/grinch/pic3.jpg", "fireplace"], ["img/grinch/pic4.jpg", "wreath"], ["img/grinch/pic5.jpg", "tinsel"], ["img/grinch/pic6.jpg", "target"]] },
+
+        { type: "heading", text: "Task 8. Word search" },
+        { type: "wordsearch", q: "Find the 18 hidden words. Tap the first letter, then the last letter. Words go across or down.",
+          grid: ["NAKQQDRPRESENTSSEB", "SAHFEASTVIUQQMFLOG", "TCHRISTMASAVZIDEEW", "OVLUORNAMENTSSLISI", "CDJDCSMERRYYHTIGIV", "KFBLHOAGRINCHLGHNS", "IKCYIKIKVHCMREHNGT", "NAIFMHTRICKGWTTLIU", "GREINDEERRLZTOSMNN", "SVUFEFAWFULMVEGXGK", "NQJFYYMYDWHOVILLEF", "RAPGIFTZTVTSNRSYCG"],
+          words: ["AWFUL", "CHIMNEY", "CHRISTMAS", "FEAST", "GIFT", "GRINCH", "LIGHTS", "MERRY", "MISTLETOE", "ORNAMENTS", "PRESENTS", "REINDEER", "SINGING", "SLEIGH", "STOCKINGS", "STUNK", "TRICK", "WHOVILLE"] },
+
+        { type: "heading", text: "Task 9. Read the descriptions. Who is it?" },
+        { type: "choice", q: "He was an orphan and he was really sad that he had no one to celebrate Christmas with. He didn't fit in with the people of Whoville, so he left and lived on Mount Crumpit for 53 years.", options: ["the Grinch", "Max"], answer: 0 },
+        { type: "choice", q: "He is very loving and loyal to his owner. He is smart and acts almost like the house's butler. He doesn't like it when his master is mean to Cindy-Lou Who, but he knows his master has a good heart.", options: ["the Grinch", "Max"], answer: 1 },
+
+        { type: "heading", text: "Task 10. Fill in the gaps with the correct verb", bank: ["says", "attack", "remember", "have", "are"] },
+        { type: "reading", text: "GRINCH: Now, ___ (1), Max, this is the time of year when the Whos ___ (2) at their most deceptive. You ___ (3) my full permission to ___ (4) anyone who so much as ___ (5) one kind word to us." },
+        { type: "gap", q: "Gap 1: Now, ___, Max…", answer: ["remember"] },
+        { type: "gap", q: "Gap 2: …when the Whos ___ at their most deceptive.", answer: ["are"] },
+        { type: "gap", q: "Gap 3: You ___ my full permission…", answer: ["have"] },
+        { type: "gap", q: "Gap 4: …to ___ anyone…", answer: ["attack"] },
+        { type: "gap", q: "Gap 5: …who so much as ___ one kind word to us.", answer: ["says"] },
+
+        { type: "heading", text: "Task 11. Put the verbs into the past simple" },
+        { type: "reading", text: "From the edge of his ledge, way up in the sky,\nthe Grinch (feel) upset, though he (not be) sure why.\nIt could've been Christmas, all that joy and the such,\nor some thoughts from his past that he just (not can) quite touch.\nBut whatever it (be), it (make) his heart moan." },
+        { type: "gap", q: "the Grinch ___ (feel) upset", answer: ["felt"] },
+        { type: "gap", q: "though he ___ (not be) sure why", answer: ["wasn't", "was not"] },
+        { type: "gap", q: "some thoughts from his past that he just ___ (not can) quite touch", answer: ["couldn't", "could not"] },
+        { type: "gap", q: "But whatever it ___ (be)", answer: ["was"] },
+        { type: "gap", q: "it ___ (make) his heart moan", answer: ["made"] },
+
+        { type: "heading", text: "Task 12. Describe the characters", sub: "Use adjectives from the list: evil, kind, smart, cruel, selfish, uncaring, deceitful, soft-hearted, loyal, cunning, aggressive, big-hearted, unselfish, thoughtful, helpful, mischievous, optimistic, nice, kind-hearted, energetic, feisty, adventurous, humble, empathetic, open-minded, naive, emotional, sensitive, greedy." },
+        { type: "write", q: "The Grinch is…" },
+        { type: "write", q: "Cindy-Lou is…" },
+        { type: "write", q: "Describe your favourite scene from the film." },
+
+        { type: "heading", text: "Task 13. Answer the questions about the film", sub: "Write short answers. Your teacher will check them with you." },
+        { type: "write", q: "Why was the Grinch out of food?" },
+        { type: "write", q: "How many sizes did the Grinch's heart grow?" },
+        { type: "write", q: "What's the name of the Grinch's dog?" },
+        { type: "write", q: "What colour is the Grinch?" },
+        { type: "write", q: "How many brothers does Cindy-Lou have?" },
+        { type: "write", q: "How many reindeer does the Grinch have?" },
+        { type: "write", q: "What did the Grinch spit out?" },
+        { type: "write", q: "Who did Max make friends with?" },
+        { type: "write", q: "What does the Grinch use as an instrument?" },
+        { type: "write", q: "Why does the Grinch steal Christmas?" },
+        { type: "write", q: "What present did the Grinch give Max?" },
+        { type: "write", q: "Who scared all of the reindeer away?" }
       ] },
 
     { day: 2, title: "Gingerbread recipe", skill: "Reading · Imperatives",
