@@ -11,6 +11,8 @@
 // A day may have "bonus": ["img/..."] — extra stickers given when the day is passed (shown under the sticker book).
 //   reading: { type:"reading", text:"A text shown between tasks" }
 //   video:  { type:"video", youtube:"VIDEO_ID", title:"..." }   (embedded YouTube clip)
+//   picture: { type:"picture", src:"img/...", alt:"...", caption:"..." }
+//   script: { type:"script", title:"...", legend:[["/","short pause"],...], lines:[{ who:"Ron", text:"...", guide:"sound guide" }, ...] }
 //   match with images:true uses picture paths on the left.
 // A day may also have "text" (a short reading shown above the questions) and "glossary" (word lists shown in a fold-out).
 
@@ -148,6 +150,7 @@ window.ADVENT = {
       bonus: ["img/hp/harry.png", "img/hp/ron.png", "img/hp/hermione.png", "img/hp/owl.png", "img/hp/platform.png", "img/hp/snitch.png", "img/hp/hat.png", "img/hp/glasses.png"],
       intro: "Watch the Hogwarts Express scene from Harry Potter and the Philosopher's Stone. Listen, fill in the missing words, then copy how the characters speak. Your answers are saved as you go.",
       items: [
+        { type: "picture", src: "img/hp/harry-ron.jpg", alt: "Harry and Ron in their Hogwarts uniforms", caption: "Harry and Ron. Today you'll see how they meet." },
         { type: "heading", deco: "img/hp/ticket.png", text: "1. Before you watch", sub: "Think about starting somewhere new where you know nobody." },
         { type: "write", q: "Have you ever started somewhere new where you knew nobody? What happened?" },
         { type: "write", q: "How do you start a conversation with a stranger on a train? Write two opening lines." },
@@ -174,7 +177,7 @@ window.ADVENT = {
         { type: "gap", q: "Ron: Excuse me, do you mind? Everywhere else is ___.", answer: ["full"] },
         { type: "gap", q: "Ron: I'm Ron, by the ___. Ron Weasley.", answer: ["way"] },
         { type: "gap", q: "Ron: So it's true? Do you really have the… the ___?", answer: ["scar"] },
-        { type: "gap", q: "Harry: No, thanks. I'm all ___.", answer: ["set"] },
+        { type: "gap", q: "Ron: No, thanks. I'm all ___.", answer: ["set"] },
         { type: "gap", q: "Ron: They mean every ___.", answer: ["flavour", "flavor"] },
         { type: "gap", q: "Ron: Each pack's got a famous witch or ___.", answer: ["wizard"] },
         { type: "gap", q: "Ron: This is Scabbers, by the way. ___, isn't he?", answer: ["pathetic"] },
@@ -196,8 +199,50 @@ window.ADVENT = {
         { type: "choice", q: "In “I'm all set”, the words join together: “I'm-all-set”. This is called…", options: ["linking", "spelling", "stress"], answer: 0 },
         { type: "choice", q: "Who speaks faster, with very clear consonants?", options: ["Hermione", "Ron"], answer: 0 },
 
-        { type: "heading", deco: "img/hp/wand.png", text: "8. Shadowing", sub: "Use the start of the scene, from “Excuse me” to “Wicked!”. Turn on the subtitles on YouTube to read along." },
+        { type: "heading", deco: "img/hp/wand.png", text: "8. Shadowing", sub: "Read the script, then copy the actors. Start with a short part (for example from “Excuse me” to “Wicked!”) and add more each day." },
         { type: "reading", text: "1. Silent mouthing: subtitles off, move your lips with the actors, no sound.\n2. Read along: say the words quietly at the same time as the actors. Use 0.75 speed if it's too fast.\n3. Pause and repeat: pause after every line and say it straight away, copying the stress and the tune.\n4. Full speed: shadow at normal speed, then try without the words.\n5. Character roles: be Harry or Ron and say only their lines. Then swap.\nRecord your last try on your phone." },
+        { type: "script", title: "The train scene", legend: [["/", "short pause"], ["//", "longer pause"], ["‿", "join the words (linking)"], ["CAPS", "stressed syllable"], ["ə", "weak sound “uh” (schwa)"], ["↗", "voice goes up"], ["↘", "voice goes down"]],
+          lines: [
+            { who: "Ron", text: "Excuse me, do you mind? Everywhere else is full.", guide: "ex-CUSE me / d'yə MIND? ↗ // EV-ry-where ELSE‿iz FULL ↘" },
+            { who: "Harry", text: "Not at all.", guide: "NO-tə-TALL ↘" },
+            { who: "Ron", text: "I'm Ron, by the way. Ron Weasley.", guide: "I'm RON / by thə WAY ↘ // ron WEEZ-lee ↘" },
+            { who: "Harry", text: "I'm Harry. Harry Potter.", guide: "I'm HA-rry ↘ // ha-rry POT-tə ↘" },
+            { who: "Ron", text: "So… so it's true? I mean, do you really have the… the…", guide: "so… // so‿its TRUE? ↗ // I MEAN / d'yə REAL-ly HAVE thə… thə…" },
+            { who: "Harry", text: "The what?", guide: "thə WHAT? ↗" },
+            { who: "Ron", text: "The scar?", guide: "thə SCAR? ↗ (almost a whisper)" },
+            { who: "Harry", text: "Oh. Yeah.", guide: "OH ↘ / YEAH ↘" },
+            { who: "Ron", text: "Wicked!", guide: "WI-ckid! ↘ (big and excited)" },
+            { who: "Trolley lady", text: "Anything off the trolley, dears?", guide: "AN-y-thing‿off thə TROL-ley / DEARS? ↗" },
+            { who: "Ron", text: "No, thanks. I'm all set.", guide: "NO thanks ↘ / I'm‿all SET ↘" },
+            { who: "Harry", text: "We'll take the lot!", guide: "we'll TAKE thə LOT! ↘" },
+            { who: "Ron", text: "Wow! Bertie Bott's Every Flavour Beans!", guide: "WOW! ↘ // BER-tie BOTTS / EV-ry FLA-və BEANS! ↘" },
+            { who: "Ron", text: "They mean every flavour.", guide: "they MEAN / EV-ry FLA-və ↘" },
+            { who: "Ron", text: "There's chocolate and peppermint, and there's also spinach, liver and tripe.", guide: "there's CHOC-lət‿ən PEP-pə-mint ↗ / ən there's‿AL-so SPIN-ach ↗ / LIV-ə ↗ / ən TRIPE ↘" },
+            { who: "Ron", text: "George swears he got a bogey-flavoured one once.", guide: "GEORGE SWEARS / he GOT‿ə BO-gey FLA-vəd‿one ONCE ↘" },
+            { who: "Harry", text: "These aren't real frogs, are they?", guide: "these‿AREN'T REAL FROGS / ARE they? ↗" },
+            { who: "Ron", text: "It's just a spell. Besides, it's the card you want.", guide: "its JUST‿ə SPELL ↘ // be-SIDES / its thə CARD yə WANT ↘" },
+            { who: "Ron", text: "Each pack's got a famous witch or wizard. I've got about 500 myself.", guide: "EACH PACK'S got‿ə FA-məs WITCH‿ə WIZ-əd ↘ // I've GOT‿ə-bout FIVE HUN-drəd my-SELF ↘" },
+            { who: "Ron", text: "Watch it! That's rotten luck. They've only got one good jump in them to begin with.", guide: "WATCH‿it! ↘ // that's ROT-tən LUCK ↘ // they've ON-ly got ONE GOOD JUMP‿in thəm / tə be-GIN with ↘" },
+            { who: "Harry", text: "I've got Dumbledore!", guide: "I've got DUM-bəl-dore! ↘" },
+            { who: "Ron", text: "I've got about six of him.", guide: "I've got‿ə-bout SIX‿əv‿im ↘" },
+            { who: "Harry", text: "Hey, he's gone!", guide: "HEY / he's GONE! ↘" },
+            { who: "Ron", text: "Well, you can't expect him to hang around all day, can you?", guide: "well / yə CAN'T ex-PECT‿im tə HANG‿ə-round‿all DAY ↘ / CAN you? ↘" },
+            { who: "Ron", text: "This is Scabbers, by the way. Pathetic, isn't he?", guide: "this‿iz SCAB-bəz / by thə WAY ↘ // pə-THET-ic ↘ / IS-n't he? ↘" },
+            { who: "Harry", text: "Just a little bit.", guide: "JUST‿ə LIT-tle BIT ↘" },
+            { who: "Ron", text: "Fred gave me a spell to turn him yellow. Want to see?", guide: "FRED GAVE me‿ə SPELL / tə TURN‿im YEL-low ↘ // WAN-nə SEE? ↗" },
+            { who: "Hermione", text: "Has anyone seen a toad? A boy named Neville's lost one.", guide: "has‿AN-y-one SEEN‿ə TOAD? ↗ // ə BOY named NEV-ille's LOST‿one ↘" },
+            { who: "Ron", text: "No.", guide: "NO ↘" },
+            { who: "Hermione", text: "Oh, are you doing magic? Let's see, then.", guide: "OH / are yə DO-ing MA-gic? ↗ // let's SEE then ↘" },
+            { who: "Ron", text: "Sunshine, daisies, butter mellow, turn this stupid, fat rat yellow!", guide: "SUN-shine / DAI-sies / BUT-tə MEL-low // TURN this STU-pid / FAT RAT YEL-low! ↘ (say it like a little poem)" },
+            { who: "Hermione", text: "Are you sure that's a real spell? Well, it's not very good, is it?", guide: "are yə SURE that's‿ə REAL SPELL? ↗ // well / its NOT ve-ry GOOD ↘ / IS‿it? ↘" },
+            { who: "Hermione", text: "Of course, I've only tried a few simple ones myself, but they've all worked for me. For example… Oculus Reparo!", guide: "of COURSE / I've ON-ly TRIED‿ə few SIM-ple ones my-SELF / but they've ALL WORKED fə ME ↘ // fər‿ex-AM-ple… // OC-u-lus re-PA-ro! ↘" },
+            { who: "Hermione", text: "That's better, isn't it?", guide: "that's BET-tə ↘ / IS-n't‿it? ↘" },
+            { who: "Hermione", text: "Holy cricket! You're Harry Potter!", guide: "HO-ly CRICK-et! ↘ // you're HA-rry POT-tə! ↘" },
+            { who: "Hermione", text: "I'm Hermione Granger. And you are…?", guide: "I'm her-MY-ə-nee GRAN-jə ↘ // ənd YOU are…? ↗" },
+            { who: "Ron", text: "I'm Ron Weasley.", guide: "I'm ron WEEZ-lee ↘" },
+            { who: "Hermione", text: "Pleasure. You two better change into your robes. I expect we'll be arriving soon.", guide: "PLEA-sure ↘ // you TWO bet-tə CHANGE‿in-tə yə ROBES ↘ / I ex-PECT we'll be‿ə-RRI-ving SOON ↘" },
+            { who: "Hermione", text: "You've got dirt on your nose, by the way. Did you know? Just there.", guide: "you've got DIRT‿on yə NOSE / by thə WAY ↘ // DID‿jə KNOW? ↗ // JUST THERE ↘" }
+          ] },
         { type: "write", q: "Which line feels most natural now? Which line is still hard?" },
 
         { type: "heading", deco: "img/hp/ron.png", text: "9. Meeting someone new" },

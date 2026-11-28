@@ -116,7 +116,7 @@
   // ---------- day view ----------
   let current = 0;
   let work = null; // answers in progress for the open day
-  const INFO = ["heading", "reading", "video"];
+  const INFO = ["heading", "reading", "video", "script", "picture"];
   const blank = (d) => d.items.map((it) => (it.type === "order" || it.type === "wordsearch" ? [] : it.type === "match" ? {} : null));
   const saveDraft = () => { if (current) { state.drafts = state.drafts || {}; state.drafts[current] = work; save(); } };
 
@@ -176,6 +176,17 @@
       return `<li class="sec${it.deco ? " has-deco" : ""}">${it.deco ? `<img class="deco" src="${esc(it.deco)}" alt="" loading="lazy">` : ""}<h3>${esc(it.text)}</h3>${it.sub ? `<p class="hint">${esc(it.sub)}</p>` : ""}${it.bank ? `<p class="bank">${it.bank.map((w) => `<span>${esc(w)}</span>`).join("")}</p>` : ""}</li>`;
     }
     if (it.type === "reading") return `<li class="sec"><div class="reading">${esc(it.text)}</div></li>`;
+    if (it.type === "picture") return `<li class="sec"><figure class="pic"><img src="${esc(it.src)}" alt="${esc(it.alt || "")}" loading="lazy">${it.caption ? `<figcaption>${esc(it.caption)}</figcaption>` : ""}</figure></li>`;
+    if (it.type === "script") {
+      const who = [...new Set(it.lines.map((l) => l.who))].filter((w) => ["Harry", "Ron", "Hermione"].includes(w));
+      const mark = (g) => esc(g).replace(/‿/g, '<i class="lk">‿</i>').replace(/\/\//g, '<i class="ps">//</i>').replace(/(^|[^/<])\/(?![/])/g, '$1<i class="ps">/</i>').replace(/[↗↘]/g, (m) => `<i class="tn">${m}</i>`).replace(/\(([^)]*)\)/g, '<em>($1)</em>');
+      return `<li class="sec"><div class="script" data-role="all">
+        <div class="script-top"><h4>${esc(it.title || "Script")}</h4>
+          <div class="roles" role="group" aria-label="Practise as">Practise as: <button type="button" class="role" data-role="all" aria-pressed="true">Everyone</button>${who.map((w) => `<button type="button" class="role" data-role="${esc(w)}" aria-pressed="false">${esc(w)}</button>`).join("")}</div></div>
+        <p class="legend">${it.legend.map(([k, v]) => `<span><b>${mark(k)}</b> ${esc(v)}</span>`).join("")}</p>
+        ${it.lines.map((l) => `<div class="sline" data-who="${esc(l.who)}"><p class="stext"><b>${esc(l.who)}:</b> ${esc(l.text)}</p><p class="sguide">${mark(l.guide)}</p></div>`).join("")}
+      </div></li>`;
+    }
     if (it.type === "video") {
       const id = encodeURIComponent(it.youtube);
       return `<li class="sec"><div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="${esc(it.title || "Video")}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="hint"><a href="https://youtu.be/${id}" target="_blank" rel="noopener">Open the video on YouTube</a> (for subtitles, transcript or 0.75 speed)</p></li>`;
@@ -346,6 +357,12 @@
     if (b.id === "retry") { work = blank(d); saveDraft(); renderTask(d, false); $("dayView").scrollTop = 0; return; }
     if (b.id === "showAns") { const res = document.querySelector(".result"); renderTask(d, true, true, res ? res.outerHTML.replace("<img", '<img style="animation:none"') : ""); return; }
     if (b.id === "goNext") return openDay(current + 1);
+    if (b.classList.contains("role")) {
+      const box = b.closest(".script");
+      box.dataset.role = b.dataset.role;
+      box.querySelectorAll(".role").forEach((r) => r.setAttribute("aria-pressed", r === b));
+      return;
+    }
     const i = +b.dataset.i;
     if (b.classList.contains("ws-cell")) return wsTap(i, +b.dataset.r, +b.dataset.c);
     if (b.classList.contains("opt")) { work[i] = +b.dataset.k; saveDraft(); b.parentElement.querySelectorAll(".opt").forEach((o) => o.setAttribute("aria-pressed", o === b)); return; }
