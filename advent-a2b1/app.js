@@ -65,6 +65,9 @@
         ? `<div class="slot got${day === newDay ? " new" : ""}" style="--r:${r}deg" title="Day ${day}"><img src="img/sticker${day}.jpg" alt="Sticker for day ${day}"></div>`
         : `<div class="slot" aria-label="Empty sticker space ${day}">${day}</div>`;
     }).join("");
+    const bonus = A.days.filter((d) => d.bonus && state.days[d.day] && state.days[d.day].done).flatMap((d) => d.bonus.map((src) => ({ src, day: d.day })));
+    $("bonus").hidden = !bonus.length;
+    $("bonusList").innerHTML = bonus.map((b, k) => `<img class="bonus-st${b.day === newDay ? " new" : ""}" src="${esc(b.src)}" alt="" style="--r:${((k * 29) % 15) - 7}deg" loading="lazy">`).join("");
   }
 
   function renderGifts() {
@@ -170,7 +173,7 @@
   function itemHTML(it, i, day, checked, showAns) {
     const seed = day * 100 + i + 7;
     if (it.type === "heading") {
-      return `<li class="sec"><h3>${esc(it.text)}</h3>${it.sub ? `<p class="hint">${esc(it.sub)}</p>` : ""}${it.bank ? `<p class="bank">${it.bank.map((w) => `<span>${esc(w)}</span>`).join("")}</p>` : ""}</li>`;
+      return `<li class="sec${it.deco ? " has-deco" : ""}">${it.deco ? `<img class="deco" src="${esc(it.deco)}" alt="" loading="lazy">` : ""}<h3>${esc(it.text)}</h3>${it.sub ? `<p class="hint">${esc(it.sub)}</p>` : ""}${it.bank ? `<p class="bank">${it.bank.map((w) => `<span>${esc(w)}</span>`).join("")}</p>` : ""}</li>`;
     }
     if (it.type === "reading") return `<li class="sec"><div class="reading">${esc(it.text)}</div></li>`;
     if (it.type === "video") {
@@ -281,6 +284,7 @@
         <p>${right} of ${total} points</p>
         <p class="st">${stars(st)}</p>
         ${wasDone ? "" : `<img src="img/sticker${d.day}.jpg" alt="Your new sticker"><p><b>New sticker for your sticker book!</b></p>`}
+        ${wasDone || !d.bonus ? "" : `<p><b>Bonus! ${d.bonus.length} extra stickers:</b></p><div class="bonus-row">${d.bonus.map((b) => `<img src="${esc(b)}" alt="">`).join("")}</div>`}
         ${newGift ? `<p>🎁 You unlocked a present: <b>${esc(newGift.name)}</b>. Find it under the calendar.</p>` : ""}
       </div>`;
       if (!wasDone || newGift) burst();

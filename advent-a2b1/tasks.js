@@ -7,7 +7,8 @@
 //   order:  { type:"order", q:"Instruction", answer:"The sentence in the right order" }
 //   wordsearch: { type:"wordsearch", q:"...", grid:["ROW1", ...], words:["WORD", ...] }
 //   write:  { type:"write", q:"Open question" }   (free answer, saved but not marked)
-//   heading: { type:"heading", text:"Task 1. ...", sub:"optional note", bank:["optional", "word bank"] }
+//   heading: { type:"heading", text:"Task 1. ...", sub:"optional note", bank:["optional", "word bank"], deco:"optional picture" }
+// A day may have "bonus": ["img/..."] — extra stickers given when the day is passed (shown under the sticker book).
 //   reading: { type:"reading", text:"A text shown between tasks" }
 //   video:  { type:"video", youtube:"VIDEO_ID", title:"..." }   (embedded YouTube clip)
 //   match with images:true uses picture paths on the left.
@@ -144,23 +145,24 @@ window.ADVENT = {
       ] },
 
     { day: 2, title: "Harry meets Ron and Hermione", skill: "Film scene · Listening, vocabulary and shadowing",
+      bonus: ["img/hp/harry.png", "img/hp/ron.png", "img/hp/hermione.png", "img/hp/owl.png", "img/hp/platform.png", "img/hp/snitch.png", "img/hp/hat.png", "img/hp/glasses.png"],
       intro: "Watch the Hogwarts Express scene from Harry Potter and the Philosopher's Stone. Listen, fill in the missing words, then copy how the characters speak. Your answers are saved as you go.",
       items: [
-        { type: "heading", text: "1. Before you watch", sub: "Think about starting somewhere new where you know nobody." },
+        { type: "heading", deco: "img/hp/ticket.png", text: "1. Before you watch", sub: "Think about starting somewhere new where you know nobody." },
         { type: "write", q: "Have you ever started somewhere new where you knew nobody? What happened?" },
         { type: "write", q: "How do you start a conversation with a stranger on a train? Write two opening lines." },
 
-        { type: "heading", text: "2. Words from the scene" },
+        { type: "heading", deco: "img/hp/books.png", text: "2. Words from the scene" },
         { type: "match", q: "Match the words with their meanings.", pairs: [["compartment", "a small room in a train"], ["trolley", "a small cart that sells food on a train"], ["wand", "a magic stick"], ["spell", "magic words that make something happen"], ["scar", "a mark on your skin from an old injury"], ["toad", "an animal like a big frog"], ["robes", "long loose clothes that wizards wear"], ["flavour", "the taste of a food"]] },
         { type: "match", q: "Match the informal British phrases with their meanings.", pairs: [["Wicked!", "Brilliant! Really cool!"], ["the lot", "everything"], ["I'm all set.", "I've got everything I need."], ["rotten luck", "very bad luck"], ["pathetic", "weak and silly"], ["by the way", "used to add new information"]] },
         { type: "choice", q: "Is a compartment the whole train or a small room in it?", options: ["a small room in it", "the whole train"], answer: 0 },
 
-        { type: "heading", text: "3. Watch for the main idea", sub: "Watch the whole clip with subtitles off." },
+        { type: "heading", deco: "img/hp/castle.png", text: "3. Watch for the main idea", sub: "Watch the whole clip with subtitles off." },
         { type: "video", youtube: "R9U5qEp_7eE", title: "Harry meets Ron and Hermione on the Hogwarts Express" },
         { type: "match", q: "Put the events in order.", pairs: [["Ron asks to sit with Harry.", "1st"], ["Ron sees Harry's scar.", "2nd"], ["Harry buys sweets from the trolley.", "3rd"], ["A chocolate frog jumps out of the window.", "4th"], ["Ron tries a spell on his rat.", "5th"], ["Hermione mends Harry's glasses.", "6th"]] },
         { type: "write", q: "Write one adjective for your first impression of each person (for example: shy, friendly, confident, bossy). Ron is… Hermione is…" },
 
-        { type: "heading", text: "4. Who says it?", sub: "Watch again and choose the speaker." },
+        { type: "heading", deco: "img/hp/harry.png", text: "4. Who says it?", sub: "Watch again and choose the speaker." },
         { type: "choice", q: "“Excuse me, do you mind? Everywhere else is full.”", options: ["Ron", "Harry", "Hermione"], answer: 0 },
         { type: "choice", q: "“Anything off the trolley, dears?”", options: ["the trolley lady", "Ron", "Hermione"], answer: 0 },
         { type: "choice", q: "“We'll take the lot!”", options: ["Harry", "Ron", "Hermione"], answer: 0 },
@@ -168,7 +170,7 @@ window.ADVENT = {
         { type: "choice", q: "“Has anyone seen a toad?”", options: ["Hermione", "Ron", "Harry"], answer: 0 },
         { type: "choice", q: "“You've got dirt on your nose, by the way.”", options: ["Hermione", "Harry", "Ron"], answer: 0 },
 
-        { type: "heading", text: "5. Listen and fill in the gaps", sub: "Write one word in each gap. Watch again if you need to." },
+        { type: "heading", deco: "img/hp/letter.png", text: "5. Listen and fill in the gaps", sub: "Write one word in each gap. Watch again if you need to." },
         { type: "gap", q: "Ron: Excuse me, do you mind? Everywhere else is ___.", answer: ["full"] },
         { type: "gap", q: "Ron: I'm Ron, by the ___. Ron Weasley.", answer: ["way"] },
         { type: "gap", q: "Ron: So it's true? Do you really have the… the ___?", answer: ["scar"] },
@@ -179,7 +181,7 @@ window.ADVENT = {
         { type: "gap", q: "Hermione: Has anyone seen a ___? A boy named Neville's lost one.", answer: ["toad"] },
         { type: "gap", q: "Hermione: You two better change into your ___.", answer: ["robes"] },
 
-        { type: "heading", text: "6. Watch for details" },
+        { type: "heading", deco: "img/hp/glasses.png", text: "6. Watch for details" },
         { type: "choice", q: "Why does Ron sit with Harry?", options: ["Everywhere else is full.", "They are old friends.", "Harry asks him to."], answer: 0 },
         { type: "choice", q: "Why is Ron so surprised when he hears Harry's name?", options: ["Harry is famous.", "Harry is his cousin.", "Harry has a funny name."], answer: 0 },
         { type: "choice", q: "Which is NOT a flavour of Bertie Bott's beans that Ron names?", options: ["strawberry", "spinach", "peppermint"], answer: 0 },
@@ -187,22 +189,22 @@ window.ADVENT = {
         { type: "choice", q: "What happens when Ron tries the spell?", options: ["Nothing happens.", "The rat turns yellow.", "The rat disappears."], answer: 0 },
         { type: "choice", q: "What does Hermione fix with her spell?", options: ["Harry's glasses", "Ron's wand", "the window"], answer: 0 },
 
-        { type: "heading", text: "7. Listen to the music of English" },
+        { type: "heading", deco: "img/hp/snitch.png", text: "7. Listen to the music of English" },
         { type: "choice", q: "“Do you mind?” is a yes/no question. At the end, the voice usually goes…", options: ["up ↗", "down ↘"], answer: 0 },
         { type: "choice", q: "“And you are…?” Hermione's voice goes up because…", options: ["she is waiting for Ron to say his name", "she is angry", "she is finishing the conversation"], answer: 0 },
         { type: "choice", q: "Which words get the stress in “Everywhere else is full”?", options: ["EVERYwhere, ELSE, FULL", "is, else", "every word the same"], answer: 0 },
         { type: "choice", q: "In “I'm all set”, the words join together: “I'm-all-set”. This is called…", options: ["linking", "spelling", "stress"], answer: 0 },
         { type: "choice", q: "Who speaks faster, with very clear consonants?", options: ["Hermione", "Ron"], answer: 0 },
 
-        { type: "heading", text: "8. Shadowing", sub: "Use the start of the scene, from “Excuse me” to “Wicked!”. Turn on the subtitles on YouTube to read along." },
+        { type: "heading", deco: "img/hp/wand.png", text: "8. Shadowing", sub: "Use the start of the scene, from “Excuse me” to “Wicked!”. Turn on the subtitles on YouTube to read along." },
         { type: "reading", text: "1. Silent mouthing: subtitles off, move your lips with the actors, no sound.\n2. Read along: say the words quietly at the same time as the actors. Use 0.75 speed if it's too fast.\n3. Pause and repeat: pause after every line and say it straight away, copying the stress and the tune.\n4. Full speed: shadow at normal speed, then try without the words.\n5. Character roles: be Harry or Ron and say only their lines. Then swap.\nRecord your last try on your phone." },
         { type: "write", q: "Which line feels most natural now? Which line is still hard?" },
 
-        { type: "heading", text: "9. Meeting someone new" },
+        { type: "heading", deco: "img/hp/ron.png", text: "9. Meeting someone new" },
         { type: "match", q: "Match what you want to do with a phrase from the scene.", pairs: [["ask to sit down", "Do you mind?"], ["introduce yourself", "I'm Ron, by the way."], ["say no politely", "No, thanks. I'm all set."], ["show you're impressed", "Wicked!"], ["ask someone's name", "And you are…?"], ["meet someone politely", "Pleasure."]] },
         { type: "write", q: "Role-play: it's your first day at a new school or course. You sit with a stranger on the train. Write a short conversation (6–8 lines) using at least three phrases from above." },
 
-        { type: "heading", text: "Homework: 5-day shadowing challenge", sub: "Shadow the same part of the scene for 5 minutes a day. Record yourself on day 1 and day 5 and send both recordings to your teacher. After each recording, check: I linked words smoothly · I stressed the key words · my questions went up or down correctly · I kept up with the speaker." }
+        { type: "heading", deco: "img/hp/hat.png", text: "Homework: 5-day shadowing challenge", sub: "Shadow the same part of the scene for 5 minutes a day. Record yourself on day 1 and day 5 and send both recordings to your teacher. After each recording, check: I linked words smoothly · I stressed the key words · my questions went up or down correctly · I kept up with the speaker." }
       ] },
 
     { day: 3, title: "Sweeter than sugar", skill: "Grammar · Comparatives",
