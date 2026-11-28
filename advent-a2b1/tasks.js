@@ -258,6 +258,7 @@ window.ADVENT = {
       intro: "Nine questions to talk about with your teacher or a friend. For each one, do the short language task, then write your own answer. Then say it out loud!",
       items: [
         { type: "heading", deco: "img/xmas/santa.png", text: "1. How do you usually celebrate Christmas?", bank: ["We usually…", "We always…", "On Christmas Eve we…", "My family…"] },
+        { type: "picture", src: "img/xmas/photo-cocoa.jpg", alt: "Friends with hot chocolate by the Christmas tree", caption: "Hot chocolate with friends by the tree. What do you usually do?" },
         { type: "choice", q: "Which sentence is correct?", options: ["We usually celebrate with my grandparents.", "We celebrate usually with my grandparents.", "Usually we celebrating with my grandparents."], answer: 0 },
         { type: "gap", q: "On Christmas Eve we ___ (have) a big dinner together.", answer: ["have"] },
         { type: "write", q: "Your answer: how do you usually celebrate Christmas?" },
@@ -284,10 +285,12 @@ window.ADVENT = {
         { type: "write", q: "Your answer: what are the Christmas traditions in your country?" },
 
         { type: "heading", deco: "img/xmas/reindeer.png", text: "6. What do you know about Christmas traditions in other countries?", bank: ["In the UK, people…", "I know that in… they…", "I find it interesting that…"] },
+        { type: "picture", src: "img/xmas/photo-market.jpg", alt: "A big Christmas tree at a night Christmas market", caption: "A Christmas market. Which countries are famous for them?" },
         { type: "match", q: "Match the countries with their traditions.", pairs: [["the UK", "pulling Christmas crackers at dinner"], ["Germany", "visiting Christmas markets"], ["Australia", "Christmas lunch on the beach"], ["Mexico", "breaking a piñata"], ["Japan", "eating fried chicken for Christmas dinner"]] },
         { type: "write", q: "Your answer: which tradition from another country do you like most and why?" },
 
         { type: "heading", deco: "img/xmas/snowman.png", text: "7. What is your opinion about Christmas movies? Do you have a favourite one?", bank: ["In my opinion…", "I think they're…", "My favourite one is… because…"] },
+        { type: "picture", src: "img/xmas/photo-movie-night.jpg", alt: "A cosy outdoor movie night with Home Alone on the screen", caption: "A cosy movie night. Would you like to watch a film like this?" },
         { type: "choice", q: "In my opinion, Christmas movies ___ a bit predictable, but I love them.", options: ["are", "is", "be"], answer: 0 },
         { type: "choice", q: "My favourite Christmas movie is Home Alone ___ it's really funny.", options: ["because", "so", "but"], answer: 0 },
         { type: "write", q: "Your answer: what do you think about Christmas movies? What's your favourite?" },

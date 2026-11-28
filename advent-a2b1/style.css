@@ -183,7 +183,7 @@ button, input, select { font: inherit; color: inherit; }
 .script:not([data-role=all]) .sline { opacity: .4; }
 .script[data-role=Harry] .sline[data-who=Harry], .script[data-role=Ron] .sline[data-who=Ron], .script[data-role=Hermione] .sline[data-who=Hermione] { opacity: 1; background: color-mix(in srgb, var(--gold) 14%, transparent); border-radius: 8px; padding-inline: 8px; }
 .pic { margin: 6px 0 0; text-align: center; }
-.pic img { width: min(100%, 420px); border-radius: 14px; box-shadow: 0 4px 14px rgba(40, 30, 20, .2); }
+.pic img { width: min(100%, 420px); max-height: 440px; object-fit: cover; border-radius: 14px; box-shadow: 0 4px 14px rgba(40, 30, 20, .2); }
 .pic figcaption { margin-top: 8px; color: var(--soft); font-size: 15px; }
 .bank { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
 .bank span { border: 1.5px dashed var(--gold); border-radius: 8px; padding: 2px 10px; font-weight: 700; font-size: 15px; }
